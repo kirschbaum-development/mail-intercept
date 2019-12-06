@@ -1,5 +1,5 @@
 # Laravel Mail Intercept
-### A testing package for intercepting email sent from Laravel
+### A testing package for intercepting mail sent from Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/kirschbaum-development/mail-intercept.svg)](https://packagist.org/packages/kirschbaum-development/mail-intercept)
 [![Total Downloads](https://img.shields.io/packagist/dt/kirschbaum-development/mail-intercept.svg)](https://packagist.org/packages/kirschbaum-development/mail-intercept)

@@ -1,0 +1,39 @@
+{
+    "name": "kirschbaum-development/mail-intercept",
+    "description": "A set of assertions to test mail sent via Swift Mailer inside of Laravel",
+    "keywords": [
+        "laravel",
+        "swift mailer",
+        "test"
+    ],
+    "homepage": "https://github.com/kirschbaum-development/mail-intercept",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Brandon Ferens",
+            "email": "brandon@kirschbaumdevelopment.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "require-dev": {
+        "swiftmailer/swiftmailer": "^6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "KirschbaumDevelopment\\MailIntercept\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

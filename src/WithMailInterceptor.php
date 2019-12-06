@@ -29,10 +29,10 @@ trait WithMailInterceptor
     /**
      * Assert mail was sent from proper sender.
      *
-     * @param string $expected
+     * @param string|array $expected
      * @param Swift_Message $mail
      */
-    public function assertMailSentFrom(string $expected, Swift_Message $mail)
+    public function assertMailSentFrom($expected, Swift_Message $mail)
     {
         $addresses = Arr::wrap($expected);
 

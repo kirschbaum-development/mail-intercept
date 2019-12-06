@@ -1,7 +1,8 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__ . '/src')
+    ->exclude('vendor')
+    ->in(__DIR__)
     ->name('*.php')
     ->ignoreDotFiles(true)
     ->ignoreVCS(true);

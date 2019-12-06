@@ -72,6 +72,7 @@ This should be called after `Mail` has been sent, but before your assertions, ot
 $this->assertMailSentTo($to, $mail);
 $this->assertMailSentFrom($from, $mail);
 $this->assertMailSubject($subject, $mail);
+$this->assertMailBodyContainsString($content, $mail);
 ```
 
 These assertions methods each accept a string as the expected first parameter and a compiled email as the second parameter. Each item of the `interceptedMail()` collection is the proper mail object.

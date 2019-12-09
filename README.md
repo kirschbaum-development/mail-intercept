@@ -84,6 +84,8 @@ These assertions methods each accept a string as the expected first parameter an
 ```php
 $this->assertMailHasHeader($header, $mail);
 $this->assertMailMissingHeader($header, $mail);
+$this->assertMailHeaderIs($header, $value, $mail);
+$this->assertMailHeaderIsNot($header, $value, $mail);
 ```
 
 If you are injecting your own headers or need access to other headers in the email, use this assertion to verify they exist and are set properly. These assertions require the header name and the compiled email.

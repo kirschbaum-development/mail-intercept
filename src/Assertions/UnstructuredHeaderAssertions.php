@@ -15,7 +15,7 @@ trait UnstructuredHeaderAssertions
      */
     public function assertMailSubject(string $expected, Swift_Message $mail)
     {
-        $this->assertMailHeaderIs('Subject', $mail, $expected);
+        $this->assertMailHeaderIs('Subject', $expected, $mail);
     }
 
     /**
@@ -26,7 +26,7 @@ trait UnstructuredHeaderAssertions
      */
     public function assertMailNotSubject(string $expected, Swift_Message $mail)
     {
-        $this->assertMailHeaderIsNot('Subject', $mail, $expected);
+        $this->assertMailHeaderIsNot('Subject', $expected, $mail);
     }
 
     /**
@@ -39,8 +39,7 @@ trait UnstructuredHeaderAssertions
     {
         $this->assertInstanceOf(
             Swift_Mime_Header::class,
-            $mail->getHeaders()->get($expected),
-            "Mail does not have header [ {$expected} ]."
+            $mail->getHeaders()->get($expected)
         );
     }
 
@@ -54,8 +53,7 @@ trait UnstructuredHeaderAssertions
     {
         static::assertThat(
             $mail->getHeaders()->get($expected),
-            static::isNull(),
-            "Mail has header [ {$expected} ]."
+            static::isNull()
         );
     }
 
@@ -63,15 +61,14 @@ trait UnstructuredHeaderAssertions
      * Assert unstructured header exists.
      *
      * @param string $expected
+     * @param string $expectedValue
      * @param Swift_Message $mail
-     * @param string|null $expectedValue
      */
-    public function assertMailHeaderIs(string $expected, Swift_Message $mail, string $expectedValue = null)
+    public function assertMailHeaderIs(string $expected, string $expectedValue, Swift_Message $mail)
     {
         $this->assertEquals(
             $expectedValue,
-            $mail->getHeaders()->get($expected)->getValue(),
-            "Mail header [ {$expected} ]  does not have the value of [ {$expectedValue} ]."
+            $mail->getHeaders()->get($expected)->getValue()
         );
     }
 
@@ -79,15 +76,14 @@ trait UnstructuredHeaderAssertions
      * Assert unstructured header exists.
      *
      * @param string $expected
+     * @param string $expectedValue
      * @param Swift_Message $mail
-     * @param string|null $expectedValue
      */
-    public function assertMailHeaderIsNot(string $expected, Swift_Message $mail, string $expectedValue = null)
+    public function assertMailHeaderIsNot(string $expected, string $expectedValue, Swift_Message $mail)
     {
         $this->assertNotEquals(
             $expectedValue,
-            $mail->getHeaders()->get($expected)->getValue(),
-            "Mail header [ {$expected} ]  does not have the value of [ {$expectedValue} ]."
+            $mail->getHeaders()->get($expected)->getValue()
         );
     }
 }

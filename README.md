@@ -60,7 +60,7 @@ That's it! Pretty simple, right?!
 $this->interceptMail()
 ```
 
-MUST be called first. Similar to `Mail::fake()` which must be called before the email is sent, but unlike the mail fake, this doesn't fake email, it intercepts the compiled email. 
+This method MUST be called first, similar to how `Mail::fake()` works. But unlike the mail fake, mail is not faked, it is intercepted. 
 
 ```php
 $this->interceptedMail()
@@ -70,18 +70,27 @@ This should be called after `Mail` has been sent, but before your assertions, ot
 
 ```php
 $this->assertMailSentTo($to, $mail);
+$this->assertMailNotSentTo($to, $mail);
 $this->assertMailSentFrom($from, $mail);
+$this->assertMailNotSentFrom($from, $mail);
 $this->assertMailSubject($subject, $mail);
+$this->assertMailNotSubject($subject, $mail);
 $this->assertMailBodyContainsString($content, $mail);
+$this->assertMailBodyNotContainsString($content, $mail);
 ```
 
 These assertions methods each accept a string as the expected first parameter and a compiled email as the second parameter. Each item of the `interceptedMail()` collection is the proper mail object.
 
 ```php
-$this->assertMailHasHeader($header, $mail, $headerValue);
+$this->assertMailHasHeader($header, $mail);
+$this->assertMailMissingHeader($header, $mail);
 ```
 
-If you are injecting your own headers or need access to other headers in the email, use this assertion to verify they exist and are set properly.
+If you are injecting your own headers or need access to other headers in the email, use this assertion to verify they exist and are set properly. These assertions require the header name and the compiled email.
+
+### Other assertions
+
+Since `$this->interceptedMail()` returns a collection of `Swift_Message` objects, you are free to dissect and look into those objects using any methods available to Swift's Message API. Head over to the [Swift Mail Docs](https://swiftmailer.symfony.com/docs/introduction.html) for more detailed info.
 
 ## Changelog
 

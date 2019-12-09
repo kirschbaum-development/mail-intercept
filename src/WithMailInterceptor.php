@@ -5,15 +5,15 @@ namespace KirschbaumDevelopment\MailIntercept;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use KirschbaumDevelopment\MailIntercept\Assertions\ToAssertions;
-use KirschbaumDevelopment\MailIntercept\Assertions\BodyAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\FromAssertions;
+use KirschbaumDevelopment\MailIntercept\Assertions\ContentAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\UnstructuredHeaderAssertions;
 
 trait WithMailInterceptor
 {
     use ToAssertions;
-    use BodyAssertions;
     use FromAssertions;
+    use ContentAssertions;
     use UnstructuredHeaderAssertions;
 
     /**

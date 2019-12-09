@@ -8,8 +8,8 @@ use KirschbaumDevelopment\MailIntercept\WithMailInterceptor;
 
 class ContentAssertionsTest extends TestCase
 {
-    use WithFaker,
-        WithMailInterceptor;
+    use WithFaker;
+    use WithMailInterceptor;
 
     public function testMailBodyContents()
     {
@@ -26,7 +26,7 @@ class ContentAssertionsTest extends TestCase
         $this->assertMailBodyContainsString($content, $mail);
     }
 
-    public function testMailSentToMultipleEmails()
+    public function testMailBodyContentInMultipleEmails()
     {
         $this->interceptMail();
 
@@ -46,6 +46,44 @@ class ContentAssertionsTest extends TestCase
 
         foreach ($mails as $mail) {
             $this->assertMailBodyContainsString($content, $mail);
+        }
+    }
+
+    public function testMailBodyDoesNotHaveContents()
+    {
+        $this->interceptMail();
+
+        $content = $this->faker->unique()->sentence;
+
+        Mail::send([], [], function ($message) {
+            $message->setBody($this->faker->unique()->sentence);
+        });
+
+        $mail = $this->interceptedMail()->first();
+
+        $this->assertMailBodyNotContainsString($content, $mail);
+    }
+
+    public function testMailBodyDoesNotHaveContentInMultipleEmails()
+    {
+        $this->interceptMail();
+
+        $emailCount = mt_rand(1, 5);
+
+        $content = $this->faker->unique()->sentence;
+
+        for ($i = 0; $i < $emailCount; $i++) {
+            Mail::send([], [], function ($message) {
+                $message->setBody($this->faker->unique()->sentence);
+            });
+        }
+
+        $mails = $this->interceptedMail();
+
+        $this->assertCount($emailCount, $mails);
+
+        foreach ($mails as $mail) {
+            $this->assertMailBodyNotContainsString($content, $mail);
         }
     }
 }

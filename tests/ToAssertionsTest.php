@@ -91,7 +91,10 @@ class ToAssertionsTest extends TestCase
         ];
 
         Mail::send([], [], function ($message) {
-            $message->to($this->faker->unique()->email);
+            $message->to([
+                $this->faker->unique()->email,
+                $this->faker->unique()->email,
+            ]);
         });
 
         $mail = $this->interceptedMail()->first();

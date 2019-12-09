@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 trait ToAssertions
 {
     /**
-     * Assert mail was sent to proper recipient.
+     * Assert mail was sent to address.
      *
      * @param string|array $expected
      * @param Swift_Message $mail
@@ -18,15 +18,16 @@ trait ToAssertions
         $addresses = Arr::wrap($expected);
 
         foreach ($addresses as $address) {
-            $this->assertTrue(
+            static::assertThat(
                 in_array($address, $mail->getHeaders()->get('To')->getAddresses()),
-                sprintf('Mail was sent to [ %s ]', $address)
+                static::isTrue(),
+                "Mail was not sent to [ {$address} ]"
             );
         }
     }
 
     /**
-     * Assert mail was sent to proper recipient.
+     * Assert mail was not sent to address.
      *
      * @param string|array $expected
      * @param Swift_Message $mail
@@ -36,9 +37,10 @@ trait ToAssertions
         $addresses = Arr::wrap($expected);
 
         foreach ($addresses as $address) {
-            $this->assertFalse(
+            static::assertThat(
                 in_array($address, $mail->getHeaders()->get('To')->getAddresses()),
-                sprintf('Mail was sent to [ %s ]', $address)
+                static::isFalse(),
+                "Mail was sent to [ {$address} ]"
             );
         }
     }

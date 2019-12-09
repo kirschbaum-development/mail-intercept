@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 trait FromAssertions
 {
     /**
-     * Assert mail was sent from proper sender.
+     * Assert mail was sent from address.
      *
      * @param string|array $expected
      * @param Swift_Message $mail
@@ -17,9 +17,31 @@ trait FromAssertions
     {
         $addresses = Arr::wrap($expected);
 
-        $this->assertEmpty(
-            array_diff($addresses, $mail->getHeaders()->get('From')->getAddresses()),
-            sprintf('Mail was not sent from [ %s ].', implode(', ', Arr::wrap($addresses)))
-        );
+        foreach ($addresses as $address) {
+            static::assertThat(
+                in_array($address, $mail->getHeaders()->get('From')->getAddresses()),
+                static::isTrue(),
+                "Mail was not sent from [ {$address} ]"
+            );
+        }
+    }
+
+    /**
+     * Assert mail was not sent from address.
+     *
+     * @param string|array $expected
+     * @param Swift_Message $mail
+     */
+    public function assertMailNotSentFrom($expected, Swift_Message $mail)
+    {
+        $addresses = Arr::wrap($expected);
+
+        foreach ($addresses as $address) {
+            static::assertThat(
+                in_array($address, $mail->getHeaders()->get('From')->getAddresses()),
+                static::isFalse(),
+                "Mail was sent from [ {$address} ]"
+            );
+        }
     }
 }

@@ -8,8 +8,8 @@ use KirschbaumDevelopment\MailIntercept\WithMailInterceptor;
 
 class ToAssertionsTest extends TestCase
 {
-    use WithFaker,
-        WithMailInterceptor;
+    use WithFaker;
+    use WithMailInterceptor;
 
     public function testMailSentToSingleEmail()
     {
@@ -63,6 +63,61 @@ class ToAssertionsTest extends TestCase
 
         foreach ($emails as $key => $email) {
             $this->assertMailSentTo($email, $mails[$key]);
+        }
+    }
+
+    public function testMailNotSentToSingleEmail()
+    {
+        $this->interceptMail();
+
+        $email = $this->faker->unique()->email;
+
+        Mail::send([], [], function ($message) {
+            $message->to($this->faker->unique()->email);
+        });
+
+        $mail = $this->interceptedMail()->first();
+
+        $this->assertMailNotSentTo($email, $mail);
+    }
+
+    public function testMailNotSentToMultipleEmails()
+    {
+        $this->interceptMail();
+
+        $emails = [
+            $this->faker->unique()->email,
+            $this->faker->unique()->email,
+        ];
+
+        Mail::send([], [], function ($message) {
+            $message->to($this->faker->unique()->email);
+        });
+
+        $mail = $this->interceptedMail()->first();
+
+        $this->assertMailNotSentTo($emails, $mail);
+    }
+
+    public function testDifferentMailNotSentToDifferentSingleEmail()
+    {
+        $this->interceptMail();
+
+        $emails = [
+            $this->faker->unique()->email,
+            $this->faker->unique()->email,
+        ];
+
+        foreach ($emails as $email) {
+            Mail::send([], [], function ($message) {
+                $message->to($this->faker->unique()->email);
+            });
+        }
+
+        $mails = $this->interceptedMail();
+
+        foreach ($emails as $key => $email) {
+            $this->assertMailNotSentTo($email, $mails[$key]);
         }
     }
 }

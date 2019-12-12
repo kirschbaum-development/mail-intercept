@@ -2,7 +2,7 @@ on: push
 name: Code Style
 
 jobs:
-  phpunit:
+  php-cs-fixer:
     runs-on: ubuntu-latest
     container:
       image: kirschbaumdevelopment/laravel-test-runner:7.3.0

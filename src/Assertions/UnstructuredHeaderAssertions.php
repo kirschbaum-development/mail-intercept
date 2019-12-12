@@ -51,10 +51,7 @@ trait UnstructuredHeaderAssertions
      */
     public function assertMailMissingHeader(string $expected, Swift_Message $mail)
     {
-        static::assertThat(
-            $mail->getHeaders()->get($expected),
-            static::isNull()
-        );
+        $this->assertNull($mail->getHeaders()->get($expected));
     }
 
     /**

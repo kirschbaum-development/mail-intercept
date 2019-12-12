@@ -18,11 +18,7 @@ trait FromAssertions
         $addresses = Arr::wrap($expected);
 
         foreach ($addresses as $address) {
-            static::assertThat(
-                in_array($address, $mail->getHeaders()->get('From')->getAddresses()),
-                static::isTrue(),
-                "Mail was not sent from [ {$address} ]"
-            );
+            $this->assertContains($address, $mail->getHeaders()->get('From')->getAddresses());
         }
     }
 
@@ -37,11 +33,7 @@ trait FromAssertions
         $addresses = Arr::wrap($expected);
 
         foreach ($addresses as $address) {
-            static::assertThat(
-                in_array($address, $mail->getHeaders()->get('From')->getAddresses()),
-                static::isFalse(),
-                "Mail was sent from [ {$address} ]"
-            );
+            $this->assertNotContains($address, $mail->getHeaders()->get('From')->getAddresses());
         }
     }
 }

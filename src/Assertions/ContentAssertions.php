@@ -14,7 +14,11 @@ trait ContentAssertions
      */
     public function assertMailBodyContainsString(string $needle, Swift_Message $mail)
     {
-        $this->assertStringContainsString($needle, $mail->getBody());
+        $this->assertStringContainsString(
+            $needle,
+            $mail->getBody(),
+            "The expected [{$needle}] string was not found in the body."
+        );
     }
 
     /**
@@ -25,6 +29,10 @@ trait ContentAssertions
      */
     public function assertMailBodyNotContainsString(string $needle, Swift_Message $mail)
     {
-        $this->assertStringNotContainsString($needle, $mail->getBody());
+        $this->assertStringNotContainsString(
+            $needle,
+            $mail->getBody(),
+            "The expected [{$needle}] string was found in the body."
+        );
     }
 }

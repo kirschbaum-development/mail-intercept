@@ -18,7 +18,11 @@ trait ToAssertions
         $addresses = Arr::wrap($expected);
 
         foreach ($addresses as $address) {
-            $this->assertContains($address, $mail->getHeaders()->get('To')->getAddresses());
+            $this->assertContains(
+                $address,
+                $mail->getHeaders()->get('To')->getAddresses(),
+                "Mail was not sent to the expected address [{$address}]."
+            );
         }
     }
 
@@ -33,7 +37,11 @@ trait ToAssertions
         $addresses = Arr::wrap($expected);
 
         foreach ($addresses as $address) {
-            $this->assertNotContains($address, $mail->getHeaders()->get('To')->getAddresses());
+            $this->assertNotContains(
+                $address,
+                $mail->getHeaders()->get('To')->getAddresses(),
+                "Mail was sent to the expected address [{$address}]."
+            );
         }
     }
 }

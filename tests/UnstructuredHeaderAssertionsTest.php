@@ -4,6 +4,7 @@ namespace Tests;
 
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\ExpectationFailedException;
 use KirschbaumDevelopment\MailIntercept\WithMailInterceptor;
 
 class UnstructuredHeaderAssertionsTest extends TestCase
@@ -21,9 +22,23 @@ class UnstructuredHeaderAssertionsTest extends TestCase
             $message->getHeaders()->addTextHeader($header, $this->faker->word);
         });
 
-        $mail = $this->interceptedMail()->first();
+        $this->assertMailHasHeader($header, $this->interceptedMail()->first());
+    }
 
-        $this->assertMailHasHeader($header, $mail);
+    public function testMailHasHeaderThrowsProperExpectationFailedException()
+    {
+        $this->interceptMail();
+
+        $header = $this->faker->unique()->slug;
+
+        Mail::send([], [], function ($message) {
+            $message->getHeaders()->addTextHeader($this->faker->unique()->slug, $this->faker->word);
+        });
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("The expected [{$header}] header did not exist.");
+
+        $this->assertMailHasHeader($header, $this->interceptedMail()->first());
     }
 
     public function testMailHasHeaderOnMultipleEmails()
@@ -59,9 +74,23 @@ class UnstructuredHeaderAssertionsTest extends TestCase
             $message->getHeaders()->addTextHeader($this->faker->unique()->slug, $this->faker->word);
         });
 
-        $mail = $this->interceptedMail()->first();
+        $this->assertMailMissingHeader($header, $this->interceptedMail()->first());
+    }
 
-        $this->assertMailMissingHeader($header, $mail);
+    public function testMailMissingHeaderThrowsProperExpectationFailedException()
+    {
+        $this->interceptMail();
+
+        $header = $this->faker->slug;
+
+        Mail::send([], [], function ($message) use ($header) {
+            $message->getHeaders()->addTextHeader($header, $this->faker->word);
+        });
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("The expected [{$header}] header did exist.");
+
+        $this->assertMailMissingHeader($header, $this->interceptedMail()->first());
     }
 
     public function testMailMissingHeaderOnMultipleEmails()
@@ -98,9 +127,24 @@ class UnstructuredHeaderAssertionsTest extends TestCase
             $message->getHeaders()->addTextHeader($header, $value);
         });
 
-        $mail = $this->interceptedMail()->first();
+        $this->assertMailHeaderIs($header, $value, $this->interceptedMail()->first());
+    }
 
-        $this->assertMailHeaderIs($header, $value, $mail);
+    public function testMailHeaderIsThrowsProperExpectationFailedException()
+    {
+        $this->interceptMail();
+
+        $header = $this->faker->slug;
+        $value = $this->faker->unique()->word;
+
+        Mail::send([], [], function ($message) use ($header) {
+            $message->getHeaders()->addTextHeader($header, $this->faker->unique()->word);
+        });
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("The expected [{$header}] was not set to [{$value}].");
+
+        $this->assertMailHeaderIs($header, $value, $this->interceptedMail()->first());
     }
 
     public function testMailHeaderIsOnMultipleEmails()
@@ -138,9 +182,24 @@ class UnstructuredHeaderAssertionsTest extends TestCase
             $message->getHeaders()->addTextHeader($header, $this->faker->unique()->word);
         });
 
-        $mail = $this->interceptedMail()->first();
+        $this->assertMailHeaderIsNot($header, $value, $this->interceptedMail()->first());
+    }
 
-        $this->assertMailHeaderIsNot($header, $value, $mail);
+    public function testMailHeaderIsNotThrowsProperExpectationFailedException()
+    {
+        $this->interceptMail();
+
+        $header = $this->faker->slug;
+        $value = $this->faker->word;
+
+        Mail::send([], [], function ($message) use ($header, $value) {
+            $message->getHeaders()->addTextHeader($header, $value);
+        });
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("The expected [{$header}] was set to [{$value}].");
+
+        $this->assertMailHeaderIsNot($header, $value, $this->interceptedMail()->first());
     }
 
     public function testMailHeaderIsNotOnMultipleEmails()

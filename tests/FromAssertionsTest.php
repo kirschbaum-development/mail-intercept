@@ -4,6 +4,7 @@ namespace Tests;
 
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\ExpectationFailedException;
 use KirschbaumDevelopment\MailIntercept\WithMailInterceptor;
 
 class FromAssertionsTest extends TestCase
@@ -21,9 +22,23 @@ class FromAssertionsTest extends TestCase
             $message->from($email);
         });
 
-        $mail = $this->interceptedMail()->first();
+        $this->assertMailSentFrom($email, $this->interceptedMail()->first());
+    }
 
-        $this->assertMailSentFrom($email, $mail);
+    public function testMailSentFromThrowsProperExpectationFailedException()
+    {
+        $this->interceptMail();
+
+        $email = $this->faker->unique()->email;
+
+        Mail::send([], [], function ($message) {
+            $message->from($this->faker->unique->email);
+        });
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("Mail was not sent from the expected address [{$email}].");
+
+        $this->assertMailSentFrom($email, $this->interceptedMail()->first());
     }
 
     public function testMailSentFromMultipleEmails()
@@ -39,9 +54,7 @@ class FromAssertionsTest extends TestCase
             $message->from($emails);
         });
 
-        $mail = $this->interceptedMail()->first();
-
-        $this->assertMailSentFrom($emails, $mail);
+        $this->assertMailSentFrom($emails, $this->interceptedMail()->first());
     }
 
     public function testDifferentMailSentFromDifferentSingleEmail()
@@ -59,10 +72,8 @@ class FromAssertionsTest extends TestCase
             });
         }
 
-        $mails = $this->interceptedMail();
-
         foreach ($emails as $key => $email) {
-            $this->assertMailSentFrom($email, $mails[$key]);
+            $this->assertMailSentFrom($email, $this->interceptedMail()[$key]);
         }
     }
 
@@ -76,9 +87,23 @@ class FromAssertionsTest extends TestCase
             $message->from($this->faker->unique()->email);
         });
 
-        $mail = $this->interceptedMail()->first();
+        $this->assertMailNotSentFrom($email, $this->interceptedMail()->first());
+    }
 
-        $this->assertMailNotSentFrom($email, $mail);
+    public function testMailNotSentFromThrowsProperExpectationFailedException()
+    {
+        $this->interceptMail();
+
+        $email = $this->faker->email;
+
+        Mail::send([], [], function ($message) use ($email) {
+            $message->from($email);
+        });
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("Mail was sent from the expected address [{$email}].");
+
+        $this->assertMailNotSentFrom($email, $this->interceptedMail()->first());
     }
 
     public function testMailNotSentFromMultipleEmails()
@@ -97,9 +122,7 @@ class FromAssertionsTest extends TestCase
             ]);
         });
 
-        $mail = $this->interceptedMail()->first();
-
-        $this->assertMailNotSentFrom($emails, $mail);
+        $this->assertMailNotSentFrom($emails, $this->interceptedMail()->first());
     }
 
     public function testDifferentMailNotSentFromDifferentSingleEmail()
@@ -117,10 +140,8 @@ class FromAssertionsTest extends TestCase
             });
         }
 
-        $mails = $this->interceptedMail();
-
         foreach ($emails as $key => $email) {
-            $this->assertMailNotSentFrom($email, $mails[$key]);
+            $this->assertMailNotSentFrom($email, $this->interceptedMail()[$key]);
         }
     }
 }

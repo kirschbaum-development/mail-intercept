@@ -39,7 +39,8 @@ trait UnstructuredHeaderAssertions
     {
         $this->assertInstanceOf(
             Swift_Mime_Header::class,
-            $mail->getHeaders()->get($expected)
+            $mail->getHeaders()->get($expected),
+            "The expected [{$expected}] header did not exist."
         );
     }
 
@@ -51,11 +52,14 @@ trait UnstructuredHeaderAssertions
      */
     public function assertMailMissingHeader(string $expected, Swift_Message $mail)
     {
-        $this->assertNull($mail->getHeaders()->get($expected));
+        $this->assertNull(
+            $mail->getHeaders()->get($expected),
+            "The expected [{$expected}] header did exist."
+        );
     }
 
     /**
-     * Assert unstructured header exists.
+     * Assert unstructured header is expected value.
      *
      * @param string $expected
      * @param string $expectedValue
@@ -65,12 +69,13 @@ trait UnstructuredHeaderAssertions
     {
         $this->assertEquals(
             $expectedValue,
-            $mail->getHeaders()->get($expected)->getValue()
+            $mail->getHeaders()->get($expected)->getValue(),
+            "The expected [{$expected}] was not set to [{$expectedValue}]."
         );
     }
 
     /**
-     * Assert unstructured header exists.
+     * Assert unstructured header is not expected value.
      *
      * @param string $expected
      * @param string $expectedValue
@@ -80,7 +85,8 @@ trait UnstructuredHeaderAssertions
     {
         $this->assertNotEquals(
             $expectedValue,
-            $mail->getHeaders()->get($expected)->getValue()
+            $mail->getHeaders()->get($expected)->getValue(),
+            "The expected [{$expected}] was set to [{$expectedValue}]."
         );
     }
 }

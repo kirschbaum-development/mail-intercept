@@ -4,6 +4,7 @@ namespace Tests;
 
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\ExpectationFailedException;
 use KirschbaumDevelopment\MailIntercept\WithMailInterceptor;
 
 class SubjectAssertionsTest extends TestCase
@@ -21,9 +22,23 @@ class SubjectAssertionsTest extends TestCase
             $message->subject($subject);
         });
 
-        $mail = $this->interceptedMail()->first();
+        $this->assertMailSubject($subject, $this->interceptedMail()->first());
+    }
 
-        $this->assertMailSubject($subject, $mail);
+    public function testMailSubjectThrowsProperExpectationFailedException()
+    {
+        $this->interceptMail();
+
+        $subject = $this->faker->unique()->sentence;
+
+        Mail::send([], [], function ($message) {
+            $message->subject($this->faker->unique()->sentence);
+        });
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("The expected [Subject] was not set to [{$subject}].");
+
+        $this->assertMailSubject($subject, $this->interceptedMail()->first());
     }
 
     public function testMailSubjectOnMultipleEmails()
@@ -59,9 +74,23 @@ class SubjectAssertionsTest extends TestCase
             $message->subject($this->faker->unique()->sentence);
         });
 
-        $mail = $this->interceptedMail()->first();
+        $this->assertMailNotSubject($subject, $this->interceptedMail()->first());
+    }
 
-        $this->assertMailNotSubject($subject, $mail);
+    public function testMailNotSubjectThrowsProperExpectationFailedException()
+    {
+        $this->interceptMail();
+
+        $subject = $this->faker->sentence;
+
+        Mail::send([], [], function ($message) use ($subject) {
+            $message->subject($subject);
+        });
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("The expected [Subject] was set to [{$subject}].");
+
+        $this->assertMailNotSubject($subject, $this->interceptedMail()->first());
     }
 
     public function testMailNotSubjectOnMultipleEmails()

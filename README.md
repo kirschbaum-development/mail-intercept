@@ -1,3 +1,5 @@
+![Nova Inline Select banner](https://raw.githubusercontent.com/kirschbaum-development/mail-intercept/master/screenshots/banner.jpg)
+
 # Laravel Mail Intercept
 ### A testing package for intercepting mail sent from Laravel
 
@@ -6,9 +8,9 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/cc0749987c38426ebc8b0059c1171e27)](https://www.codacy.com/manual/Kirschbaum/mail-intercept?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kirschbaum-development/mail-intercept&amp;utm_campaign=Badge_Grade)
 [![Actions Status](https://github.com/kirschbaum-development/mail-intercept/workflows/CI/badge.svg)](https://github.com/kirschbaum-development/mail-intercept/actions)
 
-This package contains an interceptor Laravel Mail just before they are sent out. This allows all kinds of assertions to be made on the actual emails themselves. 
+This testing suite intercepts Laravel Mail just before they are sent out, allowing all kinds of assertions to be made on the actual emails themselves.
 
-This package does not fake any email. You get to inspect the actual mail ensuring you are sending exactly what you want!
+Mail isn't faked here. You get to inspect the actual mail ensuring you are sending exactly what you want!
 
 ## Requirements
 

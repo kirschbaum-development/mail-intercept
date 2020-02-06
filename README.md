@@ -70,25 +70,37 @@ $this->interceptedMail()
 
 This should be called after `Mail` has been sent, but before your assertions, otherwise you won't have any emails to work with. It returns a `Collection` of emails so you are free to use any of the methods available to a collection.
 
-```php
-$this->assertMailSentTo($to, $mail);
-$this->assertMailNotSentTo($to, $mail);
-$this->assertMailSentFrom($from, $mail);
-$this->assertMailNotSentFrom($from, $mail);
-$this->assertMailSubject($subject, $mail);
-$this->assertMailNotSubject($subject, $mail);
-$this->assertMailBodyContainsString($content, $mail);
-$this->assertMailBodyNotContainsString($content, $mail);
-```
+| Assertions                                                 | Parameters                                        |
+|:---------------------------------------------------------- |:--------------------------------------------------|
+| `$this->assertMailSentTo($to, $mail);`                     | `$to` string, array<br/>`$mail` Swift_Message     |
+| `$this->assertMailNotSentTo($to, $mail);`                  | `$to` string, array<br/>`$mail` Swift_Message     |
+| `$this->assertMailSentFrom($from, $mail);`                 | `$from` string, array<br/>`$mail` Swift_Message   |
+| `$this->assertMailNotSentFrom($from, $mail);`              | `$from` string, array<br/>`$mail` Swift_Message   |
+| `$this->assertMailSubject($subject, $mail);`               | `$subject` string<br/>`$mail` Swift_Message       |
+| `$this->assertMailNotSubject($subject, $mail);`            | `$subject` string<br/>`$mail` Swift_Message       |
+| `$this->assertMailBodyContainsString($content, $mail);`    | `$content` string<br/>`$mail` Swift_Message       |
+| `$this->assertMailBodyNotContainsString($content, $mail);` | `$content` string<br/>`$mail` Swift_Message       |
+| `$this->assertMailRepliesTo($reply, $mail);`               | `$reply` string, array<br/>`$mail` Swift_Message  |
+| `$this->assertMailNotRepliesTo($reply, $mail);`            | `$reply` string, array<br/>`$mail` Swift_Message  |
+| `$this->assertMailCc($cc, $mail);`                         | `$cc` string, array<br/>`$mail` Swift_Message     |
+| `$this->assertMailNotCc($cc, $mail);`                      | `$cc` string, array<br/>`$mail` Swift_Message     |
+| `$this->assertMailBcc($cc, $mail);`                        | `$bcc` string, array<br/>`$mail` Swift_Message    |
+| `$this->assertMailNotBcc($cc, $mail);`                     | `$bcc` string, array<br/>`$mail` Swift_Message    |
+| `$this->assertMailSender($sender, $mail);`                 | `$sender` string, array<br/>`$mail` Swift_Message |
+| `$this->assertMailNotSender($sender, $mail);`              | `$sender` string, array<br/>`$mail` Swift_Message |
+| `$this->assertMailIsPlain($mail);`                         | `$mail` Swift_Message                             |
+| `$this->assertMailIsNotPlain($mail);`                      | `$mail` Swift_Message                             |
+| `$this->assertMailIsHtml($mail);`                          | `$mail` Swift_Message                             |
+| `$this->assertMailIsNotHtml($mail);`                       | `$mail` Swift_Message                             |
 
-These assertions methods each accept a string as the expected first parameter and a compiled email as the second parameter. Each item of the `interceptedMail()` collection is the proper mail object.
+| Header Assertions                                       | Parameters                                                     |
+|:------------------------------------------------------- |:---------------------------------------------------------------|
+| `$this->assertMailHasHeader($header, $mail);`           | `$header` string<br/>`$mail` Swift_Message                     |
+| `$this->assertMailMissingHeader($header, $mail);`       | `$header` string<br/>`$mail` Swift_Message                     |
+| `$this->assertMailHeaderIs($header, $value, $mail);`    | `$header` string<br/>`$value` string<br/>`$mail` Swift_Message |
+| `$this->assertMailHeaderIsNot($header, $value, $mail);` | `$header` string<br/>`$value` string<br/>`$mail` Swift_Message |
 
-```php
-$this->assertMailHasHeader($header, $mail);
-$this->assertMailMissingHeader($header, $mail);
-$this->assertMailHeaderIs($header, $value, $mail);
-$this->assertMailHeaderIsNot($header, $value, $mail);
-```
+You should use each item of the `interceptedMail()` collection as the mail object for all assertions.
 
 If you are injecting your own headers or need access to other headers in the email, use this assertion to verify they exist and are set properly. These assertions require the header name and the compiled email.
 

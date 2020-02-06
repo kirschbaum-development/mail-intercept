@@ -5,32 +5,32 @@ namespace Tests;
 use Swift_Message;
 use Illuminate\Foundation\Testing\WithFaker;
 use PHPUnit\Framework\ExpectationFailedException;
-use KirschbaumDevelopment\MailIntercept\Assertions\ToAssertions;
+use KirschbaumDevelopment\MailIntercept\Assertions\CcAssertions;
 
-class ToAssertionsTest extends TestCase
+class CcAssertionsTest extends TestCase
 {
     use WithFaker;
-    use ToAssertions;
+    use CcAssertions;
 
-    public function testMailSentToSingleEmail()
+    public function testMailCcSingleEmail()
     {
         $email = $this->faker->email;
 
-        $mail = (new Swift_Message())->setTo($email);
+        $mail = (new Swift_Message())->setCc($email);
 
-        $this->assertMailSentTo($email, $mail);
+        $this->assertMailCc($email, $mail);
     }
 
-    public function testMailSentToThrowsProperExpectationFailedException()
+    public function testMailCcThrowsProperExpectationFailedException()
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Swift_Message())->setTo($this->faker->unique->email);
+        $mail = (new Swift_Message())->setCc($this->faker->unique->email);
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage("Mail was not sent to the expected address [{$email}].");
+        $this->expectExceptionMessage("Mail was not CC'd to the expected address [{$email}].");
 
-        $this->assertMailSentTo($email, $mail);
+        $this->assertMailCc($email, $mail);
     }
 
     public function testMailSentToMultipleEmails()
@@ -40,30 +40,30 @@ class ToAssertionsTest extends TestCase
             $this->faker->email,
         ];
 
-        $mail = (new Swift_Message())->setTo($emails);
+        $mail = (new Swift_Message())->setCc($emails);
 
-        $this->assertMailSentTo($emails, $mail);
+        $this->assertMailCc($emails, $mail);
     }
 
     public function testMailNotSentToSingleEmail()
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Swift_Message())->setTo($this->faker->unique()->email);
+        $mail = (new Swift_Message())->setCc($this->faker->unique()->email);
 
-        $this->assertMailNotSentTo($email, $mail);
+        $this->assertMailNotCc($email, $mail);
     }
 
     public function testMailNotSentToThrowsProperExpectationFailedException()
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Swift_Message())->setTo($email);
+        $mail = (new Swift_Message())->setCc($email);
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage("Mail was sent to the expected address [{$email}].");
+        $this->expectExceptionMessage("Mail was CC'd to the expected address [{$email}].");
 
-        $this->assertMailNotSentTo($email, $mail);
+        $this->assertMailNotCc($email, $mail);
     }
 
     public function testMailNotSentToMultipleEmails()
@@ -73,11 +73,11 @@ class ToAssertionsTest extends TestCase
             $this->faker->unique()->email,
         ];
 
-        $mail = (new Swift_Message())->setTo([
+        $mail = (new Swift_Message())->setCc([
             $this->faker->unique()->email,
             $this->faker->unique()->email,
         ]);
 
-        $this->assertMailNotSentTo($emails, $mail);
+        $this->assertMailNotCc($emails, $mail);
     }
 }

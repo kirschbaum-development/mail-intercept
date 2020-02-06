@@ -72,8 +72,8 @@ This should be called after `Mail` has been sent, but before your assertions, ot
 
 | Assertion | Parameters |
 |:--------- |:-----------|
-|`$this->assertMailSentTo($to, $mail);`| `$to` string|array <br> `$mail` Swift_Message |
-|`$this->assertMailNotSentTo($to, $mail);`| `$to` string|array <br> `$mail` Swift_Message |
+|`$this->assertMailSentTo($to, $mail);`| `$to` string|array\ `$mail` Swift_Message |
+|`$this->assertMailNotSentTo($to, $mail);`| `$to` string|array <br/> `$mail` Swift_Message |
 |`$this->assertMailSentFrom($from, $mail);`| `$from` string|array <br> `$mail` Swift_Message |
 |`$this->assertMailNotSentFrom($from, $mail);`| `$from` string|array <br> `$mail` Swift_Message |
 |`$this->assertMailSubject($subject, $mail);`| `$subject` string|array <br> `$mail` Swift_Message |

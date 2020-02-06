@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 trait ReplyToAssertions
 {
     /**
-     * Assert mail was sent to address.
+     * Assert mail replies to address.
      *
      * @param string|array $expected
      * @param Swift_Message $mail
@@ -27,7 +27,7 @@ trait ReplyToAssertions
     }
 
     /**
-     * Assert mail was not sent to address.
+     * Assert mail does not reply to address.
      *
      * @param string|array $expected
      * @param Swift_Message $mail

@@ -3,7 +3,6 @@
 namespace Tests;
 
 use Swift_Message;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\WithFaker;
 use PHPUnit\Framework\ExpectationFailedException;
 use KirschbaumDevelopment\MailIntercept\WithMailInterceptor;

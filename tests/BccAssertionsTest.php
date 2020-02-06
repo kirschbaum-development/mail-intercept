@@ -2,146 +2,82 @@
 
 namespace Tests;
 
-use Illuminate\Support\Facades\Mail;
+use Swift_Message;
 use Illuminate\Foundation\Testing\WithFaker;
 use PHPUnit\Framework\ExpectationFailedException;
-use KirschbaumDevelopment\MailIntercept\WithMailInterceptor;
+use KirschbaumDevelopment\MailIntercept\Assertions\BccAssertions;
 
 class BccAssertionsTest extends TestCase
 {
     use WithFaker;
-    use WithMailInterceptor;
+    use BccAssertions;
 
     public function testMailBccSingleEmail()
     {
-        $this->interceptMail();
-
         $email = $this->faker->email;
 
-        Mail::send([], [], function ($message) use ($email) {
-            $message->bcc($email);
-        });
+        $mail = (new Swift_Message())->setBcc($email);
 
-        $this->assertMailBcc($email, $this->interceptedMail()->first());
+        $this->assertMailBcc($email, $mail);
     }
 
     public function testMailBccThrowsProperExpectationFailedException()
     {
-        $this->interceptMail();
-
         $email = $this->faker->unique()->email;
 
-        Mail::send([], [], function ($message) {
-            $message->bcc($this->faker->unique->email);
-        });
+        $mail = (new Swift_Message())->setBcc($this->faker->unique->email);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail was not BCC'd to the expected address [{$email}].");
 
-        $this->assertMailBcc($email, $this->interceptedMail()->first());
+        $this->assertMailBcc($email, $mail);
     }
 
     public function testMailSentToMultipleEmails()
     {
-        $this->interceptMail();
-
         $emails = [
             $this->faker->email,
             $this->faker->email,
         ];
 
-        Mail::send([], [], function ($message) use ($emails) {
-            $message->bcc($emails);
-        });
+        $mail = (new Swift_Message())->setBcc($emails);
 
-        $this->assertMailBcc($emails, $this->interceptedMail()->first());
-    }
-
-    public function testDifferentMailSentToDifferentSingleEmail()
-    {
-        $this->interceptMail();
-
-        $emails = [
-            $this->faker->email,
-            $this->faker->email,
-        ];
-
-        foreach ($emails as $email) {
-            Mail::send([], [], function ($message) use ($email) {
-                $message->bcc($email);
-            });
-        }
-
-        foreach ($emails as $key => $email) {
-            $this->assertMailBcc($email, $this->interceptedMail()[$key]);
-        }
+        $this->assertMailBcc($emails, $mail);
     }
 
     public function testMailNotSentToSingleEmail()
     {
-        $this->interceptMail();
-
         $email = $this->faker->unique()->email;
 
-        Mail::send([], [], function ($message) {
-            $message->bcc($this->faker->unique()->email);
-        });
+        $mail = (new Swift_Message())->setBcc($this->faker->unique()->email);
 
-        $this->assertMailNotBcc($email, $this->interceptedMail()->first());
+        $this->assertMailNotBcc($email, $mail);
     }
 
     public function testMailNotSentToThrowsProperExpectationFailedException()
     {
-        $this->interceptMail();
-
         $email = $this->faker->unique()->email;
 
-        Mail::send([], [], function ($message) use ($email) {
-            $message->bcc($email);
-        });
+        $mail = (new Swift_Message())->setBcc($email);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail was BCC'd to the expected address [{$email}].");
 
-        $this->assertMailNotBcc($email, $this->interceptedMail()->first());
+        $this->assertMailNotBcc($email, $mail);
     }
 
     public function testMailNotSentToMultipleEmails()
     {
-        $this->interceptMail();
-
         $emails = [
             $this->faker->unique()->email,
             $this->faker->unique()->email,
         ];
 
-        Mail::send([], [], function ($message) {
-            $message->bcc([
-                $this->faker->unique()->email,
-                $this->faker->unique()->email,
-            ]);
-        });
-
-        $this->assertMailNotBcc($emails, $this->interceptedMail()->first());
-    }
-
-    public function testDifferentMailNotSentToDifferentSingleEmail()
-    {
-        $this->interceptMail();
-
-        $emails = [
+        $mail = (new Swift_Message())->setBcc([
             $this->faker->unique()->email,
             $this->faker->unique()->email,
-        ];
+        ]);
 
-        foreach ($emails as $email) {
-            Mail::send([], [], function ($message) {
-                $message->bcc($this->faker->unique()->email);
-            });
-        }
-
-        foreach ($emails as $key => $email) {
-            $this->assertMailNotBcc($email, $this->interceptedMail()[$key]);
-        }
+        $this->assertMailNotBcc($emails, $mail);
     }
 }

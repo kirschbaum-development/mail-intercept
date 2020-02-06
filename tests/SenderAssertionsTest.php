@@ -2,146 +2,82 @@
 
 namespace Tests;
 
-use Illuminate\Support\Facades\Mail;
+use Swift_Message;
 use Illuminate\Foundation\Testing\WithFaker;
 use PHPUnit\Framework\ExpectationFailedException;
-use KirschbaumDevelopment\MailIntercept\WithMailInterceptor;
+use KirschbaumDevelopment\MailIntercept\Assertions\SenderAssertions;
 
 class SenderAssertionsTest extends TestCase
 {
     use WithFaker;
-    use WithMailInterceptor;
+    use SenderAssertions;
 
     public function testMailSenderSingleEmail()
     {
-        $this->interceptMail();
-
         $email = $this->faker->email;
 
-        Mail::send([], [], function ($message) use ($email) {
-            $message->sender($email);
-        });
+        $mail = (new Swift_Message())->setSender($email);
 
-        $this->assertMailSender($email, $this->interceptedMail()->first());
+        $this->assertMailSender($email, $mail);
     }
 
     public function testMailSenderThrowsProperExpectationFailedException()
     {
-        $this->interceptMail();
-
         $email = $this->faker->unique()->email;
 
-        Mail::send([], [], function ($message) {
-            $message->sender($this->faker->unique->email);
-        });
+        $mail = (new Swift_Message())->setSender($this->faker->unique->email);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail sender was not from the expected address [{$email}].");
 
-        $this->assertMailSender($email, $this->interceptedMail()->first());
+        $this->assertMailSender($email, $mail);
     }
 
     public function testMailSenderMultipleEmails()
     {
-        $this->interceptMail();
-
         $emails = [
             $this->faker->email,
             $this->faker->email,
         ];
 
-        Mail::send([], [], function ($message) use ($emails) {
-            $message->sender($emails);
-        });
+        $mail = (new Swift_Message())->setSender($emails);
 
-        $this->assertMailSender($emails, $this->interceptedMail()->first());
-    }
-
-    public function testDifferentMailSenderDifferentSingleEmail()
-    {
-        $this->interceptMail();
-
-        $emails = [
-            $this->faker->email,
-            $this->faker->email,
-        ];
-
-        foreach ($emails as $email) {
-            Mail::send([], [], function ($message) use ($email) {
-                $message->sender($email);
-            });
-        }
-
-        foreach ($emails as $key => $email) {
-            $this->assertMailSender($email, $this->interceptedMail()[$key]);
-        }
+        $this->assertMailSender($emails, $mail);
     }
 
     public function testMailNotSenderSingleEmail()
     {
-        $this->interceptMail();
-
         $email = $this->faker->unique()->email;
 
-        Mail::send([], [], function ($message) {
-            $message->sender($this->faker->unique()->email);
-        });
+        $mail = (new Swift_Message())->setSender($this->faker->unique()->email);
 
-        $this->assertMailNotSender($email, $this->interceptedMail()->first());
+        $this->assertMailNotSender($email, $mail);
     }
 
     public function testMailNotSenderThrowsProperExpectationFailedException()
     {
-        $this->interceptMail();
-
         $email = $this->faker->email;
 
-        Mail::send([], [], function ($message) use ($email) {
-            $message->sender($email);
-        });
+        $mail = (new Swift_Message())->setSender($email);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail sender was from the expected address [{$email}].");
 
-        $this->assertMailNotSender($email, $this->interceptedMail()->first());
+        $this->assertMailNotSender($email, $mail);
     }
 
     public function testMailNotSenderMultipleEmails()
     {
-        $this->interceptMail();
-
         $emails = [
             $this->faker->unique()->email,
             $this->faker->unique()->email,
         ];
 
-        Mail::send([], [], function ($message) use ($emails) {
-            $message->sender([
-                $this->faker->unique()->email,
-                $this->faker->unique()->email,
-            ]);
-        });
-
-        $this->assertMailNotSender($emails, $this->interceptedMail()->first());
-    }
-
-    public function testDifferentMailNotSenderDifferentSingleEmail()
-    {
-        $this->interceptMail();
-
-        $emails = [
+        $mail = (new Swift_Message())->setSender([
             $this->faker->unique()->email,
             $this->faker->unique()->email,
-        ];
+        ]);
 
-        foreach ($emails as $email) {
-            Mail::send([], [], function ($message) {
-                $message->sender($this->faker->unique()->email);
-            });
-        }
-
-        foreach ($emails as $key => $email) {
-            $this->assertMailNotSender($email, $this->interceptedMail()[$key]);
-        }
+        $this->assertMailNotSender($emails, $mail);
     }
 }

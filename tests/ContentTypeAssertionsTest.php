@@ -5,12 +5,12 @@ namespace Tests;
 use Swift_Message;
 use Illuminate\Foundation\Testing\WithFaker;
 use PHPUnit\Framework\ExpectationFailedException;
-use KirschbaumDevelopment\MailIntercept\WithMailInterceptor;
+use KirschbaumDevelopment\MailIntercept\Assertions\ContentTypeAssertions;
 
 class ContentTypeAssertionsTest extends TestCase
 {
     use WithFaker;
-    use WithMailInterceptor;
+    use ContentTypeAssertions;
 
     public function testMailContentTypePlain()
     {
@@ -21,8 +21,7 @@ class ContentTypeAssertionsTest extends TestCase
 
     public function testMailContentTypePlainThrowsException()
     {
-        $mail = new Swift_Message();
-        $mail->setContentType('text/bad');
+        $mail = (new Swift_Message())->setContentType('text/bad');
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('The mail is not [text/plain].');
@@ -32,8 +31,7 @@ class ContentTypeAssertionsTest extends TestCase
 
     public function testMailContentTypeNotPlain()
     {
-        $mail = new Swift_Message();
-        $mail->setContentType('text/not-plain');
+        $mail = (new Swift_Message())->setContentType('text/not-plain');
 
         $this->assertMailIsNotPlain($mail);
     }
@@ -50,16 +48,14 @@ class ContentTypeAssertionsTest extends TestCase
 
     public function testMailContentTypeHtml()
     {
-        $mail = new Swift_Message();
-        $mail->setContentType('text/html');
+        $mail = (new Swift_Message())->setContentType('text/html');
 
         $this->assertMailIsHtml($mail);
     }
 
     public function testMailContentTypeHtmlThrowsException()
     {
-        $mail = new Swift_Message();
-        $mail->setContentType('text/bad');
+        $mail = (new Swift_Message())->setContentType('text/bad');
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('The mail is not [text/html].');
@@ -69,16 +65,14 @@ class ContentTypeAssertionsTest extends TestCase
 
     public function testMailContentTypeNotHtml()
     {
-        $mail = new Swift_Message();
-        $mail->setContentType('text/not-html');
+        $mail = (new Swift_Message())->setContentType('text/not-html');
 
         $this->assertMailIsNotHtml($mail);
     }
 
     public function testMailContentTypeNotHtmlThrowsException()
     {
-        $mail = new Swift_Message();
-        $mail->setContentType('text/html');
+        $mail = (new Swift_Message())->setContentType('text/html');
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('The mail is [text/html].');

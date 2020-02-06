@@ -2,146 +2,82 @@
 
 namespace Tests;
 
-use Illuminate\Support\Facades\Mail;
+use Swift_Message;
 use Illuminate\Foundation\Testing\WithFaker;
 use PHPUnit\Framework\ExpectationFailedException;
-use KirschbaumDevelopment\MailIntercept\WithMailInterceptor;
+use KirschbaumDevelopment\MailIntercept\Assertions\ReplyToAssertions;
 
 class ReplyToAssertionsTest extends TestCase
 {
     use WithFaker;
-    use WithMailInterceptor;
+    use ReplyToAssertions;
 
     public function testMailRepliesToSingleEmail()
     {
-        $this->interceptMail();
-
         $email = $this->faker->email;
 
-        Mail::send([], [], function ($message) use ($email) {
-            $message->replyTo($email);
-        });
+        $mail = (new Swift_Message())->setReplyTo($email);
 
-        $this->assertMailRepliesTo($email, $this->interceptedMail()->first());
+        $this->assertMailRepliesTo($email, $mail);
     }
 
     public function testMailRepliesToThrowsProperExpectationFailedException()
     {
-        $this->interceptMail();
-
         $email = $this->faker->unique()->email;
 
-        Mail::send([], [], function ($message) {
-            $message->replyTo($this->faker->unique->email);
-        });
+        $mail = (new Swift_Message())->setReplyTo($this->faker->unique->email);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail does not reply to the expected address [{$email}].");
 
-        $this->assertMailRepliesTo($email, $this->interceptedMail()->first());
+        $this->assertMailRepliesTo($email, $mail);
     }
 
     public function testMailRepliesToMultipleEmails()
     {
-        $this->interceptMail();
-
         $emails = [
             $this->faker->email,
             $this->faker->email,
         ];
 
-        Mail::send([], [], function ($message) use ($emails) {
-            $message->replyTo($emails);
-        });
+        $mail = (new Swift_Message())->setReplyTo($emails);
 
-        $this->assertMailRepliesTo($emails, $this->interceptedMail()->first());
-    }
-
-    public function testDifferentMailRepliesToDifferentSingleEmail()
-    {
-        $this->interceptMail();
-
-        $emails = [
-            $this->faker->email,
-            $this->faker->email,
-        ];
-
-        foreach ($emails as $email) {
-            Mail::send([], [], function ($message) use ($email) {
-                $message->replyTo($email);
-            });
-        }
-
-        foreach ($emails as $key => $email) {
-            $this->assertMailRepliesTo($email, $this->interceptedMail()[$key]);
-        }
+        $this->assertMailRepliesTo($emails, $mail);
     }
 
     public function testMailNotRepliesToSingleEmail()
     {
-        $this->interceptMail();
-
         $email = $this->faker->unique()->email;
 
-        Mail::send([], [], function ($message) {
-            $message->replyTo($this->faker->unique()->email);
-        });
+        $mail = (new Swift_Message())->setReplyTo($this->faker->unique()->email);
 
-        $this->assertMailNotRepliesTo($email, $this->interceptedMail()->first());
+        $this->assertMailNotRepliesTo($email, $mail);
     }
 
     public function testMailNotRepliesToThrowsProperExpectationFailedException()
     {
-        $this->interceptMail();
-
         $email = $this->faker->email;
 
-        Mail::send([], [], function ($message) use ($email) {
-            $message->replyTo($email);
-        });
+        $mail = (new Swift_Message())->setReplyTo($email);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail replied to the expected address [{$email}].");
 
-        $this->assertMailNotRepliesTo($email, $this->interceptedMail()->first());
+        $this->assertMailNotRepliesTo($email, $mail);
     }
 
     public function testMailNotRepliesToMultipleEmails()
     {
-        $this->interceptMail();
-
         $emails = [
             $this->faker->unique()->email,
             $this->faker->unique()->email,
         ];
 
-        Mail::send([], [], function ($message) use ($emails) {
-            $message->replyTo([
-                $this->faker->unique()->email,
-                $this->faker->unique()->email,
-            ]);
-        });
-
-        $this->assertMailNotRepliesTo($emails, $this->interceptedMail()->first());
-    }
-
-    public function testDifferentMailNotRepliesToDifferentSingleEmail()
-    {
-        $this->interceptMail();
-
-        $emails = [
+        $mail = (new Swift_Message())->setReplyTo([
             $this->faker->unique()->email,
             $this->faker->unique()->email,
-        ];
+        ]);
 
-        foreach ($emails as $email) {
-            Mail::send([], [], function ($message) {
-                $message->replyTo($this->faker->unique()->email);
-            });
-        }
-
-        foreach ($emails as $key => $email) {
-            $this->assertMailNotRepliesTo($email, $this->interceptedMail()[$key]);
-        }
+        $this->assertMailNotRepliesTo($emails, $mail);
     }
 }

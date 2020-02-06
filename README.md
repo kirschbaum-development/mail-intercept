@@ -72,22 +72,22 @@ This should be called after `Mail` has been sent, but before your assertions, ot
 
 | Assertion | Parameters |
 |:--------- |:-----------|
-|`$this->assertMailSentTo($to, $mail);`| `$to` string|array\ `$mail` Swift_Message |
-|`$this->assertMailNotSentTo($to, $mail);`| `$to` string|array <br/> `$mail` Swift_Message |
-|`$this->assertMailSentFrom($from, $mail);`| `$from` string|array <br> `$mail` Swift_Message |
-|`$this->assertMailNotSentFrom($from, $mail);`| `$from` string|array <br> `$mail` Swift_Message |
-|`$this->assertMailSubject($subject, $mail);`| `$subject` string|array <br> `$mail` Swift_Message |
-|`$this->assertMailNotSubject($subject, $mail);`| `$subject` string|array <br> `$mail` Swift_Message |
-|`$this->assertMailBodyContainsString($content, $mail);`| `$content` string|array <br> `$mail` Swift_Message |
-|`$this->assertMailBodyNotContainsString($content, $mail);`| `$content` string|array <br> `$mail` Swift_Message |
-|`$this->assertMailRepliesTo($reply, $mail);`| `$reply` string|array <br> `$mail` Swift_Message |
-|`$this->assertMailNotRepliesTo($reply, $mail);`| `$reply` string|array <br> `$mail` Swift_Message |
-|`$this->assertMailCc($cc, $mail);`| `$cc` string|array <br> `$mail` Swift_Message |
-|`$this->assertMailNotCc($cc, $mail);`| `$cc` string|array <br> `$mail` Swift_Message |
-|`$this->assertMailBcc($cc, $mail);`| `$bcc` string|array <br> `$mail` Swift_Message |
-|`$this->assertMailNotBcc($cc, $mail);`| `$bcc` string|array <br> `$mail` Swift_Message |
-|`$this->assertMailSender($sender, $mail);`| `$sender` string|array <br> `$mail` Swift_Message |
-|`$this->assertMailNotSender($sender, $mail);`| `$sender` string|array <br> `$mail` Swift_Message |
+|`$this->assertMailSentTo($to, $mail);`| `$to` string, array<br/>`$mail` Swift_Message |
+|`$this->assertMailNotSentTo($to, $mail);`| `$to` string, array<br/>`$mail` Swift_Message |
+|`$this->assertMailSentFrom($from, $mail);`| `$from` string, array<br/>`$mail` Swift_Message |
+|`$this->assertMailNotSentFrom($from, $mail);`| `$from` string, array<br/>`$mail` Swift_Message |
+|`$this->assertMailSubject($subject, $mail);`| `$subject` string<br/>`$mail` Swift_Message |
+|`$this->assertMailNotSubject($subject, $mail);`| `$subject` string<br/>`$mail` Swift_Message |
+|`$this->assertMailBodyContainsString($content, $mail);`| `$content` string<br/>`$mail` Swift_Message |
+|`$this->assertMailBodyNotContainsString($content, $mail);`| `$content` string<br/>`$mail` Swift_Message |
+|`$this->assertMailRepliesTo($reply, $mail);`| `$reply` string, array<br/>`$mail` Swift_Message |
+|`$this->assertMailNotRepliesTo($reply, $mail);`| `$reply` string, array<br/>`$mail` Swift_Message |
+|`$this->assertMailCc($cc, $mail);`| `$cc` string, array<br/>`$mail` Swift_Message |
+|`$this->assertMailNotCc($cc, $mail);`| `$cc` string, array<br/>`$mail` Swift_Message |
+|`$this->assertMailBcc($cc, $mail);`| `$bcc` string, array<br/>`$mail` Swift_Message |
+|`$this->assertMailNotBcc($cc, $mail);`| `$bcc` string, array<br/>`$mail` Swift_Message |
+|`$this->assertMailSender($sender, $mail);`| `$sender` string, array<br/>`$mail` Swift_Message |
+|`$this->assertMailNotSender($sender, $mail);`| `$sender` string, array<br/>`$mail` Swift_Message |
 |`$this->assertMailIsPlain($mail);`| `$mail` Swift_Message |
 |`$this->assertMailIsNotPlain($mail);`| `$mail` Swift_Message |
 |`$this->assertMailIsHtml($mail);`| `$mail` Swift_Message |

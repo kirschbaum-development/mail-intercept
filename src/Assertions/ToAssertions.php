@@ -20,7 +20,7 @@ trait ToAssertions
         foreach ($addresses as $address) {
             $this->assertContains(
                 $address,
-                $mail->getHeaders()->get('To')->getAddresses(),
+                array_keys($mail->getTo()),
                 "Mail was not sent to the expected address [{$address}]."
             );
         }
@@ -39,7 +39,7 @@ trait ToAssertions
         foreach ($addresses as $address) {
             $this->assertNotContains(
                 $address,
-                $mail->getHeaders()->get('To')->getAddresses(),
+                array_keys($mail->getTo()),
                 "Mail was sent to the expected address [{$address}]."
             );
         }

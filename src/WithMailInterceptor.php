@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Config;
 use KirschbaumDevelopment\MailIntercept\Assertions\ToAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\FromAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\ContentAssertions;
+use KirschbaumDevelopment\MailIntercept\Assertions\ReplyToAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\UnstructuredHeaderAssertions;
 
 trait WithMailInterceptor
@@ -14,6 +15,7 @@ trait WithMailInterceptor
     use ToAssertions;
     use FromAssertions;
     use ContentAssertions;
+    use ReplyToAssertions;
     use UnstructuredHeaderAssertions;
 
     /**

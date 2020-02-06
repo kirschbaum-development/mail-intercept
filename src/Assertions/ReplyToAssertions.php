@@ -5,42 +5,42 @@ namespace KirschbaumDevelopment\MailIntercept\Assertions;
 use Swift_Message;
 use Illuminate\Support\Arr;
 
-trait FromAssertions
+trait ReplyToAssertions
 {
     /**
-     * Assert mail was sent from address.
+     * Assert mail was sent to address.
      *
      * @param string|array $expected
      * @param Swift_Message $mail
      */
-    public function assertMailSentFrom($expected, Swift_Message $mail)
+    public function assertMailRepliesTo($expected, Swift_Message $mail)
     {
         $addresses = Arr::wrap($expected);
 
         foreach ($addresses as $address) {
             $this->assertContains(
                 $address,
-                array_keys($mail->getFrom()),
-                "Mail was not sent from the expected address [{$address}]."
+                array_keys($mail->getReplyTo()),
+                "Mail does not reply to the expected address [{$address}]."
             );
         }
     }
 
     /**
-     * Assert mail was not sent from address.
+     * Assert mail was not sent to address.
      *
      * @param string|array $expected
      * @param Swift_Message $mail
      */
-    public function assertMailNotSentFrom($expected, Swift_Message $mail)
+    public function assertMailNotRepliesTo($expected, Swift_Message $mail)
     {
         $addresses = Arr::wrap($expected);
 
         foreach ($addresses as $address) {
             $this->assertNotContains(
                 $address,
-                array_keys($mail->getFrom()),
-                "Mail was sent from the expected address [{$address}]."
+                array_keys($mail->getReplyTo()),
+                "Mail replied to the expected address [{$address}]."
             );
         }
     }

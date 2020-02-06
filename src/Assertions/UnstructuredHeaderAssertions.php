@@ -8,28 +8,6 @@ use Swift_Mime_Header;
 trait UnstructuredHeaderAssertions
 {
     /**
-     * Assert mail has subject.
-     *
-     * @param string $expected
-     * @param Swift_Message $mail
-     */
-    public function assertMailSubject(string $expected, Swift_Message $mail)
-    {
-        $this->assertMailHeaderIs('Subject', $expected, $mail);
-    }
-
-    /**
-     * Assert mail does not have subject.
-     *
-     * @param string $expected
-     * @param Swift_Message $mail
-     */
-    public function assertMailNotSubject(string $expected, Swift_Message $mail)
-    {
-        $this->assertMailHeaderIsNot('Subject', $expected, $mail);
-    }
-
-    /**
      * Assert unstructured header exists.
      *
      * @param string $expected

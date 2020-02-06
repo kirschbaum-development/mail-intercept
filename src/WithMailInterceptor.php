@@ -10,6 +10,7 @@ use KirschbaumDevelopment\MailIntercept\Assertions\BccAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\FromAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\ContentAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\ReplyToAssertions;
+use KirschbaumDevelopment\MailIntercept\Assertions\SubjectAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\UnstructuredHeaderAssertions;
 
 trait WithMailInterceptor
@@ -20,6 +21,7 @@ trait WithMailInterceptor
     use FromAssertions;
     use ContentAssertions;
     use ReplyToAssertions;
+    use SubjectAssertions;
     use UnstructuredHeaderAssertions;
 
     /**

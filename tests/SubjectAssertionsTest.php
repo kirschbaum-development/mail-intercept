@@ -36,7 +36,7 @@ class SubjectAssertionsTest extends TestCase
         });
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage("The expected [Subject] was not set to [{$subject}].");
+        $this->expectExceptionMessage("The expected subject was not [{$subject}].");
 
         $this->assertMailSubject($subject, $this->interceptedMail()->first());
     }
@@ -88,7 +88,7 @@ class SubjectAssertionsTest extends TestCase
         });
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage("The expected [Subject] was set to [{$subject}].");
+        $this->expectExceptionMessage("The expected subject was [{$subject}].");
 
         $this->assertMailNotSubject($subject, $this->interceptedMail()->first());
     }

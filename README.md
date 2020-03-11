@@ -19,7 +19,7 @@ This testing package requires Laravel 5.5 or higher.
 ## Installation
 
 ```bash
-composer require-dev kirschbaum-development/mail-intercept
+composer require kirschbaum-development/mail-intercept --dev
 ```
 
 ## Usage

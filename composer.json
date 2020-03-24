@@ -21,7 +21,7 @@
         "laravel/framework": ">=5.5"
     },
     "require-dev": {
-        "orchestra/testing": ">=3.5",
+        "orchestra/testbench": ">=3.5",
         "phpunit/phpunit": ">=6.0",
         "swiftmailer/swiftmailer": "^6.0"
     },

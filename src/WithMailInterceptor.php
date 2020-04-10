@@ -43,6 +43,11 @@ trait WithMailInterceptor
      */
     public function interceptedMail(): Collection
     {
-        return app('swift.transport')->driver()->messages();
+        $swiftTransport = (version_compare(app()->version(), '7.0.0', '<'))
+            ? app('swift.transport')
+            : (app('mailer')->getSwiftMailer())->getTransport();
+
+        return $swiftTransport->driver()->messages();
     }
+
 }

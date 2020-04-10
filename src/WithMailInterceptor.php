@@ -49,5 +49,4 @@ trait WithMailInterceptor
 
         return $swiftTransport->driver()->messages();
     }
-
 }

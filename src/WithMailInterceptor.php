@@ -44,9 +44,9 @@ trait WithMailInterceptor
     public function interceptedMail(): Collection
     {
         $swiftTransport = (version_compare(app()->version(), '7.0.0', '<'))
-            ? app('swift.transport')
+            ? app('swift.transport')->driver()
             : (app('mailer')->getSwiftMailer())->getTransport();
 
-        return $swiftTransport->driver()->messages();
+        return $swiftTransport->messages();
     }
 }

@@ -1,4 +1,4 @@
-![Mail Intercept banner](https://raw.githubusercontent.com/kirschbaum-development/mail-intercept/master/screenshots/banner.png)
+![Mail Intercept banner](screenshots/banner.jpg)
 
 # Laravel Mail Intercept
 ### A testing package for intercepting mail sent from Laravel

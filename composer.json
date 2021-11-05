@@ -21,6 +21,7 @@
         "laravel/framework": ">=5.5"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.2",
         "orchestra/testbench": ">=3.5",
         "phpunit/phpunit": ">=6.0",
         "swiftmailer/swiftmailer": "^6.0"

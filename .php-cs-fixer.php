@@ -7,10 +7,12 @@ $finder = PhpCsFixer\Finder::create()
     ->ignoreDotFiles(true)
     ->ignoreVCS(true);
 
-return PhpCsFixer\Config::create()
-    ->setFinder($finder)
+$config = new PhpCsFixer\Config();
+
+return $config->setFinder($finder)
+    ->setLineEnding("\n")
     ->setRules([
-        '@PSR2' => true,
+        '@PSR12' => true,
         'phpdoc_no_empty_return' => false,
         'phpdoc_var_annotation_correct_order' => true,
         'array_syntax' => [
@@ -18,9 +20,21 @@ return PhpCsFixer\Config::create()
         ],
         'no_singleline_whitespace_before_semicolons' => true,
         'no_extra_blank_lines' => [
-            'break', 'case', 'continue', 'curly_brace_block', 'default',
-            'extra', 'parenthesis_brace_block', 'return',
-            'square_brace_block', 'switch', 'throw', 'use', 'useTrait', 'use_trait',
+            'tokens' => [
+                'break',
+                'case',
+                'continue',
+                'curly_brace_block',
+                'default',
+                'extra',
+                'parenthesis_brace_block',
+                'return',
+                'square_brace_block',
+                'switch',
+                'throw',
+                'use',
+                'use_trait',
+            ],
         ],
         'cast_spaces' => [
             'space' => 'single',
@@ -35,13 +49,15 @@ return PhpCsFixer\Config::create()
         'lowercase_cast' => true,
         'lowercase_static_reference' => true,
         'no_empty_phpdoc' => true,
-        //'no_empty_comment' => true,
+        'no_empty_comment' => true,
         'array_indentation' => true,
-        // TODO: This isn't working, causes fixer to error.
-        // 'increment_style' => ['style' => 'post'],
         'short_scalar_cast' => true,
         'class_attributes_separation' => [
-            'elements' => ['const', 'method', 'property'],
+            'elements' => [
+                'const' => 'one',
+                'method' => 'one',
+                'property' => 'one',
+            ],
         ],
         'no_mixed_echo_print' => [
             'use' => 'echo',
@@ -51,9 +67,13 @@ return PhpCsFixer\Config::create()
             'default' => 'single_space',
         ],
         'no_empty_statement' => true,
-        'unary_operator_spaces' => true, // $number ++ becomes $number++
-        'hash_to_slash_comment' => true, // # becomes //
-        'standardize_not_equals' => true, // <> becomes !=
+        'unary_operator_spaces' => true,
+        'single_line_comment_style' => [
+            'comment_types' => [
+                'hash',
+            ],
+        ],
+        'standardize_not_equals' => true,
         'native_function_casing' => true,
         'ternary_operator_spaces' => true,
         'ternary_to_null_coalescing' => true,
@@ -64,12 +84,27 @@ return PhpCsFixer\Config::create()
         'no_leading_import_slash' => true,
         'blank_line_before_statement' => [
             'statements' => [
-                'break', 'case', 'continue',
-                'declare', 'default', 'die',
-                'do', 'exit', 'for', 'foreach',
-                'goto', 'if', 'include',
-                'include_once', 'require', 'require_once',
-                'return', 'switch', 'throw', 'try', 'while', 'yield',
+                'break',
+                'case',
+                'continue',
+                'declare',
+                'default',
+                'do',
+                'exit',
+                'for',
+                'foreach',
+                'goto',
+                'if',
+                'include',
+                'include_once',
+                'require',
+                'require_once',
+                'return',
+                'switch',
+                'throw',
+                'try',
+                'while',
+                'yield',
             ],
         ],
         'combine_consecutive_unsets' => true,
@@ -77,12 +112,17 @@ return PhpCsFixer\Config::create()
         'no_whitespace_in_blank_line' => true,
         'blank_line_after_opening_tag' => true,
         'no_trailing_comma_in_list_call' => true,
-        'list_syntax' => ['syntax' => 'short'],
-        // public function getTimezoneAttribute( ? Banana $value) becomes public function getTimezoneAttribute(?Banana $value)
+        'list_syntax' => [
+            'syntax' => 'short',
+        ],
         'compact_nullable_typehint' => true,
         'explicit_string_variable' => true,
         'no_leading_namespace_whitespace' => true,
-        'trailing_comma_in_multiline_array' => true,
+        'trailing_comma_in_multiline' => [
+            'elements' => [
+                'arrays',
+            ]
+        ],
         'not_operator_with_successor_space' => true,
         'object_operator_without_whitespace' => true,
         'single_blank_line_before_namespace' => true,
@@ -90,6 +130,7 @@ return PhpCsFixer\Config::create()
         'no_blank_lines_after_phpdoc' => true,
         'no_whitespace_before_comma_in_array' => true,
         'no_trailing_comma_in_singleline_array' => true,
+        'whitespace_after_comma_in_array' => true,
         'multiline_whitespace_before_semicolons' => [
             'strategy' => 'no_multi_line',
         ],
@@ -100,6 +141,7 @@ return PhpCsFixer\Config::create()
         'phpdoc_scalar' => true,
         'phpdoc_separation' => true,
         'phpdoc_single_line_var_spacing' => true,
+        'single_trait_insert_per_statement' => true,
         'ordered_class_elements' => [
             'order' => [
                 'use_trait',
@@ -110,7 +152,9 @@ return PhpCsFixer\Config::create()
                 'protected',
                 'private',
             ],
-            'sortAlgorithm' => 'none',
+            'sort_algorithm' => 'none',
         ],
-    ])
-    ->setLineEnding("\n");
+        'return_type_declaration' => [
+            'space_before' => 'none',
+        ],
+    ]);

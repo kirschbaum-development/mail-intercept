@@ -2,21 +2,16 @@
 
 namespace Tests;
 
-use Swift_Message;
-use Illuminate\Foundation\Testing\WithFaker;
+use Symfony\Component\Mime\Email;
 use PHPUnit\Framework\ExpectationFailedException;
-use KirschbaumDevelopment\MailIntercept\Assertions\BccAssertions;
 
 class BccAssertionsTest extends TestCase
 {
-    use WithFaker;
-    use BccAssertions;
-
     public function testMailBccSingleEmail()
     {
         $email = $this->faker->email;
 
-        $mail = (new Swift_Message())->setBcc($email);
+        $mail = (new Email())->bcc($email);
 
         $this->assertMailBcc($email, $mail);
     }
@@ -25,7 +20,7 @@ class BccAssertionsTest extends TestCase
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Swift_Message())->setBcc($this->faker->unique->email);
+        $mail = (new Email())->bcc($this->faker->unique()->email);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail was not BCC'd to the expected address [{$email}].");
@@ -40,7 +35,7 @@ class BccAssertionsTest extends TestCase
             $this->faker->email,
         ];
 
-        $mail = (new Swift_Message())->setBcc($emails);
+        $mail = (new Email())->bcc(...$emails);
 
         $this->assertMailBcc($emails, $mail);
     }
@@ -49,7 +44,7 @@ class BccAssertionsTest extends TestCase
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Swift_Message())->setBcc($this->faker->unique()->email);
+        $mail = (new Email())->bcc($this->faker->unique()->email);
 
         $this->assertMailNotBcc($email, $mail);
     }
@@ -58,7 +53,7 @@ class BccAssertionsTest extends TestCase
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Swift_Message())->setBcc($email);
+        $mail = (new Email())->bcc($email);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail was BCC'd to the expected address [{$email}].");
@@ -73,10 +68,10 @@ class BccAssertionsTest extends TestCase
             $this->faker->unique()->email,
         ];
 
-        $mail = (new Swift_Message())->setBcc([
+        $mail = (new Email())->bcc(
             $this->faker->unique()->email,
-            $this->faker->unique()->email,
-        ]);
+            $this->faker->unique()->email
+        );
 
         $this->assertMailNotBcc($emails, $mail);
     }

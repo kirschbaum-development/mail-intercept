@@ -2,21 +2,16 @@
 
 namespace Tests;
 
-use Swift_Message;
-use Illuminate\Foundation\Testing\WithFaker;
+use Symfony\Component\Mime\Email;
 use PHPUnit\Framework\ExpectationFailedException;
-use KirschbaumDevelopment\MailIntercept\Assertions\ToAssertions;
 
 class ToAssertionsTest extends TestCase
 {
-    use WithFaker;
-    use ToAssertions;
-
     public function testMailSentToSingleEmail()
     {
         $email = $this->faker->email;
 
-        $mail = (new Swift_Message())->setTo($email);
+        $mail = (new Email())->to($email);
 
         $this->assertMailSentTo($email, $mail);
     }
@@ -25,7 +20,7 @@ class ToAssertionsTest extends TestCase
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Swift_Message())->setTo($this->faker->unique->email);
+        $mail = (new Email())->to($this->faker->unique()->email);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail was not sent to the expected address [{$email}].");
@@ -40,7 +35,7 @@ class ToAssertionsTest extends TestCase
             $this->faker->email,
         ];
 
-        $mail = (new Swift_Message())->setTo($emails);
+        $mail = (new Email())->to(...$emails);
 
         $this->assertMailSentTo($emails, $mail);
     }
@@ -49,7 +44,7 @@ class ToAssertionsTest extends TestCase
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Swift_Message())->setTo($this->faker->unique()->email);
+        $mail = (new Email())->to($this->faker->unique()->email);
 
         $this->assertMailNotSentTo($email, $mail);
     }
@@ -58,7 +53,7 @@ class ToAssertionsTest extends TestCase
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Swift_Message())->setTo($email);
+        $mail = (new Email())->to($email);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail was sent to the expected address [{$email}].");
@@ -73,10 +68,10 @@ class ToAssertionsTest extends TestCase
             $this->faker->unique()->email,
         ];
 
-        $mail = (new Swift_Message())->setTo([
+        $mail = (new Email())->to(
             $this->faker->unique()->email,
-            $this->faker->unique()->email,
-        ]);
+            $this->faker->unique()->email
+        );
 
         $this->assertMailNotSentTo($emails, $mail);
     }

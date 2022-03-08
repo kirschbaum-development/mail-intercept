@@ -2,46 +2,37 @@
 
 namespace KirschbaumDevelopment\MailIntercept\Assertions;
 
-use Swift_Message;
-use Illuminate\Support\Arr;
+use Symfony\Component\Mime\Email;
 
 trait SenderAssertions
 {
     /**
      * Assert mail sender was address.
      *
-     * @param string|array $expected
-     * @param Swift_Message $mail
+     * @param string $expected
+     * @param Email $mail
      */
-    public function assertMailSender($expected, Swift_Message $mail)
+    public function assertMailSender(string $expected, Email $mail)
     {
-        $addresses = Arr::wrap($expected);
-
-        foreach ($addresses as $address) {
-            $this->assertContains(
-                $address,
-                array_keys($mail->getSender()),
-                "Mail sender was not from the expected address [{$address}]."
-            );
-        }
+        $this->assertEquals(
+            $expected,
+            $mail->getSender()->getAddress(),
+            "Mail sender was not from the expected address [{$expected}]."
+        );
     }
 
     /**
      * Assert mail was not sender address.
      *
-     * @param string|array $expected
-     * @param Swift_Message $mail
+     * @param string $expected
+     * @param Email $mail
      */
-    public function assertMailNotSender($expected, Swift_Message $mail)
+    public function assertMailNotSender(string $expected, Email $mail)
     {
-        $addresses = Arr::wrap($expected);
-
-        foreach ($addresses as $address) {
-            $this->assertNotContains(
-                $address,
-                array_keys($mail->getSender()),
-                "Mail sender was from the expected address [{$address}]."
-            );
-        }
+        $this->assertNotEquals(
+            $expected,
+            $mail->getSender()->getAddress(),
+            "Mail sender was from the expected address [{$expected}]."
+        );
     }
 }

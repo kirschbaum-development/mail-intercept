@@ -2,21 +2,16 @@
 
 namespace Tests;
 
-use Swift_Message;
-use Illuminate\Foundation\Testing\WithFaker;
+use Symfony\Component\Mime\Email;
 use PHPUnit\Framework\ExpectationFailedException;
-use KirschbaumDevelopment\MailIntercept\Assertions\FromAssertions;
 
 class FromAssertionsTest extends TestCase
 {
-    use WithFaker;
-    use FromAssertions;
-
     public function testMailSentFromSingleEmail()
     {
         $email = $this->faker->email;
 
-        $mail = (new Swift_Message())->setFrom($email);
+        $mail = (new Email())->from($email);
 
         $this->assertMailSentFrom($email, $mail);
     }
@@ -25,7 +20,7 @@ class FromAssertionsTest extends TestCase
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Swift_Message())->setFrom($this->faker->unique->email);
+        $mail = (new Email())->from($this->faker->unique()->email);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail was not sent from the expected address [{$email}].");
@@ -40,7 +35,7 @@ class FromAssertionsTest extends TestCase
             $this->faker->email,
         ];
 
-        $mail = (new Swift_Message())->setFrom($emails);
+        $mail = (new Email())->from(...$emails);
 
         $this->assertMailSentFrom($emails, $mail);
     }
@@ -49,7 +44,7 @@ class FromAssertionsTest extends TestCase
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Swift_Message())->setFrom($this->faker->unique()->email);
+        $mail = (new Email())->from($this->faker->unique()->email);
 
         $this->assertMailNotSentFrom($email, $mail);
     }
@@ -58,7 +53,7 @@ class FromAssertionsTest extends TestCase
     {
         $email = $this->faker->email;
 
-        $mail = (new Swift_Message())->setFrom($email);
+        $mail = (new Email())->from($email);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail was sent from the expected address [{$email}].");
@@ -73,10 +68,10 @@ class FromAssertionsTest extends TestCase
             $this->faker->unique()->email,
         ];
 
-        $mail = (new Swift_Message())->setFrom([
+        $mail = (new Email())->from(
             $this->faker->unique()->email,
-            $this->faker->unique()->email,
-        ]);
+            $this->faker->unique()->email
+        );
 
         $this->assertMailNotSentFrom($emails, $mail);
     }

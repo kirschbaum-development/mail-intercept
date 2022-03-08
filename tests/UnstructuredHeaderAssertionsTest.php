@@ -2,21 +2,16 @@
 
 namespace Tests;
 
-use Swift_Message;
-use Illuminate\Foundation\Testing\WithFaker;
+use Symfony\Component\Mime\Email;
 use PHPUnit\Framework\ExpectationFailedException;
-use KirschbaumDevelopment\MailIntercept\Assertions\UnstructuredHeaderAssertions;
 
 class UnstructuredHeaderAssertionsTest extends TestCase
 {
-    use WithFaker;
-    use UnstructuredHeaderAssertions;
-
     public function testMailHasHeader()
     {
         $header = $this->faker->slug;
 
-        $mail = (new Swift_Message());
+        $mail = (new Email());
         $mail->getHeaders()->addTextHeader($header, $this->faker->word);
 
         $this->assertMailHasHeader($header, $mail);
@@ -26,7 +21,7 @@ class UnstructuredHeaderAssertionsTest extends TestCase
     {
         $header = $this->faker->unique()->slug;
 
-        $mail = (new Swift_Message());
+        $mail = (new Email());
         $mail->getHeaders()->addTextHeader($this->faker->unique()->slug, $this->faker->word);
 
         $this->expectException(ExpectationFailedException::class);
@@ -39,7 +34,7 @@ class UnstructuredHeaderAssertionsTest extends TestCase
     {
         $header = $this->faker->unique()->slug;
 
-        $mail = (new Swift_Message());
+        $mail = (new Email());
         $mail->getHeaders()->addTextHeader($this->faker->unique()->slug, $this->faker->word);
 
         $this->assertMailMissingHeader($header, $mail);
@@ -49,7 +44,7 @@ class UnstructuredHeaderAssertionsTest extends TestCase
     {
         $header = $this->faker->slug;
 
-        $mail = (new Swift_Message());
+        $mail = (new Email());
         $mail->getHeaders()->addTextHeader($header, $this->faker->word);
 
         $this->expectException(ExpectationFailedException::class);
@@ -63,7 +58,7 @@ class UnstructuredHeaderAssertionsTest extends TestCase
         $header = $this->faker->slug;
         $value = $this->faker->word;
 
-        $mail = (new Swift_Message());
+        $mail = (new Email());
         $mail->getHeaders()->addTextHeader($header, $value);
 
         $this->assertMailHeaderIs($header, $value, $mail);
@@ -74,7 +69,7 @@ class UnstructuredHeaderAssertionsTest extends TestCase
         $header = $this->faker->slug;
         $value = $this->faker->unique()->word;
 
-        $mail = (new Swift_Message());
+        $mail = (new Email());
         $mail->getHeaders()->addTextHeader($header, $this->faker->unique()->word);
 
         $this->expectException(ExpectationFailedException::class);
@@ -88,7 +83,7 @@ class UnstructuredHeaderAssertionsTest extends TestCase
         $header = $this->faker->slug;
         $value = $this->faker->unique()->word;
 
-        $mail = (new Swift_Message());
+        $mail = (new Email());
         $mail->getHeaders()->addTextHeader($header, $this->faker->unique()->word);
 
         $this->assertMailHeaderIsNot($header, $value, $mail);
@@ -99,7 +94,7 @@ class UnstructuredHeaderAssertionsTest extends TestCase
         $header = $this->faker->slug;
         $value = $this->faker->word;
 
-        $mail = (new Swift_Message());
+        $mail = (new Email());
         $mail->getHeaders()->addTextHeader($header, $value);
 
         $this->expectException(ExpectationFailedException::class);

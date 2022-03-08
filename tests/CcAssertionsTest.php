@@ -2,21 +2,16 @@
 
 namespace Tests;
 
-use Swift_Message;
-use Illuminate\Foundation\Testing\WithFaker;
+use Symfony\Component\Mime\Email;
 use PHPUnit\Framework\ExpectationFailedException;
-use KirschbaumDevelopment\MailIntercept\Assertions\CcAssertions;
 
 class CcAssertionsTest extends TestCase
 {
-    use WithFaker;
-    use CcAssertions;
-
     public function testMailCcSingleEmail()
     {
         $email = $this->faker->email;
 
-        $mail = (new Swift_Message())->setCc($email);
+        $mail = (new Email())->cc($email);
 
         $this->assertMailCc($email, $mail);
     }
@@ -25,7 +20,7 @@ class CcAssertionsTest extends TestCase
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Swift_Message())->setCc($this->faker->unique->email);
+        $mail = (new Email())->cc($this->faker->unique()->email);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail was not CC'd to the expected address [{$email}].");
@@ -40,7 +35,7 @@ class CcAssertionsTest extends TestCase
             $this->faker->email,
         ];
 
-        $mail = (new Swift_Message())->setCc($emails);
+        $mail = (new Email())->cc(...$emails);
 
         $this->assertMailCc($emails, $mail);
     }
@@ -49,7 +44,7 @@ class CcAssertionsTest extends TestCase
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Swift_Message())->setCc($this->faker->unique()->email);
+        $mail = (new Email())->cc($this->faker->unique()->email);
 
         $this->assertMailNotCc($email, $mail);
     }
@@ -58,7 +53,7 @@ class CcAssertionsTest extends TestCase
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Swift_Message())->setCc($email);
+        $mail = (new Email())->cc($email);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail was CC'd to the expected address [{$email}].");
@@ -73,10 +68,10 @@ class CcAssertionsTest extends TestCase
             $this->faker->unique()->email,
         ];
 
-        $mail = (new Swift_Message())->setCc([
+        $mail = (new Email())->cc(
             $this->faker->unique()->email,
-            $this->faker->unique()->email,
-        ]);
+            $this->faker->unique()->email
+        );
 
         $this->assertMailNotCc($emails, $mail);
     }

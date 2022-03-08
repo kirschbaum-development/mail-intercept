@@ -2,6 +2,7 @@
 
 namespace KirschbaumDevelopment\MailIntercept;
 
+use Symfony\Component\Mime\Email;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use KirschbaumDevelopment\MailIntercept\Assertions\CcAssertions;
@@ -12,6 +13,8 @@ use KirschbaumDevelopment\MailIntercept\Assertions\SenderAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\ContentAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\ReplyToAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\SubjectAssertions;
+use KirschbaumDevelopment\MailIntercept\Assertions\PriorityAssertions;
+use KirschbaumDevelopment\MailIntercept\Assertions\ReturnPathAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\ContentTypeAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\UnstructuredHeaderAssertions;
 
@@ -25,6 +28,8 @@ trait WithMailInterceptor
     use ContentAssertions;
     use ReplyToAssertions;
     use SubjectAssertions;
+    use PriorityAssertions;
+    use ReturnPathAssertions;
     use ContentTypeAssertions;
     use UnstructuredHeaderAssertions;
 
@@ -43,10 +48,23 @@ trait WithMailInterceptor
      */
     public function interceptedMail(): Collection
     {
-        $swiftTransport = (version_compare(app()->version(), '7.0.0', '<'))
-            ? app('swift.transport')->driver()
-            : (app('mailer')->getSwiftMailer())->getTransport();
+        return app('mailer')->getSymfonyTransport()
+            ->messages()
+            ->map(fn ($message) => $message->getOriginalMessage());
+    }
 
-        return $swiftTransport->messages();
+    /**
+     * Gather email addresses from specific field method.
+     *
+     * @param string $method
+     * @param Email $mail
+     *
+     * @return array
+     */
+    protected function gatherEmailData(string $method, Email $mail): array
+    {
+        return collect($mail->$method())
+            ->map(fn ($address) => $address->getAddress())
+            ->toArray();
     }
 }

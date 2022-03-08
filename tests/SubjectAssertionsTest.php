@@ -2,21 +2,16 @@
 
 namespace Tests;
 
-use Swift_Message;
-use Illuminate\Foundation\Testing\WithFaker;
+use Symfony\Component\Mime\Email;
 use PHPUnit\Framework\ExpectationFailedException;
-use KirschbaumDevelopment\MailIntercept\Assertions\SubjectAssertions;
 
 class SubjectAssertionsTest extends TestCase
 {
-    use WithFaker;
-    use SubjectAssertions;
-
     public function testMailSubject()
     {
         $subject = $this->faker->sentence;
 
-        $mail = (new Swift_Message())->setSubject($subject);
+        $mail = (new Email())->subject($subject);
 
         $this->assertMailSubject($subject, $mail);
     }
@@ -25,7 +20,7 @@ class SubjectAssertionsTest extends TestCase
     {
         $subject = $this->faker->unique()->sentence;
 
-        $mail = (new Swift_Message())->setSubject($this->faker->unique()->sentence);
+        $mail = (new Email())->subject($this->faker->unique()->sentence);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("The expected subject was not [{$subject}].");
@@ -37,7 +32,7 @@ class SubjectAssertionsTest extends TestCase
     {
         $subject = $this->faker->unique()->sentence;
 
-        $mail = (new Swift_Message())->setSubject($this->faker->unique()->sentence);
+        $mail = (new Email())->subject($this->faker->unique()->sentence);
 
         $this->assertMailNotSubject($subject, $mail);
     }
@@ -46,7 +41,7 @@ class SubjectAssertionsTest extends TestCase
     {
         $subject = $this->faker->sentence;
 
-        $mail = (new Swift_Message())->setSubject($subject);
+        $mail = (new Email())->subject($subject);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("The expected subject was [{$subject}].");

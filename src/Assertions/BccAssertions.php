@@ -2,25 +2,26 @@
 
 namespace KirschbaumDevelopment\MailIntercept\Assertions;
 
-use Swift_Message;
 use Illuminate\Support\Arr;
+use Symfony\Component\Mime\Email;
 
 trait BccAssertions
 {
     /**
      * Assert mail was BCC'd to address.
      *
-     * @param string|array $expected
-     * @param Swift_Message $mail
+     * @param array|string $expected
+     * @param Email $mail
      */
-    public function assertMailBcc($expected, Swift_Message $mail)
+    public function assertMailBcc(array|string $expected, Email $mail)
     {
-        $addresses = Arr::wrap($expected);
+        $expectedAddresses = Arr::wrap($expected);
+        $actualAddresses = $this->gatherEmailData('getBcc', $mail);
 
-        foreach ($addresses as $address) {
+        foreach ($expectedAddresses as $address) {
             $this->assertContains(
                 $address,
-                array_keys($mail->getBcc()),
+                $actualAddresses,
                 "Mail was not BCC'd to the expected address [{$address}]."
             );
         }
@@ -29,17 +30,18 @@ trait BccAssertions
     /**
      * Assert mail was not BCC'd to address.
      *
-     * @param string|array $expected
-     * @param Swift_Message $mail
+     * @param array|string $expected
+     * @param Email $mail
      */
-    public function assertMailNotBcc($expected, Swift_Message $mail)
+    public function assertMailNotBcc(array|string $expected, Email $mail)
     {
         $addresses = Arr::wrap($expected);
+        $actualAddresses = $this->gatherEmailData('getBcc', $mail);
 
         foreach ($addresses as $address) {
             $this->assertNotContains(
                 $address,
-                array_keys($mail->getBcc()),
+                $actualAddresses,
                 "Mail was BCC'd to the expected address [{$address}]."
             );
         }

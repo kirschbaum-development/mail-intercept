@@ -2,21 +2,16 @@
 
 namespace Tests;
 
-use Swift_Message;
-use Illuminate\Foundation\Testing\WithFaker;
+use Symfony\Component\Mime\Email;
 use PHPUnit\Framework\ExpectationFailedException;
-use KirschbaumDevelopment\MailIntercept\Assertions\ReplyToAssertions;
 
 class ReplyToAssertionsTest extends TestCase
 {
-    use WithFaker;
-    use ReplyToAssertions;
-
     public function testMailRepliesToSingleEmail()
     {
         $email = $this->faker->email;
 
-        $mail = (new Swift_Message())->setReplyTo($email);
+        $mail = (new Email())->replyTo($email);
 
         $this->assertMailRepliesTo($email, $mail);
     }
@@ -25,7 +20,7 @@ class ReplyToAssertionsTest extends TestCase
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Swift_Message())->setReplyTo($this->faker->unique->email);
+        $mail = (new Email())->replyTo($this->faker->unique()->email);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail does not reply to the expected address [{$email}].");
@@ -40,7 +35,7 @@ class ReplyToAssertionsTest extends TestCase
             $this->faker->email,
         ];
 
-        $mail = (new Swift_Message())->setReplyTo($emails);
+        $mail = (new Email())->replyTo(...$emails);
 
         $this->assertMailRepliesTo($emails, $mail);
     }
@@ -49,7 +44,7 @@ class ReplyToAssertionsTest extends TestCase
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Swift_Message())->setReplyTo($this->faker->unique()->email);
+        $mail = (new Email())->replyTo($this->faker->unique()->email);
 
         $this->assertMailNotRepliesTo($email, $mail);
     }
@@ -58,7 +53,7 @@ class ReplyToAssertionsTest extends TestCase
     {
         $email = $this->faker->email;
 
-        $mail = (new Swift_Message())->setReplyTo($email);
+        $mail = (new Email())->replyTo($email);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail replied to the expected address [{$email}].");
@@ -73,10 +68,10 @@ class ReplyToAssertionsTest extends TestCase
             $this->faker->unique()->email,
         ];
 
-        $mail = (new Swift_Message())->setReplyTo([
+        $mail = (new Email())->replyTo(
             $this->faker->unique()->email,
-            $this->faker->unique()->email,
-        ]);
+            $this->faker->unique()->email
+        );
 
         $this->assertMailNotRepliesTo($emails, $mail);
     }

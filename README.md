@@ -54,12 +54,26 @@ class MailTest extends TestCase
 
         $interceptedMail = $this->interceptedMail()->first();
 
-        $this->assertMailSentTo($email, $interceptedMail);
+        $interceptedMail->assertSentTo($email);
     }
 }
 ```
 
 That's it! Pretty simple, right?!
+
+There are two ways of accessing the assertions. First is the fluent syntax directly on each intercepted email.
+
+```php
+$interceptedMail->assertSentTo($email);
+```
+
+The other way (the older way) is to use the assertions methods made available from the `WithMailInterceptor` trait. Using these methods are fine, but aren't as clean to write.
+
+```php
+$this->assertMailSentTo($email, $interceptedEmail);
+```
+
+Both of these assertions do the exact same thing, the fluent one is just much cleaner. See all the available assertion methods below!
 
 ### Testing API
 
@@ -74,6 +88,68 @@ $this->interceptedMail()
 ```
 
 This should be called after `Mail` has been sent, but before your assertions, otherwise you won't have any emails to work with. It returns a `Collection` of emails so you are free to use any of the methods available to a collection.
+
+#### Fluent Assertion Methods
+
+| Assertions                                             | Parameters              |
+|:-------------------------------------------------------|:------------------------|
+| `$intercepted->assertSentTo($to);`                     | `$to` array, string     |
+| `$intercepted->assertNotSentTo($to);`                  | `$to` array, string     |
+| `$intercepted->assertSentFrom($from);`                 | `$from` array, string   |
+| `$intercepted->assertNotSentFrom($from);`              | `$from` array, string   |
+| `$intercepted->assertSubject($subject);`               | `$subject` string       |
+| `$intercepted->assertNotSubject($subject);`            | `$subject` string       |
+| `$intercepted->assertBodyContainsString($content);`    | `$content` string       |
+| `$intercepted->assertBodyNotContainsString($content);` | `$content` string       |
+| `$intercepted->assertRepliesTo($reply);`               | `$reply` array, string  |
+| `$intercepted->assertNotRepliesTo($reply);`            | `$reply` array, string  |
+| `$intercepted->assertCc($cc);`                         | `$cc` array, string     |
+| `$intercepted->assertNotCc($cc);`                      | `$cc` array, string     |
+| `$intercepted->assertBcc($cc);`                        | `$bcc` array, string    |
+| `$intercepted->assertNotBcc($cc);`                     | `$bcc` array, string    |
+| `$intercepted->assertSender($sender);`                 | `$sender` array, string |
+| `$intercepted->assertNotSender($sender);`              | `$sender` array, string |
+| `$intercepted->assertReturnPath($returnPath);`         | `$returnPath` string    |
+| `$intercepted->assertNotReturnPath($returnPath);`      | `$returnPath` string    |
+
+| Content Type Assertions                          | 
+|:-------------------------------------------------|
+| `$intercepted->assertIsPlain();`                 |
+| `$intercepted->assertIsNotPlain();`              |
+| `$intercepted->assertHasPlainContent();`         |
+| `$intercepted->assertDoesNotHavePlainContent();` |
+| `$intercepted->assertIsHtml();`                  |
+| `$intercepted->assertIsNotHtml();`               |
+| `$intercepted->assertHasHtmlContent();`          |
+| `$intercepted->assertDoesNotHaveHtmlContent();`  |
+| `$intercepted->assertIsAlternative();`           |
+| `$intercepted->assertIsNotAlternative();`        |
+| `$intercepted->assertIsMixed();`                 |
+| `$intercepted->assertIsNotMixed();`              |
+
+| Header Assertions                                   | Parameters                           |
+|:----------------------------------------------------|:-------------------------------------|
+| `$intercepted->assertHasHeader($header);`           | `$header` string                     |
+| `$intercepted->assertMissingHeader($header);`       | `$header` string                     |
+| `$intercepted->assertHeaderIs($header, $value);`    | `$header` string<br/>`$value` string |
+| `$intercepted->assertHeaderIsNot($header, $value);` | `$header` string<br/>`$value` string |
+
+| Priority Assertions                           | Parameters      |
+|:----------------------------------------------|:----------------|
+| `$intercepted->assertPriority($priority);`    | `$priority` int |
+| `$intercepted->assertNotPriority($priority);` | `$priority` int |
+| `$intercepted->assertPriorityIsHighest();`    |                 |
+| `$intercepted->assertPriorityNotHighest();`   |                 |
+| `$intercepted->assertPriorityIsHigh();`       |                 |
+| `$intercepted->assertPriorityNotHigh();`      |                 |
+| `$intercepted->assertPriorityIsNormal();`     |                 |
+| `$intercepted->assertPriorityNotNormal();`    |                 |
+| `$intercepted->assertPriorityIsLow();`        |                 |
+| `$intercepted->assertPriorityNotLow();`       |                 |
+| `$intercepted->assertPriorityIsLowest();`     |                 |
+| `$intercepted->assertPriorityIsLowest();`     |                 |
+
+#### Assertion Methods
 
 | Assertions                                                 | Parameters                                |
 |:-----------------------------------------------------------|:------------------------------------------|
@@ -139,7 +215,7 @@ If you are injecting your own headers or need access to other headers in the ema
 
 ### Other assertions
 
-Since `$this->interceptedMail()` returns a collection of `Symfony\Component\Mime\Email` objects, you are free to dissect and look into those objects using any methods available to Symfony's Email API. Head over to the [Symfony Email Docs](https://symfony.com/doc/current/mailer.html) for more detailed info.
+Since `$this->interceptedMail()` returns a collection of `AssertableMessage` objects. You are free to dissect and look into those objects using any methods available to Symfony's Email API. Head over to the [Symfony Email Docs](https://symfony.com/doc/current/mailer.html) for more detailed info.
 
 ## Changelog
 

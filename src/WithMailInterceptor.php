@@ -5,6 +5,7 @@ namespace KirschbaumDevelopment\MailIntercept;
 use Symfony\Component\Mime\Email;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
+use Symfony\Component\Mailer\SentMessage;
 use KirschbaumDevelopment\MailIntercept\Assertions\CcAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\ToAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\BccAssertions;
@@ -34,7 +35,7 @@ trait WithMailInterceptor
     use UnstructuredHeaderAssertions;
 
     /**
-     * Intercept Swift Mailer so we can dissect the mail.
+     * Intercept Symfony Mailer so we can dissect the mail.
      */
     public function interceptMail()
     {
@@ -50,18 +51,20 @@ trait WithMailInterceptor
     {
         return app('mailer')->getSymfonyTransport()
             ->messages()
-            ->map(fn ($message) => $message->getOriginalMessage());
+            ->map(function (SentMessage $message) {
+                return new AssertableMessage($message->getOriginalMessage());
+            });
     }
 
     /**
      * Gather email addresses from specific field method.
      *
      * @param string $method
-     * @param Email $mail
+     * @param AssertableMessage|Email $mail
      *
      * @return array
      */
-    protected function gatherEmailData(string $method, Email $mail): array
+    protected function gatherEmailData(string $method, AssertableMessage|Email $mail): array
     {
         return collect($mail->$method())
             ->map(fn ($address) => $address->getAddress())

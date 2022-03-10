@@ -2,7 +2,7 @@
 
 namespace KirschbaumDevelopment\MailIntercept\Assertions;
 
-use Swift_Message;
+use Symfony\Component\Mime\Email;
 
 trait SubjectAssertions
 {
@@ -10,9 +10,9 @@ trait SubjectAssertions
      * Assert mail has subject.
      *
      * @param string $expected
-     * @param Swift_Message $mail
+     * @param Email $mail
      */
-    public function assertMailSubject(string $expected, Swift_Message $mail)
+    public function assertMailSubject(string $expected, Email $mail)
     {
         $this->assertEquals(
             $expected,
@@ -25,9 +25,9 @@ trait SubjectAssertions
      * Assert mail does not have subject.
      *
      * @param string $expected
-     * @param Swift_Message $mail
+     * @param Email $mail
      */
-    public function assertMailNotSubject(string $expected, Swift_Message $mail)
+    public function assertMailNotSubject(string $expected, Email $mail)
     {
         $this->assertNotEquals(
             $expected,

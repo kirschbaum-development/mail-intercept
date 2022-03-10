@@ -2,25 +2,27 @@
 
 namespace KirschbaumDevelopment\MailIntercept\Assertions;
 
-use Swift_Message;
 use Illuminate\Support\Arr;
+use Symfony\Component\Mime\Email;
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 
 trait ToAssertions
 {
     /**
      * Assert mail was sent to address.
      *
-     * @param string|array $expected
-     * @param Swift_Message $mail
+     * @param array|string $expected
+     * @param AssertableMessage|Email $mail
      */
-    public function assertMailSentTo($expected, Swift_Message $mail)
+    public function assertMailSentTo(array|string $expected, AssertableMessage|Email $mail)
     {
-        $addresses = Arr::wrap($expected);
+        $expectedAddresses = Arr::wrap($expected);
+        $actualAddresses = $this->gatherEmailData('getTo', $mail);
 
-        foreach ($addresses as $address) {
+        foreach ($expectedAddresses as $address) {
             $this->assertContains(
                 $address,
-                array_keys($mail->getTo()),
+                $actualAddresses,
                 "Mail was not sent to the expected address [{$address}]."
             );
         }
@@ -29,17 +31,18 @@ trait ToAssertions
     /**
      * Assert mail was not sent to address.
      *
-     * @param string|array $expected
-     * @param Swift_Message $mail
+     * @param array|string $expected
+     * @param AssertableMessage|Email $mail
      */
-    public function assertMailNotSentTo($expected, Swift_Message $mail)
+    public function assertMailNotSentTo(array|string $expected, AssertableMessage|Email $mail)
     {
-        $addresses = Arr::wrap($expected);
+        $expectedAddresses = Arr::wrap($expected);
+        $actualAddresses = $this->gatherEmailData('getTo', $mail);
 
-        foreach ($addresses as $address) {
+        foreach ($expectedAddresses as $address) {
             $this->assertNotContains(
                 $address,
-                array_keys($mail->getTo()),
+                $actualAddresses,
                 "Mail was sent to the expected address [{$address}]."
             );
         }

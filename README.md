@@ -14,7 +14,12 @@ Mail isn't faked here. You get to inspect the actual mail ensuring you are sendi
 
 ## Requirements
 
-This testing package requires Laravel 5.5 or higher.
+| Laravel Version  | Mail Intercept Version  |
+|:-----------------|:------------------------|
+| 9.x              | 0.3.x                   |
+| 8.x and lower    | 0.2.x                   |
+
+Please note: If you are using `v0.2.x`, please refer to that version's [documentation](https://github.com/kirschbaum-development/mail-intercept/tree/v0.2.x).
 
 ## Installation
 
@@ -36,8 +41,8 @@ use KirschbaumDevelopment\MailIntercept\WithMailInterceptor;
 
 class MailTest extends TestCase
 {
-    use WithFaker,
-        WithMailInterceptor;
+    use WithFaker;
+    use WithMailInterceptor;
 
     public function testMail()
     {
@@ -49,12 +54,26 @@ class MailTest extends TestCase
 
         $interceptedMail = $this->interceptedMail()->first();
 
-        $this->assertMailSentTo($email, $interceptedMail);
+        $interceptedMail->assertSentTo($email);
     }
 }
 ```
 
 That's it! Pretty simple, right?!
+
+There are two ways of accessing the assertions. First is the fluent syntax directly on each intercepted email.
+
+```php
+$interceptedMail->assertSentTo($email);
+```
+
+The other way (the older way) is to use the assertions methods made available from the `WithMailInterceptor` trait. Using these methods are fine, but aren't as clean to write.
+
+```php
+$this->assertMailSentTo($email, $interceptedEmail);
+```
+
+Both of these assertions do the exact same thing, the fluent one is just much cleaner. See all the available assertion methods below!
 
 ### Testing API
 
@@ -70,35 +89,125 @@ $this->interceptedMail()
 
 This should be called after `Mail` has been sent, but before your assertions, otherwise you won't have any emails to work with. It returns a `Collection` of emails so you are free to use any of the methods available to a collection.
 
-| Assertions                                                 | Parameters                                        |
-|:---------------------------------------------------------- |:--------------------------------------------------|
-| `$this->assertMailSentTo($to, $mail);`                     | `$to` string, array<br/>`$mail` Swift_Message     |
-| `$this->assertMailNotSentTo($to, $mail);`                  | `$to` string, array<br/>`$mail` Swift_Message     |
-| `$this->assertMailSentFrom($from, $mail);`                 | `$from` string, array<br/>`$mail` Swift_Message   |
-| `$this->assertMailNotSentFrom($from, $mail);`              | `$from` string, array<br/>`$mail` Swift_Message   |
-| `$this->assertMailSubject($subject, $mail);`               | `$subject` string<br/>`$mail` Swift_Message       |
-| `$this->assertMailNotSubject($subject, $mail);`            | `$subject` string<br/>`$mail` Swift_Message       |
-| `$this->assertMailBodyContainsString($content, $mail);`    | `$content` string<br/>`$mail` Swift_Message       |
-| `$this->assertMailBodyNotContainsString($content, $mail);` | `$content` string<br/>`$mail` Swift_Message       |
-| `$this->assertMailRepliesTo($reply, $mail);`               | `$reply` string, array<br/>`$mail` Swift_Message  |
-| `$this->assertMailNotRepliesTo($reply, $mail);`            | `$reply` string, array<br/>`$mail` Swift_Message  |
-| `$this->assertMailCc($cc, $mail);`                         | `$cc` string, array<br/>`$mail` Swift_Message     |
-| `$this->assertMailNotCc($cc, $mail);`                      | `$cc` string, array<br/>`$mail` Swift_Message     |
-| `$this->assertMailBcc($cc, $mail);`                        | `$bcc` string, array<br/>`$mail` Swift_Message    |
-| `$this->assertMailNotBcc($cc, $mail);`                     | `$bcc` string, array<br/>`$mail` Swift_Message    |
-| `$this->assertMailSender($sender, $mail);`                 | `$sender` string, array<br/>`$mail` Swift_Message |
-| `$this->assertMailNotSender($sender, $mail);`              | `$sender` string, array<br/>`$mail` Swift_Message |
-| `$this->assertMailIsPlain($mail);`                         | `$mail` Swift_Message                             |
-| `$this->assertMailIsNotPlain($mail);`                      | `$mail` Swift_Message                             |
-| `$this->assertMailIsHtml($mail);`                          | `$mail` Swift_Message                             |
-| `$this->assertMailIsNotHtml($mail);`                       | `$mail` Swift_Message                             |
+#### Fluent Assertion Methods
 
-| Header Assertions                                       | Parameters                                                     |
-|:------------------------------------------------------- |:---------------------------------------------------------------|
-| `$this->assertMailHasHeader($header, $mail);`           | `$header` string<br/>`$mail` Swift_Message                     |
-| `$this->assertMailMissingHeader($header, $mail);`       | `$header` string<br/>`$mail` Swift_Message                     |
-| `$this->assertMailHeaderIs($header, $value, $mail);`    | `$header` string<br/>`$value` string<br/>`$mail` Swift_Message |
-| `$this->assertMailHeaderIsNot($header, $value, $mail);` | `$header` string<br/>`$value` string<br/>`$mail` Swift_Message |
+| Assertions                                             | Parameters              |
+|:-------------------------------------------------------|:------------------------|
+| `$intercepted->assertSentTo($to);`                     | `$to` array, string     |
+| `$intercepted->assertNotSentTo($to);`                  | `$to` array, string     |
+| `$intercepted->assertSentFrom($from);`                 | `$from` array, string   |
+| `$intercepted->assertNotSentFrom($from);`              | `$from` array, string   |
+| `$intercepted->assertSubject($subject);`               | `$subject` string       |
+| `$intercepted->assertNotSubject($subject);`            | `$subject` string       |
+| `$intercepted->assertBodyContainsString($content);`    | `$content` string       |
+| `$intercepted->assertBodyNotContainsString($content);` | `$content` string       |
+| `$intercepted->assertRepliesTo($reply);`               | `$reply` array, string  |
+| `$intercepted->assertNotRepliesTo($reply);`            | `$reply` array, string  |
+| `$intercepted->assertCc($cc);`                         | `$cc` array, string     |
+| `$intercepted->assertNotCc($cc);`                      | `$cc` array, string     |
+| `$intercepted->assertBcc($cc);`                        | `$bcc` array, string    |
+| `$intercepted->assertNotBcc($cc);`                     | `$bcc` array, string    |
+| `$intercepted->assertSender($sender);`                 | `$sender` array, string |
+| `$intercepted->assertNotSender($sender);`              | `$sender` array, string |
+| `$intercepted->assertReturnPath($returnPath);`         | `$returnPath` string    |
+| `$intercepted->assertNotReturnPath($returnPath);`      | `$returnPath` string    |
+
+| Content Type Assertions                          | 
+|:-------------------------------------------------|
+| `$intercepted->assertIsPlain();`                 |
+| `$intercepted->assertIsNotPlain();`              |
+| `$intercepted->assertHasPlainContent();`         |
+| `$intercepted->assertDoesNotHavePlainContent();` |
+| `$intercepted->assertIsHtml();`                  |
+| `$intercepted->assertIsNotHtml();`               |
+| `$intercepted->assertHasHtmlContent();`          |
+| `$intercepted->assertDoesNotHaveHtmlContent();`  |
+| `$intercepted->assertIsAlternative();`           |
+| `$intercepted->assertIsNotAlternative();`        |
+| `$intercepted->assertIsMixed();`                 |
+| `$intercepted->assertIsNotMixed();`              |
+
+| Header Assertions                                   | Parameters                           |
+|:----------------------------------------------------|:-------------------------------------|
+| `$intercepted->assertHasHeader($header);`           | `$header` string                     |
+| `$intercepted->assertMissingHeader($header);`       | `$header` string                     |
+| `$intercepted->assertHeaderIs($header, $value);`    | `$header` string<br/>`$value` string |
+| `$intercepted->assertHeaderIsNot($header, $value);` | `$header` string<br/>`$value` string |
+
+| Priority Assertions                           | Parameters      |
+|:----------------------------------------------|:----------------|
+| `$intercepted->assertPriority($priority);`    | `$priority` int |
+| `$intercepted->assertNotPriority($priority);` | `$priority` int |
+| `$intercepted->assertPriorityIsHighest();`    |                 |
+| `$intercepted->assertPriorityNotHighest();`   |                 |
+| `$intercepted->assertPriorityIsHigh();`       |                 |
+| `$intercepted->assertPriorityNotHigh();`      |                 |
+| `$intercepted->assertPriorityIsNormal();`     |                 |
+| `$intercepted->assertPriorityNotNormal();`    |                 |
+| `$intercepted->assertPriorityIsLow();`        |                 |
+| `$intercepted->assertPriorityNotLow();`       |                 |
+| `$intercepted->assertPriorityIsLowest();`     |                 |
+| `$intercepted->assertPriorityIsLowest();`     |                 |
+
+#### Assertion Methods
+
+| Assertions                                                 | Parameters                                |
+|:-----------------------------------------------------------|:------------------------------------------|
+| `$this->assertMailSentTo($to, $mail);`                     | `$to` array, string<br/>`$mail` Email     |
+| `$this->assertMailNotSentTo($to, $mail);`                  | `$to` array, string<br/>`$mail` Email     |
+| `$this->assertMailSentFrom($from, $mail);`                 | `$from` array, string<br/>`$mail` Email   |
+| `$this->assertMailNotSentFrom($from, $mail);`              | `$from` array, string<br/>`$mail` Email   |
+| `$this->assertMailSubject($subject, $mail);`               | `$subject` string<br/>`$mail` Email       |
+| `$this->assertMailNotSubject($subject, $mail);`            | `$subject` string<br/>`$mail` Email       |
+| `$this->assertMailBodyContainsString($content, $mail);`    | `$content` string<br/>`$mail` Email       |
+| `$this->assertMailBodyNotContainsString($content, $mail);` | `$content` string<br/>`$mail` Email       |
+| `$this->assertMailRepliesTo($reply, $mail);`               | `$reply` array, string<br/>`$mail` Email  |
+| `$this->assertMailNotRepliesTo($reply, $mail);`            | `$reply` array, string<br/>`$mail` Email  |
+| `$this->assertMailCc($cc, $mail);`                         | `$cc` array, string<br/>`$mail` Email     |
+| `$this->assertMailNotCc($cc, $mail);`                      | `$cc` array, string<br/>`$mail` Email     |
+| `$this->assertMailBcc($cc, $mail);`                        | `$bcc` array, string<br/>`$mail` Email    |
+| `$this->assertMailNotBcc($cc, $mail);`                     | `$bcc` array, string<br/>`$mail` Email    |
+| `$this->assertMailSender($sender, $mail);`                 | `$sender` array, string<br/>`$mail` Email |
+| `$this->assertMailNotSender($sender, $mail);`              | `$sender` array, string<br/>`$mail` Email |
+| `$this->assertMailReturnPath($returnPath, $mail);`         | `$returnPath` string<br/>`$mail` Email    |
+| `$this->assertMailNotReturnPath($returnPath, $mail);`      | `$returnPath` string<br/>`$mail` Email    |
+
+| Content Type Assertions                            | Parameters    |
+|:---------------------------------------------------|:--------------|
+| `$this->assertMailIsPlain($mail);`                 | `$mail` Email |
+| `$this->assertMailIsNotPlain($mail);`              | `$mail` Email |
+| `$this->assertMailHasPlainContent($mail);`         | `$mail` Email |
+| `$this->assertMailDoesNotHavePlainContent($mail);` | `$mail` Email |
+| `$this->assertMailIsHtml($mail);`                  | `$mail` Email |
+| `$this->assertMailIsNotHtml($mail);`               | `$mail` Email |
+| `$this->assertMailHasHtmlContent($mail);`          | `$mail` Email |
+| `$this->assertMailDoesNotHaveHtmlContent($mail);`  | `$mail` Email |
+| `$this->assertMailIsAlternative($mail);`           | `$mail` Email |
+| `$this->assertMailIsNotAlternative($mail);`        | `$mail` Email |
+| `$this->assertMailIsMixed($mail);`                 | `$mail` Email |
+| `$this->assertMailIsNotMixed($mail);`              | `$mail` Email |
+
+| Header Assertions                                       | Parameters                                             |
+|:--------------------------------------------------------|:-------------------------------------------------------|
+| `$this->assertMailHasHeader($header, $mail);`           | `$header` string<br/>`$mail` Email                     |
+| `$this->assertMailMissingHeader($header, $mail);`       | `$header` string<br/>`$mail` Email                     |
+| `$this->assertMailHeaderIs($header, $value, $mail);`    | `$header` string<br/>`$value` string<br/>`$mail` Email |
+| `$this->assertMailHeaderIsNot($header, $value, $mail);` | `$header` string<br/>`$value` string<br/>`$mail` Email |
+
+| Priority Assertions                               | Parameters                        |
+|:--------------------------------------------------|:----------------------------------|
+| `$this->assertMailPriority($priority, $mail);`    | `$priority` int<br/>`$mail` Email |
+| `$this->assertMailNotPriority($priority, $mail);` | `$priority` int<br/>`$mail` Email |
+| `$this->assertMailPriorityIsHighest($mail);`      | `$mail` Email                     |
+| `$this->assertMailPriorityNotHighest($mail);`     | `$mail` Email                     |
+| `$this->assertMailPriorityIsHigh($mail);`         | `$mail` Email                     |
+| `$this->assertMailPriorityNotHigh($mail);`        | `$mail` Email                     |
+| `$this->assertMailPriorityIsNormal($mail);`       | `$mail` Email                     |
+| `$this->assertMailPriorityNotNormal($mail);`      | `$mail` Email                     |
+| `$this->assertMailPriorityIsLow($mail);`          | `$mail` Email                     |
+| `$this->assertMailPriorityNotLow($mail);`         | `$mail` Email                     |
+| `$this->assertMailPriorityIsLowest($mail);`       | `$mail` Email                     |
+| `$this->assertMailPriorityIsLowest($mail);`       | `$mail` Email                     |
 
 You should use each item of the `interceptedMail()` collection as the mail object for all assertions.
 
@@ -106,7 +215,7 @@ If you are injecting your own headers or need access to other headers in the ema
 
 ### Other assertions
 
-Since `$this->interceptedMail()` returns a collection of `Swift_Message` objects, you are free to dissect and look into those objects using any methods available to Swift's Message API. Head over to the [Swift Mail Docs](https://swiftmailer.symfony.com/docs/introduction.html) for more detailed info.
+Since `$this->interceptedMail()` returns a collection of `AssertableMessage` objects. You are free to dissect and look into those objects using any methods available to Symfony's Email API. Head over to the [Symfony Email Docs](https://symfony.com/doc/current/mailer.html) for more detailed info.
 
 ## Changelog
 
@@ -123,6 +232,7 @@ If you discover any security related issues, please email brandon@kirschbaumdeve
 ## Credits
 
 - [Brandon Ferens](https://github.com/brandonferens)
+- [Michael Fox](https://github.com/michaelfox)
 
 ## Sponsorship
 

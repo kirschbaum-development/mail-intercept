@@ -2,25 +2,26 @@
 
 namespace KirschbaumDevelopment\MailIntercept\Assertions;
 
-use Swift_Message;
 use Illuminate\Support\Arr;
+use Symfony\Component\Mime\Email;
 
 trait CcAssertions
 {
     /**
      * Assert mail was CC'd to address.
      *
-     * @param string|array $expected
-     * @param Swift_Message $mail
+     * @param array|string $expected
+     * @param Email $mail
      */
-    public function assertMailCc($expected, Swift_Message $mail)
+    public function assertMailCc(array|string $expected, Email $mail)
     {
-        $addresses = Arr::wrap($expected);
+        $expectedAddresses = Arr::wrap($expected);
+        $actualAddresses = $this->gatherEmailData('getCc', $mail);
 
-        foreach ($addresses as $address) {
+        foreach ($expectedAddresses as $address) {
             $this->assertContains(
                 $address,
-                array_keys($mail->getCc()),
+                $actualAddresses,
                 "Mail was not CC'd to the expected address [{$address}]."
             );
         }
@@ -29,17 +30,18 @@ trait CcAssertions
     /**
      * Assert mail was not CC'd to address.
      *
-     * @param string|array $expected
-     * @param Swift_Message $mail
+     * @param array|string $expected
+     * @param Email $mail
      */
-    public function assertMailNotCc($expected, Swift_Message $mail)
+    public function assertMailNotCc(array|string $expected, Email $mail)
     {
-        $addresses = Arr::wrap($expected);
+        $expectedAddresses = Arr::wrap($expected);
+        $actualAddresses = $this->gatherEmailData('getCc', $mail);
 
-        foreach ($addresses as $address) {
+        foreach ($expectedAddresses as $address) {
             $this->assertNotContains(
                 $address,
-                array_keys($mail->getCc()),
+                $actualAddresses,
                 "Mail was CC'd to the expected address [{$address}]."
             );
         }

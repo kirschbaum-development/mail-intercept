@@ -2,8 +2,8 @@
 
 namespace KirschbaumDevelopment\MailIntercept\Assertions;
 
-use Swift_Message;
-use Swift_Mime_Header;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Header\UnstructuredHeader;
 
 trait UnstructuredHeaderAssertions
 {
@@ -11,12 +11,12 @@ trait UnstructuredHeaderAssertions
      * Assert unstructured header exists.
      *
      * @param string $expected
-     * @param Swift_Message $mail
+     * @param Email $mail
      */
-    public function assertMailHasHeader(string $expected, Swift_Message $mail)
+    public function assertMailHasHeader(string $expected, Email $mail)
     {
         $this->assertInstanceOf(
-            Swift_Mime_Header::class,
+            UnstructuredHeader::class,
             $mail->getHeaders()->get($expected),
             "The expected [{$expected}] header did not exist."
         );
@@ -26,9 +26,9 @@ trait UnstructuredHeaderAssertions
      * Assert unstructured header exists.
      *
      * @param string $expected
-     * @param Swift_Message $mail
+     * @param Email $mail
      */
-    public function assertMailMissingHeader(string $expected, Swift_Message $mail)
+    public function assertMailMissingHeader(string $expected, Email $mail)
     {
         $this->assertNull(
             $mail->getHeaders()->get($expected),
@@ -41,9 +41,9 @@ trait UnstructuredHeaderAssertions
      *
      * @param string $expected
      * @param string $expectedValue
-     * @param Swift_Message $mail
+     * @param Email $mail
      */
-    public function assertMailHeaderIs(string $expected, string $expectedValue, Swift_Message $mail)
+    public function assertMailHeaderIs(string $expected, string $expectedValue, Email $mail)
     {
         $this->assertEquals(
             $expectedValue,
@@ -57,9 +57,9 @@ trait UnstructuredHeaderAssertions
      *
      * @param string $expected
      * @param string $expectedValue
-     * @param Swift_Message $mail
+     * @param Email $mail
      */
-    public function assertMailHeaderIsNot(string $expected, string $expectedValue, Swift_Message $mail)
+    public function assertMailHeaderIsNot(string $expected, string $expectedValue, Email $mail)
     {
         $this->assertNotEquals(
             $expectedValue,

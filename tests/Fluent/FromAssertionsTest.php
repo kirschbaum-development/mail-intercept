@@ -1,9 +1,11 @@
 <?php
 
-namespace Tests;
+namespace Tests\Fluent;
 
+use Tests\TestCase;
 use Symfony\Component\Mime\Email;
 use PHPUnit\Framework\ExpectationFailedException;
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 
 class FromAssertionsTest extends TestCase
 {
@@ -11,21 +13,25 @@ class FromAssertionsTest extends TestCase
     {
         $email = $this->faker->email;
 
-        $mail = (new Email())->from($email);
+        $mail = new AssertableMessage(
+            (new Email())->from($email)
+        );
 
-        $this->assertMailSentFrom($email, $mail);
+        $mail->assertSentFrom($email);
     }
 
     public function testMailSentFromThrowsProperExpectationFailedException()
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Email())->from($this->faker->unique()->email);
+        $mail = new AssertableMessage(
+            (new Email())->from($this->faker->unique()->email)
+        );
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail was not sent from the expected address [{$email}].");
 
-        $this->assertMailSentFrom($email, $mail);
+        $mail->assertSentFrom($email);
     }
 
     public function testMailSentFromMultipleEmails()
@@ -35,30 +41,36 @@ class FromAssertionsTest extends TestCase
             $this->faker->email,
         ];
 
-        $mail = (new Email())->from(...$emails);
+        $mail = new AssertableMessage(
+            (new Email())->from(...$emails)
+        );
 
-        $this->assertMailSentFrom($emails, $mail);
+        $mail->assertSentFrom($emails);
     }
 
     public function testMailNotSentFromSingleEmail()
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Email())->from($this->faker->unique()->email);
+        $mail = new AssertableMessage(
+            (new Email())->from($this->faker->unique()->email)
+        );
 
-        $this->assertMailNotSentFrom($email, $mail);
+        $mail->assertNotSentFrom($email);
     }
 
     public function testMailNotSentFromThrowsProperExpectationFailedException()
     {
         $email = $this->faker->email;
 
-        $mail = (new Email())->from($email);
+        $mail = new AssertableMessage(
+            (new Email())->from($email)
+        );
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail was sent from the expected address [{$email}].");
 
-        $this->assertMailNotSentFrom($email, $mail);
+        $mail->assertNotSentFrom($email);
     }
 
     public function testMailNotSentFromMultipleEmails()
@@ -68,11 +80,13 @@ class FromAssertionsTest extends TestCase
             $this->faker->unique()->email,
         ];
 
-        $mail = (new Email())->from(
-            $this->faker->unique()->email,
-            $this->faker->unique()->email
+        $mail = new AssertableMessage(
+            (new Email())->from(
+                $this->faker->unique()->email,
+                $this->faker->unique()->email
+            )
         );
 
-        $this->assertMailNotSentFrom($emails, $mail);
+        $mail->assertNotSentFrom($emails);
     }
 }

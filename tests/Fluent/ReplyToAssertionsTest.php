@@ -1,9 +1,11 @@
 <?php
 
-namespace Tests;
+namespace Tests\Fluent;
 
+use Tests\TestCase;
 use Symfony\Component\Mime\Email;
 use PHPUnit\Framework\ExpectationFailedException;
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 
 class ReplyToAssertionsTest extends TestCase
 {
@@ -11,21 +13,25 @@ class ReplyToAssertionsTest extends TestCase
     {
         $email = $this->faker->email;
 
-        $mail = (new Email())->replyTo($email);
+        $mail = new AssertableMessage(
+            (new Email())->replyTo($email)
+        );
 
-        $this->assertMailRepliesTo($email, $mail);
+        $mail->assertRepliesTo($email);
     }
 
     public function testMailRepliesToThrowsProperExpectationFailedException()
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Email())->replyTo($this->faker->unique()->email);
+        $mail = new AssertableMessage(
+            (new Email())->replyTo($this->faker->unique()->email)
+        );
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail does not reply to the expected address [{$email}].");
 
-        $this->assertMailRepliesTo($email, $mail);
+        $mail->assertRepliesTo($email);
     }
 
     public function testMailRepliesToMultipleEmails()
@@ -35,30 +41,36 @@ class ReplyToAssertionsTest extends TestCase
             $this->faker->email,
         ];
 
-        $mail = (new Email())->replyTo(...$emails);
+        $mail = new AssertableMessage(
+            (new Email())->replyTo(...$emails)
+        );
 
-        $this->assertMailRepliesTo($emails, $mail);
+        $mail->assertRepliesTo($emails);
     }
 
     public function testMailNotRepliesToSingleEmail()
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Email())->replyTo($this->faker->unique()->email);
+        $mail = new AssertableMessage(
+            (new Email())->replyTo($this->faker->unique()->email)
+        );
 
-        $this->assertMailNotRepliesTo($email, $mail);
+        $mail->assertNotRepliesTo($email);
     }
 
     public function testMailNotRepliesToThrowsProperExpectationFailedException()
     {
         $email = $this->faker->email;
 
-        $mail = (new Email())->replyTo($email);
+        $mail = new AssertableMessage(
+            (new Email())->replyTo($email)
+        );
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail replied to the expected address [{$email}].");
 
-        $this->assertMailNotRepliesTo($email, $mail);
+        $mail->assertNotRepliesTo($email);
     }
 
     public function testMailNotRepliesToMultipleEmails()
@@ -68,11 +80,13 @@ class ReplyToAssertionsTest extends TestCase
             $this->faker->unique()->email,
         ];
 
-        $mail = (new Email())->replyTo(
-            $this->faker->unique()->email,
-            $this->faker->unique()->email
+        $mail = new AssertableMessage(
+            (new Email())->replyTo(
+                $this->faker->unique()->email,
+                $this->faker->unique()->email
+            )
         );
 
-        $this->assertMailNotRepliesTo($emails, $mail);
+        $mail->assertNotRepliesTo($emails);
     }
 }

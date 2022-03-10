@@ -1,9 +1,11 @@
 <?php
 
-namespace Tests;
+namespace Tests\Fluent;
 
+use Tests\TestCase;
 use Symfony\Component\Mime\Email;
 use PHPUnit\Framework\ExpectationFailedException;
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 
 class SubjectAssertionsTest extends TestCase
 {
@@ -11,41 +13,49 @@ class SubjectAssertionsTest extends TestCase
     {
         $subject = $this->faker->sentence;
 
-        $mail = (new Email())->subject($subject);
+        $mail = new AssertableMessage(
+            (new Email())->subject($subject)
+        );
 
-        $this->assertMailSubject($subject, $mail);
+        $mail->assertSubject($subject);
     }
 
     public function testMailSubjectThrowsProperExpectationFailedException()
     {
         $subject = $this->faker->unique()->sentence;
 
-        $mail = (new Email())->subject($this->faker->unique()->sentence);
+        $mail = new AssertableMessage(
+            (new Email())->subject($this->faker->unique()->sentence)
+        );
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("The expected subject was not [{$subject}].");
 
-        $this->assertMailSubject($subject, $mail);
+        $mail->assertSubject($subject);
     }
 
     public function testMailNotSubject()
     {
         $subject = $this->faker->unique()->sentence;
 
-        $mail = (new Email())->subject($this->faker->unique()->sentence);
+        $mail = new AssertableMessage(
+            (new Email())->subject($this->faker->unique()->sentence)
+        );
 
-        $this->assertMailNotSubject($subject, $mail);
+        $mail->assertNotSubject($subject);
     }
 
     public function testMailNotSubjectThrowsProperExpectationFailedException()
     {
         $subject = $this->faker->sentence;
 
-        $mail = (new Email())->subject($subject);
+        $mail = new AssertableMessage(
+            (new Email())->subject($subject)
+        );
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("The expected subject was [{$subject}].");
 
-        $this->assertMailNotSubject($subject, $mail);
+        $mail->assertNotSubject($subject);
     }
 }

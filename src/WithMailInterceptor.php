@@ -2,8 +2,10 @@
 
 namespace KirschbaumDevelopment\MailIntercept;
 
+use Symfony\Component\Mime\Email;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
+use Symfony\Component\Mailer\SentMessage;
 use KirschbaumDevelopment\MailIntercept\Assertions\CcAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\ToAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\BccAssertions;
@@ -12,6 +14,8 @@ use KirschbaumDevelopment\MailIntercept\Assertions\SenderAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\ContentAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\ReplyToAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\SubjectAssertions;
+use KirschbaumDevelopment\MailIntercept\Assertions\PriorityAssertions;
+use KirschbaumDevelopment\MailIntercept\Assertions\ReturnPathAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\ContentTypeAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\UnstructuredHeaderAssertions;
 
@@ -25,11 +29,13 @@ trait WithMailInterceptor
     use ContentAssertions;
     use ReplyToAssertions;
     use SubjectAssertions;
+    use PriorityAssertions;
+    use ReturnPathAssertions;
     use ContentTypeAssertions;
     use UnstructuredHeaderAssertions;
 
     /**
-     * Intercept Swift Mailer so we can dissect the mail.
+     * Intercept Symfony Mailer so we can dissect the mail.
      */
     public function interceptMail()
     {
@@ -43,10 +49,25 @@ trait WithMailInterceptor
      */
     public function interceptedMail(): Collection
     {
-        $swiftTransport = (version_compare(app()->version(), '7.0.0', '<'))
-            ? app('swift.transport')->driver()
-            : (app('mailer')->getSwiftMailer())->getTransport();
+        return app('mailer')->getSymfonyTransport()
+            ->messages()
+            ->map(function (SentMessage $message) {
+                return new AssertableMessage($message->getOriginalMessage());
+            });
+    }
 
-        return $swiftTransport->messages();
+    /**
+     * Gather email addresses from specific field method.
+     *
+     * @param string $method
+     * @param AssertableMessage|Email $mail
+     *
+     * @return array
+     */
+    protected function gatherEmailData(string $method, AssertableMessage|Email $mail): array
+    {
+        return collect($mail->$method())
+            ->map(fn ($address) => $address->getAddress())
+            ->toArray();
     }
 }

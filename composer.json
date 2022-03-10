@@ -3,7 +3,7 @@
     "description": "A test package for intercepting email sent from Laravel",
     "keywords": [
         "laravel",
-        "swift mailer",
+        "symfony mailer",
         "test",
         "email"
     ],
@@ -17,14 +17,14 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
-        "laravel/framework": ">=5.5"
+        "php": "^8.0.2",
+        "illuminate/mail": "^9.2"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.2",
-        "orchestra/testbench": ">=3.5",
-        "phpunit/phpunit": ">=6.0",
-        "swiftmailer/swiftmailer": "^6.0"
+        "friendsofphp/php-cs-fixer": "^3.7",
+        "orchestra/testbench": "^7.1",
+        "phpunit/phpunit": "^9.5.10",
+        "spatie/ray": "^1.34"
     },
     "autoload": {
         "psr-4": {

@@ -1,9 +1,11 @@
 <?php
 
-namespace Tests;
+namespace Tests\Fluent;
 
+use Tests\TestCase;
 use Symfony\Component\Mime\Email;
 use PHPUnit\Framework\ExpectationFailedException;
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 
 class BccAssertionsTest extends TestCase
 {
@@ -11,21 +13,25 @@ class BccAssertionsTest extends TestCase
     {
         $email = $this->faker->email;
 
-        $mail = (new Email())->bcc($email);
+        $mail = new AssertableMessage(
+            (new Email())->bcc($email)
+        );
 
-        $this->assertMailBcc($email, $mail);
+        $mail->assertBcc($email);
     }
 
     public function testMailBccThrowsProperExpectationFailedException()
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Email())->bcc($this->faker->unique()->email);
+        $mail = new AssertableMessage(
+            (new Email())->bcc($this->faker->unique()->email)
+        );
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail was not BCC'd to the expected address [{$email}].");
 
-        $this->assertMailBcc($email, $mail);
+        $mail->assertBcc($email);
     }
 
     public function testMailSentToMultipleEmails()
@@ -35,30 +41,36 @@ class BccAssertionsTest extends TestCase
             $this->faker->email,
         ];
 
-        $mail = (new Email())->bcc(...$emails);
+        $mail = new AssertableMessage(
+            (new Email())->bcc(...$emails)
+        );
 
-        $this->assertMailBcc($emails, $mail);
+        $mail->assertBcc($emails);
     }
 
     public function testMailNotSentToSingleEmail()
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Email())->bcc($this->faker->unique()->email);
+        $mail = new AssertableMessage(
+            (new Email())->bcc($this->faker->unique()->email)
+        );
 
-        $this->assertMailNotBcc($email, $mail);
+        $mail->assertNotBcc($email);
     }
 
     public function testMailNotSentToThrowsProperExpectationFailedException()
     {
         $email = $this->faker->unique()->email;
 
-        $mail = (new Email())->bcc($email);
+        $mail = new AssertableMessage(
+            (new Email())->bcc($email)
+        );
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Mail was BCC'd to the expected address [{$email}].");
 
-        $this->assertMailNotBcc($email, $mail);
+        $mail->assertNotBcc($email);
     }
 
     public function testMailNotSentToMultipleEmails()
@@ -68,11 +80,13 @@ class BccAssertionsTest extends TestCase
             $this->faker->unique()->email,
         ];
 
-        $mail = (new Email())->bcc(
-            $this->faker->unique()->email,
-            $this->faker->unique()->email
+        $mail = new AssertableMessage(
+            (new Email())->bcc(
+                $this->faker->unique()->email,
+                $this->faker->unique()->email
+            )
         );
 
-        $this->assertMailNotBcc($emails, $mail);
+        $mail->assertNotBcc($emails);
     }
 }

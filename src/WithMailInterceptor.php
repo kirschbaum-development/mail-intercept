@@ -37,7 +37,7 @@ trait WithMailInterceptor
     /**
      * Intercept Symfony Mailer so we can dissect the mail.
      */
-    public function interceptMail()
+    public function interceptMail(): void
     {
         Config::set('mail.driver', 'array');
     }
@@ -64,7 +64,7 @@ trait WithMailInterceptor
      *
      * @return array
      */
-    protected function gatherEmailData(string $method, AssertableMessage|Email $mail): array
+    protected function gatherEmailData(string $method, AssertableMessage | Email $mail): array
     {
         return collect($mail->$method())
             ->map(fn ($address) => $address->getAddress())

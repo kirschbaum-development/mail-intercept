@@ -80,8 +80,8 @@ class AssertableMessage extends Assert
     /**
      * Dynamically pass missing methods to the Symfony instance.
      *
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array $parameters
      *
      * @return mixed
      */

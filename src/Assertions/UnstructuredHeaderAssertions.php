@@ -4,6 +4,7 @@ namespace KirschbaumDevelopment\MailIntercept\Assertions;
 
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Header\UnstructuredHeader;
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 
 trait UnstructuredHeaderAssertions
 {
@@ -11,9 +12,9 @@ trait UnstructuredHeaderAssertions
      * Assert unstructured header exists.
      *
      * @param string $expected
-     * @param Email $mail
+     * @param AssertableMessage|Email $mail
      */
-    public function assertMailHasHeader(string $expected, Email $mail)
+    public function assertMailHasHeader(string $expected, AssertableMessage | Email $mail): void
     {
         $this->assertInstanceOf(
             UnstructuredHeader::class,
@@ -26,9 +27,9 @@ trait UnstructuredHeaderAssertions
      * Assert unstructured header exists.
      *
      * @param string $expected
-     * @param Email $mail
+     * @param AssertableMessage|Email $mail
      */
-    public function assertMailMissingHeader(string $expected, Email $mail)
+    public function assertMailMissingHeader(string $expected, AssertableMessage | Email $mail): void
     {
         $this->assertNull(
             $mail->getHeaders()->get($expected),
@@ -41,9 +42,9 @@ trait UnstructuredHeaderAssertions
      *
      * @param string $expected
      * @param string $expectedValue
-     * @param Email $mail
+     * @param AssertableMessage|Email $mail
      */
-    public function assertMailHeaderIs(string $expected, string $expectedValue, Email $mail)
+    public function assertMailHeaderIs(string $expected, string $expectedValue, AssertableMessage | Email $mail): void
     {
         $this->assertEquals(
             $expectedValue,
@@ -57,9 +58,9 @@ trait UnstructuredHeaderAssertions
      *
      * @param string $expected
      * @param string $expectedValue
-     * @param Email $mail
+     * @param AssertableMessage|Email $mail
      */
-    public function assertMailHeaderIsNot(string $expected, string $expectedValue, Email $mail)
+    public function assertMailHeaderIsNot(string $expected, string $expectedValue, AssertableMessage | Email $mail): void
     {
         $this->assertNotEquals(
             $expectedValue,

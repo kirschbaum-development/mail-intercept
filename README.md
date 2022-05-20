@@ -151,63 +151,63 @@ This should be called after `Mail` has been sent, but before your assertions, ot
 
 #### Assertion Methods
 
-| Assertions                                                 | Parameters                                |
-|:-----------------------------------------------------------|:------------------------------------------|
-| `$this->assertMailSentTo($to, $mail);`                     | `$to` array, string<br/>`$mail` Email     |
-| `$this->assertMailNotSentTo($to, $mail);`                  | `$to` array, string<br/>`$mail` Email     |
-| `$this->assertMailSentFrom($from, $mail);`                 | `$from` array, string<br/>`$mail` Email   |
-| `$this->assertMailNotSentFrom($from, $mail);`              | `$from` array, string<br/>`$mail` Email   |
-| `$this->assertMailSubject($subject, $mail);`               | `$subject` string<br/>`$mail` Email       |
-| `$this->assertMailNotSubject($subject, $mail);`            | `$subject` string<br/>`$mail` Email       |
-| `$this->assertMailBodyContainsString($content, $mail);`    | `$content` string<br/>`$mail` Email       |
-| `$this->assertMailBodyNotContainsString($content, $mail);` | `$content` string<br/>`$mail` Email       |
-| `$this->assertMailRepliesTo($reply, $mail);`               | `$reply` array, string<br/>`$mail` Email  |
-| `$this->assertMailNotRepliesTo($reply, $mail);`            | `$reply` array, string<br/>`$mail` Email  |
-| `$this->assertMailCc($cc, $mail);`                         | `$cc` array, string<br/>`$mail` Email     |
-| `$this->assertMailNotCc($cc, $mail);`                      | `$cc` array, string<br/>`$mail` Email     |
-| `$this->assertMailBcc($cc, $mail);`                        | `$bcc` array, string<br/>`$mail` Email    |
-| `$this->assertMailNotBcc($cc, $mail);`                     | `$bcc` array, string<br/>`$mail` Email    |
-| `$this->assertMailSender($sender, $mail);`                 | `$sender` array, string<br/>`$mail` Email |
-| `$this->assertMailNotSender($sender, $mail);`              | `$sender` array, string<br/>`$mail` Email |
-| `$this->assertMailReturnPath($returnPath, $mail);`         | `$returnPath` string<br/>`$mail` Email    |
-| `$this->assertMailNotReturnPath($returnPath, $mail);`      | `$returnPath` string<br/>`$mail` Email    |
+| Assertions                                                 | Parameters                                                   |
+|:-----------------------------------------------------------|:-------------------------------------------------------------|
+| `$this->assertMailSentTo($to, $mail);`                     | `$to` array, string<br/>`$mail` AssertableMessage, Email     |
+| `$this->assertMailNotSentTo($to, $mail);`                  | `$to` array, string<br/>`$mail` AssertableMessage, Email     |
+| `$this->assertMailSentFrom($from, $mail);`                 | `$from` array, string<br/>`$mail` AssertableMessage, Email   |
+| `$this->assertMailNotSentFrom($from, $mail);`              | `$from` array, string<br/>`$mail` AssertableMessage, Email   |
+| `$this->assertMailSubject($subject, $mail);`               | `$subject` string<br/>`$mail` AssertableMessage, Email       |
+| `$this->assertMailNotSubject($subject, $mail);`            | `$subject` string<br/>`$mail` AssertableMessage, Email       |
+| `$this->assertMailBodyContainsString($content, $mail);`    | `$content` string<br/>`$mail` AssertableMessage, Email       |
+| `$this->assertMailBodyNotContainsString($content, $mail);` | `$content` string<br/>`$mail` AssertableMessage, Email       |
+| `$this->assertMailRepliesTo($reply, $mail);`               | `$reply` array, string<br/>`$mail` AssertableMessage, Email  |
+| `$this->assertMailNotRepliesTo($reply, $mail);`            | `$reply` array, string<br/>`$mail` AssertableMessage, Email  |
+| `$this->assertMailCc($cc, $mail);`                         | `$cc` array, string<br/>`$mail` AssertableMessage, Email     |
+| `$this->assertMailNotCc($cc, $mail);`                      | `$cc` array, string<br/>`$mail` AssertableMessage, Email     |
+| `$this->assertMailBcc($cc, $mail);`                        | `$bcc` array, string<br/>`$mail` AssertableMessage, Email    |
+| `$this->assertMailNotBcc($cc, $mail);`                     | `$bcc` array, string<br/>`$mail` AssertableMessage, Email    |
+| `$this->assertMailSender($sender, $mail);`                 | `$sender` array, string<br/>`$mail` AssertableMessage, Email |
+| `$this->assertMailNotSender($sender, $mail);`              | `$sender` array, string<br/>`$mail` AssertableMessage, Email |
+| `$this->assertMailReturnPath($returnPath, $mail);`         | `$returnPath` string<br/>`$mail` AssertableMessage, Email    |
+| `$this->assertMailNotReturnPath($returnPath, $mail);`      | `$returnPath` string<br/>`$mail` AssertableMessage, Email    |
 
-| Content Type Assertions                            | Parameters    |
-|:---------------------------------------------------|:--------------|
-| `$this->assertMailIsPlain($mail);`                 | `$mail` Email |
-| `$this->assertMailIsNotPlain($mail);`              | `$mail` Email |
-| `$this->assertMailHasPlainContent($mail);`         | `$mail` Email |
-| `$this->assertMailDoesNotHavePlainContent($mail);` | `$mail` Email |
-| `$this->assertMailIsHtml($mail);`                  | `$mail` Email |
-| `$this->assertMailIsNotHtml($mail);`               | `$mail` Email |
-| `$this->assertMailHasHtmlContent($mail);`          | `$mail` Email |
-| `$this->assertMailDoesNotHaveHtmlContent($mail);`  | `$mail` Email |
-| `$this->assertMailIsAlternative($mail);`           | `$mail` Email |
-| `$this->assertMailIsNotAlternative($mail);`        | `$mail` Email |
-| `$this->assertMailIsMixed($mail);`                 | `$mail` Email |
-| `$this->assertMailIsNotMixed($mail);`              | `$mail` Email |
+| Content Type Assertions                            | Parameters                       |
+|:---------------------------------------------------|:---------------------------------|
+| `$this->assertMailIsPlain($mail);`                 | `$mail` AssertableMessage, Email |
+| `$this->assertMailIsNotPlain($mail);`              | `$mail` AssertableMessage, Email |
+| `$this->assertMailHasPlainContent($mail);`         | `$mail` AssertableMessage, Email |
+| `$this->assertMailDoesNotHavePlainContent($mail);` | `$mail` AssertableMessage, Email |
+| `$this->assertMailIsHtml($mail);`                  | `$mail` AssertableMessage, Email |
+| `$this->assertMailIsNotHtml($mail);`               | `$mail` AssertableMessage, Email |
+| `$this->assertMailHasHtmlContent($mail);`          | `$mail` AssertableMessage, Email |
+| `$this->assertMailDoesNotHaveHtmlContent($mail);`  | `$mail` AssertableMessage, Email |
+| `$this->assertMailIsAlternative($mail);`           | `$mail` AssertableMessage, Email |
+| `$this->assertMailIsNotAlternative($mail);`        | `$mail` AssertableMessage, Email |
+| `$this->assertMailIsMixed($mail);`                 | `$mail` AssertableMessage, Email |
+| `$this->assertMailIsNotMixed($mail);`              | `$mail` AssertableMessage, Email |
 
-| Header Assertions                                       | Parameters                                             |
-|:--------------------------------------------------------|:-------------------------------------------------------|
-| `$this->assertMailHasHeader($header, $mail);`           | `$header` string<br/>`$mail` Email                     |
-| `$this->assertMailMissingHeader($header, $mail);`       | `$header` string<br/>`$mail` Email                     |
-| `$this->assertMailHeaderIs($header, $value, $mail);`    | `$header` string<br/>`$value` string<br/>`$mail` Email |
-| `$this->assertMailHeaderIsNot($header, $value, $mail);` | `$header` string<br/>`$value` string<br/>`$mail` Email |
+| Header Assertions                                       | Parameters                                                                |
+|:--------------------------------------------------------|:--------------------------------------------------------------------------|
+| `$this->assertMailHasHeader($header, $mail);`           | `$header` string<br/>`$mail` AssertableMessage, Email                     |
+| `$this->assertMailMissingHeader($header, $mail);`       | `$header` string<br/>`$mail` AssertableMessage, Email                     |
+| `$this->assertMailHeaderIs($header, $value, $mail);`    | `$header` string<br/>`$value` string<br/>`$mail` AssertableMessage, Email |
+| `$this->assertMailHeaderIsNot($header, $value, $mail);` | `$header` string<br/>`$value` string<br/>`$mail` AssertableMessage, Email |
 
-| Priority Assertions                               | Parameters                        |
-|:--------------------------------------------------|:----------------------------------|
-| `$this->assertMailPriority($priority, $mail);`    | `$priority` int<br/>`$mail` Email |
-| `$this->assertMailNotPriority($priority, $mail);` | `$priority` int<br/>`$mail` Email |
-| `$this->assertMailPriorityIsHighest($mail);`      | `$mail` Email                     |
-| `$this->assertMailPriorityNotHighest($mail);`     | `$mail` Email                     |
-| `$this->assertMailPriorityIsHigh($mail);`         | `$mail` Email                     |
-| `$this->assertMailPriorityNotHigh($mail);`        | `$mail` Email                     |
-| `$this->assertMailPriorityIsNormal($mail);`       | `$mail` Email                     |
-| `$this->assertMailPriorityNotNormal($mail);`      | `$mail` Email                     |
-| `$this->assertMailPriorityIsLow($mail);`          | `$mail` Email                     |
-| `$this->assertMailPriorityNotLow($mail);`         | `$mail` Email                     |
-| `$this->assertMailPriorityIsLowest($mail);`       | `$mail` Email                     |
-| `$this->assertMailPriorityIsLowest($mail);`       | `$mail` Email                     |
+| Priority Assertions                               | Parameters                                           |
+|:--------------------------------------------------|:-----------------------------------------------------|
+| `$this->assertMailPriority($priority, $mail);`    | `$priority` int<br/>`$mail` AssertableMessage, Email |
+| `$this->assertMailNotPriority($priority, $mail);` | `$priority` int<br/>`$mail` AssertableMessage, Email |
+| `$this->assertMailPriorityIsHighest($mail);`      | `$mail` AssertableMessage, Email                     |
+| `$this->assertMailPriorityNotHighest($mail);`     | `$mail` AssertableMessage, Email                     |
+| `$this->assertMailPriorityIsHigh($mail);`         | `$mail` AssertableMessage, Email                     |
+| `$this->assertMailPriorityNotHigh($mail);`        | `$mail` AssertableMessage, Email                     |
+| `$this->assertMailPriorityIsNormal($mail);`       | `$mail` AssertableMessage, Email                     |
+| `$this->assertMailPriorityNotNormal($mail);`      | `$mail` AssertableMessage, Email                     |
+| `$this->assertMailPriorityIsLow($mail);`          | `$mail` AssertableMessage, Email                     |
+| `$this->assertMailPriorityNotLow($mail);`         | `$mail` AssertableMessage, Email                     |
+| `$this->assertMailPriorityIsLowest($mail);`       | `$mail` AssertableMessage, Email                     |
+| `$this->assertMailPriorityIsLowest($mail);`       | `$mail` AssertableMessage, Email                     |
 
 You should use each item of the `interceptedMail()` collection as the mail object for all assertions.
 

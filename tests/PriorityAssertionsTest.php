@@ -4,14 +4,32 @@ namespace Tests;
 
 use Symfony\Component\Mime\Email;
 use PHPUnit\Framework\ExpectationFailedException;
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 
 class PriorityAssertionsTest extends TestCase
 {
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailPriority
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailPrioritySingleEmail()
     {
         $priority = mt_rand(1, 5);
 
         $mail = (new Email())->priority($priority);
+
+        $this->assertMailPriority($priority, $mail);
+    }
+
+    public function testMailPrioritySingleEmailViaAssertableMessage()
+    {
+        $priority = mt_rand(1, 5);
+
+        $mail = new AssertableMessage(
+            (new Email())->priority($priority)
+        );
 
         $this->assertMailPriority($priority, $mail);
     }
@@ -30,6 +48,12 @@ class PriorityAssertionsTest extends TestCase
         $this->assertMailPriority($expectedPriority, $mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailNotPriority
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailNotPrioritySingleEmail()
     {
         $priorities = collect(range(1, 5))->shuffle();
@@ -37,6 +61,19 @@ class PriorityAssertionsTest extends TestCase
         $expectedPriority = $priorities->random();
 
         $mail = (new Email())->priority($actualPriority);
+
+        $this->assertMailNotPriority($expectedPriority, $mail);
+    }
+
+    public function testMailNotPrioritySingleEmailViaAssertableMessage()
+    {
+        $priorities = collect(range(1, 5))->shuffle();
+        $actualPriority = $priorities->pop();
+        $expectedPriority = $priorities->random();
+
+        $mail = new AssertableMessage(
+            (new Email())->priority($actualPriority)
+        );
 
         $this->assertMailNotPriority($expectedPriority, $mail);
     }
@@ -53,9 +90,24 @@ class PriorityAssertionsTest extends TestCase
         $this->assertMailNotPriority($priority, $mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailPriorityIsHighest
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailPriorityHighest()
     {
         $mail = (new Email())->priority(Email::PRIORITY_HIGHEST);
+
+        $this->assertMailPriorityIsHighest($mail);
+    }
+
+    public function testMailPriorityHighestViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())->priority(Email::PRIORITY_HIGHEST)
+        );
 
         $this->assertMailPriorityIsHighest($mail);
     }
@@ -70,9 +122,24 @@ class PriorityAssertionsTest extends TestCase
         $this->assertMailPriorityIsHighest($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailPriorityNotHighest
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailPriorityNotHighest()
     {
         $mail = (new Email())->priority(Email::PRIORITY_LOWEST);
+
+        $this->assertMailPriorityNotHighest($mail);
+    }
+
+    public function testMailPriorityNotHighestViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())->priority(Email::PRIORITY_LOWEST)
+        );
 
         $this->assertMailPriorityNotHighest($mail);
     }
@@ -87,9 +154,24 @@ class PriorityAssertionsTest extends TestCase
         $this->assertMailPriorityNotHighest($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailPriorityIsHigh
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailPriorityHigh()
     {
         $mail = (new Email())->priority(Email::PRIORITY_HIGH);
+
+        $this->assertMailPriorityIsHigh($mail);
+    }
+
+    public function testMailPriorityHighViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())->priority(Email::PRIORITY_HIGH)
+        );
 
         $this->assertMailPriorityIsHigh($mail);
     }
@@ -104,9 +186,24 @@ class PriorityAssertionsTest extends TestCase
         $this->assertMailPriorityIsHigh($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailPriorityNotHigh
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailPriorityNotHigh()
     {
         $mail = (new Email())->priority(Email::PRIORITY_LOWEST);
+
+        $this->assertMailPriorityNotHigh($mail);
+    }
+
+    public function testMailPriorityNotHighViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())->priority(Email::PRIORITY_LOWEST)
+        );
 
         $this->assertMailPriorityNotHigh($mail);
     }
@@ -121,9 +218,24 @@ class PriorityAssertionsTest extends TestCase
         $this->assertMailPriorityNotHigh($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailPriorityIsNormal
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailPriorityNormal()
     {
         $mail = (new Email())->priority(Email::PRIORITY_NORMAL);
+
+        $this->assertMailPriorityIsNormal($mail);
+    }
+
+    public function testMailPriorityNormalViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())->priority(Email::PRIORITY_NORMAL)
+        );
 
         $this->assertMailPriorityIsNormal($mail);
     }
@@ -138,9 +250,24 @@ class PriorityAssertionsTest extends TestCase
         $this->assertMailPriorityIsNormal($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailPriorityNotNormal
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailPriorityNotNormal()
     {
         $mail = (new Email())->priority(Email::PRIORITY_LOWEST);
+
+        $this->assertMailPriorityNotNormal($mail);
+    }
+
+    public function testMailPriorityNotNormalViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())->priority(Email::PRIORITY_LOWEST)
+        );
 
         $this->assertMailPriorityNotNormal($mail);
     }
@@ -155,9 +282,24 @@ class PriorityAssertionsTest extends TestCase
         $this->assertMailPriorityNotNormal($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailPriorityIsLow
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailPriorityLow()
     {
         $mail = (new Email())->priority(Email::PRIORITY_LOW);
+
+        $this->assertMailPriorityIsLow($mail);
+    }
+
+    public function testMailPriorityLowViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())->priority(Email::PRIORITY_LOW)
+        );
 
         $this->assertMailPriorityIsLow($mail);
     }
@@ -172,9 +314,24 @@ class PriorityAssertionsTest extends TestCase
         $this->assertMailPriorityIsLow($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailPriorityNotLow
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailPriorityNotLow()
     {
         $mail = (new Email())->priority(Email::PRIORITY_LOWEST);
+
+        $this->assertMailPriorityNotLow($mail);
+    }
+
+    public function testMailPriorityNotLowViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())->priority(Email::PRIORITY_LOWEST)
+        );
 
         $this->assertMailPriorityNotLow($mail);
     }
@@ -189,9 +346,24 @@ class PriorityAssertionsTest extends TestCase
         $this->assertMailPriorityNotLow($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailPriorityIsLowest
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailPriorityLowest()
     {
         $mail = (new Email())->priority(Email::PRIORITY_LOWEST);
+
+        $this->assertMailPriorityIsLowest($mail);
+    }
+
+    public function testMailPriorityLowestViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())->priority(Email::PRIORITY_LOWEST)
+        );
 
         $this->assertMailPriorityIsLowest($mail);
     }
@@ -206,9 +378,24 @@ class PriorityAssertionsTest extends TestCase
         $this->assertMailPriorityIsLowest($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailPriorityNotLowest
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailPriorityNotLowest()
     {
         $mail = (new Email())->priority(Email::PRIORITY_LOW);
+
+        $this->assertMailPriorityNotLowest($mail);
+    }
+
+    public function testMailPriorityNotLowestViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())->priority(Email::PRIORITY_LOW)
+        );
 
         $this->assertMailPriorityNotLowest($mail);
     }

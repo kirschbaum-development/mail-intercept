@@ -5,15 +5,34 @@ namespace Tests;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Part\TextPart;
 use PHPUnit\Framework\ExpectationFailedException;
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 
 class ContentTypeAssertionsTest extends TestCase
 {
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailIsPlain
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailContentTypePlain()
     {
         $mail = (new Email())
             ->to($this->faker->email)
             ->from($this->faker->email)
             ->text($this->faker->sentence);
+
+        $this->assertMailIsPlain($mail);
+    }
+
+    public function testMailContentTypePlainViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())
+                ->to($this->faker->email)
+                ->from($this->faker->email)
+                ->text($this->faker->sentence)
+        );
 
         $this->assertMailIsPlain($mail);
     }
@@ -29,10 +48,26 @@ class ContentTypeAssertionsTest extends TestCase
         $this->assertMailIsPlain($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailIsNotPlain
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailContentTypeNotPlain()
     {
         $part = new TextPart('body', subtype: 'not-plain');
         $mail = (new Email())->setBody($part);
+
+        $this->assertMailIsNotPlain($mail);
+    }
+
+    public function testMailContentTypeNotPlainViaAssertableMessage()
+    {
+        $part = new TextPart('body', subtype: 'not-plain');
+        $mail = new AssertableMessage(
+            (new Email())->setBody($part)
+        );
 
         $this->assertMailIsNotPlain($mail);
     }
@@ -50,6 +85,12 @@ class ContentTypeAssertionsTest extends TestCase
         $this->assertMailIsNotPlain($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailHasPlainContent
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailHasPlainContent()
     {
         $mail = (new Email())
@@ -57,6 +98,19 @@ class ContentTypeAssertionsTest extends TestCase
             ->from($this->faker->email)
             ->text($this->faker->sentence)
             ->html($this->faker->sentence);
+
+        $this->assertMailHasPlainContent($mail);
+    }
+
+    public function testMailHasPlainContentViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())
+                ->to($this->faker->email)
+                ->from($this->faker->email)
+                ->text($this->faker->sentence)
+                ->html($this->faker->sentence)
+        );
 
         $this->assertMailHasPlainContent($mail);
     }
@@ -75,6 +129,12 @@ class ContentTypeAssertionsTest extends TestCase
         $this->assertMailHasPlainContent($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailDoesNotHavePlainContent
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailDoesNotHavePlainContent()
     {
         $mail = (new Email())
@@ -82,6 +142,19 @@ class ContentTypeAssertionsTest extends TestCase
             ->from($this->faker->email)
             ->attach('attachment')
             ->html($this->faker->sentence);
+
+        $this->assertMailDoesNotHavePlainContent($mail);
+    }
+
+    public function testMailDoesNotHavePlainContentViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())
+                ->to($this->faker->email)
+                ->from($this->faker->email)
+                ->attach('attachment')
+                ->html($this->faker->sentence)
+        );
 
         $this->assertMailDoesNotHavePlainContent($mail);
     }
@@ -100,12 +173,30 @@ class ContentTypeAssertionsTest extends TestCase
         $this->assertMailDoesNotHavePlainContent($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailIsHtml
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailContentTypeHtml()
     {
         $mail = (new Email())
             ->to($this->faker->email)
             ->from($this->faker->email)
             ->html($this->faker->sentence);
+
+        $this->assertMailIsHtml($mail);
+    }
+
+    public function testMailContentTypeHtmlViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())
+                ->to($this->faker->email)
+                ->from($this->faker->email)
+                ->html($this->faker->sentence)
+        );
 
         $this->assertMailIsHtml($mail);
     }
@@ -121,10 +212,26 @@ class ContentTypeAssertionsTest extends TestCase
         $this->assertMailIsHtml($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailIsNotHtml
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailContentTypeNotHtml()
     {
         $part = new TextPart('body', subtype: 'not-html');
         $mail = (new Email())->setBody($part);
+
+        $this->assertMailIsNotHtml($mail);
+    }
+
+    public function testMailContentTypeNotHtmlViaAssertableMessage()
+    {
+        $part = new TextPart('body', subtype: 'not-html');
+        $mail = new AssertableMessage(
+            (new Email())->setBody($part)
+        );
 
         $this->assertMailIsNotHtml($mail);
     }
@@ -142,6 +249,12 @@ class ContentTypeAssertionsTest extends TestCase
         $this->assertMailIsNotHtml($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailHasHtmlContent
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailHasHtmlContent()
     {
         $mail = (new Email())
@@ -149,6 +262,19 @@ class ContentTypeAssertionsTest extends TestCase
             ->from($this->faker->email)
             ->text($this->faker->sentence)
             ->html($this->faker->sentence);
+
+        $this->assertMailHasHtmlContent($mail);
+    }
+
+    public function testMailHasHtmlContentViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())
+                ->to($this->faker->email)
+                ->from($this->faker->email)
+                ->text($this->faker->sentence)
+                ->html($this->faker->sentence)
+        );
 
         $this->assertMailHasHtmlContent($mail);
     }
@@ -167,6 +293,12 @@ class ContentTypeAssertionsTest extends TestCase
         $this->assertMailHasHtmlContent($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailDoesNotHaveHtmlContent
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailDoesNotHaveHtmlContent()
     {
         $mail = (new Email())
@@ -174,6 +306,19 @@ class ContentTypeAssertionsTest extends TestCase
             ->from($this->faker->email)
             ->attach('attachment')
             ->text($this->faker->sentence);
+
+        $this->assertMailDoesNotHaveHtmlContent($mail);
+    }
+
+    public function testMailDoesNotHaveHtmlContentViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())
+                ->to($this->faker->email)
+                ->from($this->faker->email)
+                ->attach('attachment')
+                ->text($this->faker->sentence)
+        );
 
         $this->assertMailDoesNotHaveHtmlContent($mail);
     }
@@ -192,6 +337,12 @@ class ContentTypeAssertionsTest extends TestCase
         $this->assertMailDoesNotHaveHtmlContent($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailIsAlternative
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailContentTypeAlternative()
     {
         $mail = (new Email())
@@ -199,6 +350,19 @@ class ContentTypeAssertionsTest extends TestCase
             ->from($this->faker->email)
             ->text($this->faker->sentence)
             ->html($this->faker->sentence);
+
+        $this->assertMailIsAlternative($mail);
+    }
+
+    public function testMailContentTypeAlternativeViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())
+                ->to($this->faker->email)
+                ->from($this->faker->email)
+                ->text($this->faker->sentence)
+                ->html($this->faker->sentence)
+        );
 
         $this->assertMailIsAlternative($mail);
     }
@@ -214,10 +378,26 @@ class ContentTypeAssertionsTest extends TestCase
         $this->assertMailIsAlternative($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailIsNotAlternative
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailContentTypeNotAlternative()
     {
         $part = new TextPart('body', subtype: 'not-alternative');
         $mail = (new Email())->setBody($part);
+
+        $this->assertMailIsNotAlternative($mail);
+    }
+
+    public function testMailContentTypeNotAlternativeViaAssertableMessage()
+    {
+        $part = new TextPart('body', subtype: 'not-alternative');
+        $mail = new AssertableMessage(
+            (new Email())->setBody($part)
+        );
 
         $this->assertMailIsNotAlternative($mail);
     }
@@ -236,6 +416,12 @@ class ContentTypeAssertionsTest extends TestCase
         $this->assertMailIsNotAlternative($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailIsMixed
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailContentTypeMixed()
     {
         $mail = (new Email())
@@ -243,6 +429,19 @@ class ContentTypeAssertionsTest extends TestCase
             ->from($this->faker->email)
             ->attach('attachment')
             ->text($this->faker->sentence);
+
+        $this->assertMailIsMixed($mail);
+    }
+
+    public function testMailContentTypeMixedViaAssertableMessage()
+    {
+        $mail = new AssertableMessage(
+            (new Email())
+                ->to($this->faker->email)
+                ->from($this->faker->email)
+                ->attach('attachment')
+                ->text($this->faker->sentence)
+        );
 
         $this->assertMailIsMixed($mail);
     }
@@ -258,10 +457,26 @@ class ContentTypeAssertionsTest extends TestCase
         $this->assertMailIsMixed($mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailIsNotMixed
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailContentTypeNotMixed()
     {
         $part = new TextPart('body', subtype: 'not-mixed');
         $mail = (new Email())->setBody($part);
+
+        $this->assertMailIsNotMixed($mail);
+    }
+
+    public function testMailContentTypeNotMixedViaAssertableMessage()
+    {
+        $part = new TextPart('body', subtype: 'not-mixed');
+        $mail = new AssertableMessage(
+            (new Email())->setBody($part)
+        );
 
         $this->assertMailIsNotMixed($mail);
     }

@@ -3,6 +3,7 @@
 namespace KirschbaumDevelopment\MailIntercept\Assertions;
 
 use Symfony\Component\Mime\Email;
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 
 trait SenderAssertions
 {
@@ -10,9 +11,9 @@ trait SenderAssertions
      * Assert mail sender was address.
      *
      * @param string $expected
-     * @param Email $mail
+     * @param AssertableMessage|Email $mail
      */
-    public function assertMailSender(string $expected, Email $mail)
+    public function assertMailSender(string $expected, AssertableMessage | Email $mail): void
     {
         $this->assertEquals(
             $expected,
@@ -25,9 +26,9 @@ trait SenderAssertions
      * Assert mail was not sender address.
      *
      * @param string $expected
-     * @param Email $mail
+     * @param AssertableMessage|Email $mail
      */
-    public function assertMailNotSender(string $expected, Email $mail)
+    public function assertMailNotSender(string $expected, AssertableMessage | Email $mail): void
     {
         $this->assertNotEquals(
             $expected,

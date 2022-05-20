@@ -4,6 +4,7 @@ namespace KirschbaumDevelopment\MailIntercept\Assertions;
 
 use Illuminate\Support\Arr;
 use Symfony\Component\Mime\Email;
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 
 trait CcAssertions
 {
@@ -11,9 +12,9 @@ trait CcAssertions
      * Assert mail was CC'd to address.
      *
      * @param array|string $expected
-     * @param Email $mail
+     * @param AssertableMessage|Email $mail
      */
-    public function assertMailCc(array|string $expected, Email $mail)
+    public function assertMailCc(array|string $expected, AssertableMessage | Email $mail): void
     {
         $expectedAddresses = Arr::wrap($expected);
         $actualAddresses = $this->gatherEmailData('getCc', $mail);
@@ -31,9 +32,9 @@ trait CcAssertions
      * Assert mail was not CC'd to address.
      *
      * @param array|string $expected
-     * @param Email $mail
+     * @param AssertableMessage|Email $mail
      */
-    public function assertMailNotCc(array|string $expected, Email $mail)
+    public function assertMailNotCc(array|string $expected, AssertableMessage | Email $mail): void
     {
         $expectedAddresses = Arr::wrap($expected);
         $actualAddresses = $this->gatherEmailData('getCc', $mail);

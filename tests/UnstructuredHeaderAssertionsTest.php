@@ -4,15 +4,33 @@ namespace Tests;
 
 use Symfony\Component\Mime\Email;
 use PHPUnit\Framework\ExpectationFailedException;
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 
 class UnstructuredHeaderAssertionsTest extends TestCase
 {
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailHasHeader
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailHasHeader()
     {
         $header = $this->faker->slug;
 
         $mail = new Email();
         $mail->getHeaders()->addTextHeader($header, $this->faker->word);
+
+        $this->assertMailHasHeader($header, $mail);
+    }
+
+    public function testMailHasHeaderViaAssertableMessage()
+    {
+        $header = $this->faker->slug;
+
+        $mail = new Email();
+        $mail->getHeaders()->addTextHeader($header, $this->faker->word);
+        $mail = new AssertableMessage($mail);
 
         $this->assertMailHasHeader($header, $mail);
     }
@@ -30,12 +48,29 @@ class UnstructuredHeaderAssertionsTest extends TestCase
         $this->assertMailHasHeader($header, $mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailMissingHeader
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailMissingHeader()
     {
         $header = $this->faker->unique()->slug;
 
         $mail = new Email();
         $mail->getHeaders()->addTextHeader($this->faker->unique()->slug, $this->faker->word);
+
+        $this->assertMailMissingHeader($header, $mail);
+    }
+
+    public function testMailMissingHeaderViaAssertableMessage()
+    {
+        $header = $this->faker->unique()->slug;
+
+        $mail = new Email();
+        $mail->getHeaders()->addTextHeader($this->faker->unique()->slug, $this->faker->word);
+        $mail = new AssertableMessage($mail);
 
         $this->assertMailMissingHeader($header, $mail);
     }
@@ -53,6 +88,12 @@ class UnstructuredHeaderAssertionsTest extends TestCase
         $this->assertMailMissingHeader($header, $mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailHeaderIs
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailHeaderIs()
     {
         $header = $this->faker->slug;
@@ -60,6 +101,18 @@ class UnstructuredHeaderAssertionsTest extends TestCase
 
         $mail = new Email();
         $mail->getHeaders()->addTextHeader($header, $value);
+
+        $this->assertMailHeaderIs($header, $value, $mail);
+    }
+
+    public function testMailHeaderIsViaAssertableMessage()
+    {
+        $header = $this->faker->slug;
+        $value = $this->faker->word;
+
+        $mail = new Email();
+        $mail->getHeaders()->addTextHeader($header, $value);
+        $mail = new AssertableMessage($mail);
 
         $this->assertMailHeaderIs($header, $value, $mail);
     }
@@ -78,6 +131,12 @@ class UnstructuredHeaderAssertionsTest extends TestCase
         $this->assertMailHeaderIs($header, $value, $mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailHeaderIsNot
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailHeaderIsNot()
     {
         $header = $this->faker->slug;
@@ -85,6 +144,18 @@ class UnstructuredHeaderAssertionsTest extends TestCase
 
         $mail = new Email();
         $mail->getHeaders()->addTextHeader($header, $this->faker->unique()->word);
+
+        $this->assertMailHeaderIsNot($header, $value, $mail);
+    }
+
+    public function testMailHeaderIsNotViaAssertableMessage()
+    {
+        $header = $this->faker->slug;
+        $value = $this->faker->unique()->word;
+
+        $mail = new Email();
+        $mail->getHeaders()->addTextHeader($header, $this->faker->unique()->word);
+        $mail = new AssertableMessage($mail);
 
         $this->assertMailHeaderIsNot($header, $value, $mail);
     }

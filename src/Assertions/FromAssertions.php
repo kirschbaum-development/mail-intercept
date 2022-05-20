@@ -4,6 +4,7 @@ namespace KirschbaumDevelopment\MailIntercept\Assertions;
 
 use Illuminate\Support\Arr;
 use Symfony\Component\Mime\Email;
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 
 trait FromAssertions
 {
@@ -11,9 +12,9 @@ trait FromAssertions
      * Assert mail was sent from address.
      *
      * @param array|string $expected
-     * @param Email $mail
+     * @param AssertableMessage|Email $mail
      */
-    public function assertMailSentFrom(array|string $expected, Email $mail)
+    public function assertMailSentFrom(array | string $expected, AssertableMessage | Email $mail): void
     {
         $expectedAddresses = Arr::wrap($expected);
         $actualAddresses = $this->gatherEmailData('getFrom', $mail);
@@ -31,9 +32,9 @@ trait FromAssertions
      * Assert mail was not sent from address.
      *
      * @param array|string $expected
-     * @param Email $mail
+     * @param AssertableMessage|Email $mail
      */
-    public function assertMailNotSentFrom(array|string $expected, Email $mail)
+    public function assertMailNotSentFrom(array | string $expected, AssertableMessage | Email $mail): void
     {
         $expectedAddresses = Arr::wrap($expected);
         $actualAddresses = $this->gatherEmailData('getFrom', $mail);

@@ -4,14 +4,32 @@ namespace Tests;
 
 use Symfony\Component\Mime\Email;
 use PHPUnit\Framework\ExpectationFailedException;
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 
 class FromAssertionsTest extends TestCase
 {
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailSentFrom
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailSentFromSingleEmail()
     {
         $email = $this->faker->email;
 
         $mail = (new Email())->from($email);
+
+        $this->assertMailSentFrom($email, $mail);
+    }
+
+    public function testMailSentFromSingleEmailViaAssertableMessage()
+    {
+        $email = $this->faker->email;
+
+        $mail = new AssertableMessage(
+            (new Email())->from($email)
+        );
 
         $this->assertMailSentFrom($email, $mail);
     }
@@ -40,11 +58,28 @@ class FromAssertionsTest extends TestCase
         $this->assertMailSentFrom($emails, $mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailNotSentFrom
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailNotSentFromSingleEmail()
     {
         $email = $this->faker->unique()->email;
 
         $mail = (new Email())->from($this->faker->unique()->email);
+
+        $this->assertMailNotSentFrom($email, $mail);
+    }
+
+    public function testMailNotSentFromSingleEmailViaAssertableMessage()
+    {
+        $email = $this->faker->unique()->email;
+
+        $mail = new AssertableMessage(
+            (new Email())->from($this->faker->unique()->email)
+        );
 
         $this->assertMailNotSentFrom($email, $mail);
     }

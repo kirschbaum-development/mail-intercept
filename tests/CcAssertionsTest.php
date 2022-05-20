@@ -4,14 +4,32 @@ namespace Tests;
 
 use Symfony\Component\Mime\Email;
 use PHPUnit\Framework\ExpectationFailedException;
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 
 class CcAssertionsTest extends TestCase
 {
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailCc
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailCcSingleEmail()
     {
         $email = $this->faker->email;
 
         $mail = (new Email())->cc($email);
+
+        $this->assertMailCc($email, $mail);
+    }
+
+    public function testMailCcSingleEmailViaAssertableMessage()
+    {
+        $email = $this->faker->email;
+
+        $mail = new AssertableMessage(
+            (new Email())->cc($email)
+        );
 
         $this->assertMailCc($email, $mail);
     }
@@ -40,11 +58,28 @@ class CcAssertionsTest extends TestCase
         $this->assertMailCc($emails, $mail);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailNotCc
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailNotSentToSingleEmail()
     {
         $email = $this->faker->unique()->email;
 
         $mail = (new Email())->cc($this->faker->unique()->email);
+
+        $this->assertMailNotCc($email, $mail);
+    }
+
+    public function testMailNotSentToSingleEmailViaAssertableMessage()
+    {
+        $email = $this->faker->unique()->email;
+
+        $mail = new AssertableMessage(
+            (new Email())->cc($this->faker->unique()->email)
+        );
 
         $this->assertMailNotCc($email, $mail);
     }

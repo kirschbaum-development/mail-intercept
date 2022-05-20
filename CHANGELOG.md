@@ -2,6 +2,10 @@
 
 All notable changes to `mail-intercept` will be documented in this file
 
+## 0.3.1 - 2022-05-20
+
+- Better type-hinting for `AssertableMessage` class in assertions. Thank you [@amsoel](https://github.com/amsoell).
+
 ## 0.3.0 - 2022-03-08
 
 - Upgraded for Laravel 9

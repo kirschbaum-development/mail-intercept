@@ -5,9 +5,16 @@ namespace Tests;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Part\TextPart;
 use PHPUnit\Framework\ExpectationFailedException;
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 
 class ContentAssertionsTest extends TestCase
 {
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailBodyContainsString
+    |--------------------------------------------------------------------------
+    */
+
     public function testMailBodyContentsAsText()
     {
         $content = $this->faker->sentence;
@@ -16,6 +23,20 @@ class ContentAssertionsTest extends TestCase
             ->to($this->faker->email)
             ->from($this->faker->email)
             ->text($content);
+
+        $this->assertMailBodyContainsString($content, $mail);
+    }
+
+    public function testMailBodyContentsAsTextViaAssertableMessage()
+    {
+        $content = $this->faker->sentence;
+
+        $mail = new AssertableMessage(
+            (new Email())
+                ->to($this->faker->email)
+                ->from($this->faker->email)
+                ->text($content)
+        );
 
         $this->assertMailBodyContainsString($content, $mail);
     }
@@ -33,33 +54,6 @@ class ContentAssertionsTest extends TestCase
         $this->expectExceptionMessage("The expected [{$content}] string was not found in the body.");
 
         $this->assertMailBodyContainsString($content, $mail);
-    }
-
-    public function testMailBodyAsTextDoesNotHaveContents()
-    {
-        $content = $this->faker->unique()->sentence;
-
-        $mail = (new Email())
-            ->to($this->faker->email)
-            ->from($this->faker->email)
-            ->text($this->faker->unique()->sentence);
-
-        $this->assertMailBodyNotContainsString($content, $mail);
-    }
-
-    public function testMailBodyAsTextDoesNotHaveContentsThrowsProperExpectationFailedException()
-    {
-        $content = $this->faker->sentence;
-
-        $mail = (new Email())
-            ->to($this->faker->email)
-            ->from($this->faker->email)
-            ->text($content);
-
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage("The expected [{$content}] string was found in the body.");
-
-        $this->assertMailBodyNotContainsString($content, $mail);
     }
 
     public function testMailBodyContentsAsHtml()
@@ -89,6 +83,76 @@ class ContentAssertionsTest extends TestCase
         $this->assertMailBodyContainsString($content, $mail);
     }
 
+    public function testMailBodyContentsAsAbstractPart()
+    {
+        $content = $this->faker->sentence;
+        $textPart = new TextPart($content);
+
+        $mail = (new Email())->setBody($textPart);
+
+        $this->assertMailBodyContainsString($content, $mail);
+    }
+
+    public function testMailBodyContentsAsAbstractPartThrowsProperExpectationFailedException()
+    {
+        $content = $this->faker->unique()->sentence;
+        $textPart = new TextPart($this->faker->unique()->sentence);
+
+        $mail = (new Email())->setBody($textPart);
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("The expected [{$content}] string was not found in the body.");
+
+        $this->assertMailBodyContainsString($content, $mail);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | assertMailBodyNotContainsString
+    |--------------------------------------------------------------------------
+    */
+
+    public function testMailBodyAsTextDoesNotHaveContents()
+    {
+        $content = $this->faker->unique()->sentence;
+
+        $mail = (new Email())
+            ->to($this->faker->email)
+            ->from($this->faker->email)
+            ->text($this->faker->unique()->sentence);
+
+        $this->assertMailBodyNotContainsString($content, $mail);
+    }
+
+    public function testMailBodyAsTextDoesNotHaveContentsViaAssertableMessage()
+    {
+        $content = $this->faker->unique()->sentence;
+
+        $mail = new AssertableMessage(
+            (new Email())
+                ->to($this->faker->email)
+                ->from($this->faker->email)
+                ->text($this->faker->unique()->sentence)
+        );
+
+        $this->assertMailBodyNotContainsString($content, $mail);
+    }
+
+    public function testMailBodyAsTextDoesNotHaveContentsThrowsProperExpectationFailedException()
+    {
+        $content = $this->faker->sentence;
+
+        $mail = (new Email())
+            ->to($this->faker->email)
+            ->from($this->faker->email)
+            ->text($content);
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("The expected [{$content}] string was found in the body.");
+
+        $this->assertMailBodyNotContainsString($content, $mail);
+    }
+
     public function testMailBodyAsHtmlDoesNotHaveContents()
     {
         $content = $this->faker->unique()->sentence;
@@ -114,29 +178,6 @@ class ContentAssertionsTest extends TestCase
         $this->expectExceptionMessage("The expected [{$content}] string was found in the body.");
 
         $this->assertMailBodyNotContainsString($content, $mail);
-    }
-
-    public function testMailBodyContentsAsAbstractPart()
-    {
-        $content = $this->faker->sentence;
-        $textPart = new TextPart($content);
-
-        $mail = (new Email())->setBody($textPart);
-
-        $this->assertMailBodyContainsString($content, $mail);
-    }
-
-    public function testMailBodyContentsAsAbstractPartThrowsProperExpectationFailedException()
-    {
-        $content = $this->faker->unique()->sentence;
-        $textPart = new TextPart($this->faker->unique()->sentence);
-
-        $mail = (new Email())->setBody($textPart);
-
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage("The expected [{$content}] string was not found in the body.");
-
-        $this->assertMailBodyContainsString($content, $mail);
     }
 
     public function testMailBodyAsAbstractPartDoesNotHaveContents()

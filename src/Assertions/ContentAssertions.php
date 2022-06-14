@@ -21,7 +21,7 @@ trait ContentAssertions
 
         $this->{$method}(
             $needle,
-            $mail->getBody()->bodyToString(),
+            $mail->getHtmlBody() ?: $mail->getBody()->bodyToString(),
             "The expected [{$needle}] string was not found in the body."
         );
     }
@@ -40,7 +40,7 @@ trait ContentAssertions
 
         $this->{$method}(
             $needle,
-            $mail->getBody()->bodyToString(),
+            $mail->getHtmlBody() ?: $mail->getBody()->bodyToString(),
             "The expected [{$needle}] string was found in the body."
         );
     }

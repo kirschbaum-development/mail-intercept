@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": "^8.0.2",
-        "illuminate/mail": "^9.2"
+        "illuminate/mail": "^9.2|^10.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.7",

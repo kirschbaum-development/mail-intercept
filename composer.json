@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "php": "^8.0.2",
+        "php": "^8.0.2|^8.1",
         "illuminate/mail": "^9.2|^10.0"
     },
     "require-dev": {

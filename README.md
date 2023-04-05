@@ -16,6 +16,7 @@ Mail isn't faked here. You get to inspect the actual mail ensuring you are sendi
 
 | Laravel Version  | Mail Intercept Version  |
 |:-----------------|:------------------------|
+| 10.x             | 0.4.x                   |
 | 9.x              | 0.3.x                   |
 | 8.x and lower    | 0.2.x                   |
 
@@ -49,7 +50,7 @@ class MailTest extends TestCase
         $this->interceptMail();
 
         $email = $this->faker->email;
-        
+
         Mail::to($email)->send(new TestMail());
 
         $interceptedMail = $this->interceptedMail()->first();
@@ -81,7 +82,7 @@ Both of these assertions do the exact same thing, the fluent one is just much cl
 $this->interceptMail()
 ```
 
-This method MUST be called first, similar to how `Mail::fake()` works. But unlike the mail fake, mail is not faked, it is intercepted. 
+This method MUST be called first, similar to how `Mail::fake()` works. But unlike the mail fake, mail is not faked, it is intercepted.
 
 ```php
 $this->interceptedMail()
@@ -112,7 +113,7 @@ This should be called after `Mail` has been sent, but before your assertions, ot
 | `$intercepted->assertReturnPath($returnPath);`         | `$returnPath` string    |
 | `$intercepted->assertNotReturnPath($returnPath);`      | `$returnPath` string    |
 
-| Content Type Assertions                          | 
+| Content Type Assertions                          |
 |:-------------------------------------------------|
 | `$intercepted->assertIsPlain();`                 |
 | `$intercepted->assertIsNotPlain();`              |

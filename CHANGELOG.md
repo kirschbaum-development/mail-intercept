@@ -2,6 +2,15 @@
 
 All notable changes to `mail-intercept` will be documented in this file
 
+## 0.4.0 - 2023-04-05
+
+- Added Laravel 10 support. Thank you [@cstriuli](https://github.com/cstriuli).
+- Added PHP 8.2 test runners.
+
+## 0.3.2 - 2022-06-14
+
+- Fixed bug allowing email body to be asserted properly whether it is HTML or text. Thanks [@therobfonz](https://github.com/therobfonz).
+
 ## 0.3.1 - 2022-05-20
 
 - Better type-hinting for `AssertableMessage` class in assertions. Thank you [@amsoel](https://github.com/amsoell).

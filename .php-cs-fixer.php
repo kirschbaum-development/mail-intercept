@@ -125,7 +125,7 @@ return $config->setFinder($finder)
         ],
         'not_operator_with_successor_space' => true,
         'object_operator_without_whitespace' => true,
-        'single_blank_line_before_namespace' => true,
+        'blank_lines_before_namespace' => true,
         'no_blank_lines_after_class_opening' => true,
         'no_blank_lines_after_phpdoc' => true,
         'no_whitespace_before_comma_in_array' => true,

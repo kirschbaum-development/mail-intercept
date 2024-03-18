@@ -14,11 +14,12 @@ Mail isn't faked here. You get to inspect the actual mail ensuring you are sendi
 
 ## Requirements
 
-| Laravel Version  | Mail Intercept Version  |
-|:-----------------|:------------------------|
-| 10.x             | 0.4.x                   |
-| 9.x              | 0.3.x                   |
-| 8.x and lower    | 0.2.x                   |
+| Laravel Version | Mail Intercept Version |
+|:----------------|:-----------------------|
+| 11.x            | 0.5.x                  |
+| 10.x            | 0.4.x                  |
+| 9.x             | 0.3.x                  |
+| 8.x and lower   | 0.2.x                  |
 
 Please note: If you are using `v0.2.x`, please refer to that version's [documentation](https://github.com/kirschbaum-development/mail-intercept/tree/v0.2.x).
 

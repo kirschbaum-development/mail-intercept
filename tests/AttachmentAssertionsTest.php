@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Part\DataPart;

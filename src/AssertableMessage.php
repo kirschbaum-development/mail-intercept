@@ -3,9 +3,9 @@
 namespace KirschbaumDevelopment\MailIntercept;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\ForwardsCalls;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Mime\Email;
-use Illuminate\Support\Traits\ForwardsCalls;
 
 /**
  * @method assertBcc(array|string $expected)
@@ -62,15 +62,11 @@ class AssertableMessage extends Assert
 
     /**
      * The Symfony SentMessage instance.
-     *
-     * @var Email
      */
     protected Email $email;
 
     /**
      * Create a new SentMessage instance.
-     *
-     * @param Email $email
      */
     public function __construct(Email $email)
     {
@@ -80,8 +76,6 @@ class AssertableMessage extends Assert
     /**
      * Dynamically pass missing methods to the Symfony instance.
      *
-     * @param string $method
-     * @param array $parameters
      *
      * @return mixed
      */

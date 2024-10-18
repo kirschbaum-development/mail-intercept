@@ -1,0 +1,44 @@
+{
+  "preset": "laravel",
+  "rules": {
+    "blank_line_before_statement": {
+      "statements": [
+        "break",
+        "case",
+        "continue",
+        "declare",
+        "default",
+        "do",
+        "exit",
+        "for",
+        "foreach",
+        "if",
+        "include",
+        "include_once",
+        "require",
+        "require_once",
+        "return",
+        "switch",
+        "throw",
+        "try",
+        "while",
+        "yield"
+      ]
+    },
+    "class_definition": {
+      "multi_line_extends_each_single_line": true,
+      "single_item_single_line": true,
+      "single_line": false
+    },
+    "concat_space": {
+      "spacing": "one"
+    },
+    "explicit_string_variable": true,
+    "method_chaining_indentation": true,
+    "new_with_braces": true,
+    "nullable_type_declaration_for_default_null_value": true,
+    "ordered_traits": true,
+    "phpdoc_separation": true,
+    "single_line_empty_body": true
+  }
+}

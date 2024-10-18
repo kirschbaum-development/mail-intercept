@@ -2,18 +2,15 @@
 
 namespace KirschbaumDevelopment\MailIntercept\Assertions;
 
-use Symfony\Component\Mime\Email;
 use KirschbaumDevelopment\MailIntercept\AssertableMessage;
+use Symfony\Component\Mime\Email;
 
 trait ContentAssertions
 {
     /**
      * Assert mail body contains string.
-     *
-     * @param string $needle
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailBodyContainsString(string $needle, AssertableMessage | Email $mail): void
+    public function assertMailBodyContainsString(string $needle, AssertableMessage|Email $mail): void
     {
         $method = method_exists($this, 'assertStringContainsString')
             ? 'assertStringContainsString'
@@ -28,11 +25,8 @@ trait ContentAssertions
 
     /**
      * Assert mail body does not contain string.
-     *
-     * @param string $needle
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailBodyNotContainsString(string $needle, AssertableMessage | Email $mail): void
+    public function assertMailBodyNotContainsString(string $needle, AssertableMessage|Email $mail): void
     {
         $method = method_exists($this, 'assertStringNotContainsString')
             ? 'assertStringNotContainsString'

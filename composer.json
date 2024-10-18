@@ -21,7 +21,7 @@
         "illuminate/mail": "^9.2|^10.0|^11.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.7",
+        "laravel/pint": "^1.18",
         "orchestra/testbench": "^7.1|^8.0|^9.0",
         "phpunit/phpunit": "^9.5.10|^10.5",
         "spatie/ray": "^1.41.1"
@@ -35,6 +35,17 @@
         "psr-4": {
             "Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "pint": [
+            "./vendor/bin/pint"
+        ],
+        "pint-check": [
+            "./vendor/bin/pint --test"
+        ],
+        "test": [
+            "./vendor/bin/phpunit"
+        ]
     },
     "config": {
         "sort-packages": true

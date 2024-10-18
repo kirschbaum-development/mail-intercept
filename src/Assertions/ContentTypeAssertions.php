@@ -2,18 +2,16 @@
 
 namespace KirschbaumDevelopment\MailIntercept\Assertions;
 
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Part\AbstractMultipartPart;
-use KirschbaumDevelopment\MailIntercept\AssertableMessage;
 
 trait ContentTypeAssertions
 {
     /**
      * Assert mail content type is text/plain.
-     *
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailIsPlain(AssertableMessage | Email $mail): void
+    public function assertMailIsPlain(AssertableMessage|Email $mail): void
     {
         $this->assertEquals(
             'plain',
@@ -24,10 +22,8 @@ trait ContentTypeAssertions
 
     /**
      * Assert mail content type is not text/plain.
-     *
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailIsNotPlain(AssertableMessage | Email $mail): void
+    public function assertMailIsNotPlain(AssertableMessage|Email $mail): void
     {
         $this->assertNotEquals(
             'plain',
@@ -38,10 +34,8 @@ trait ContentTypeAssertions
 
     /**
      * Assert multipart email has text/plain content type.
-     *
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailHasPlainContent(AssertableMessage | Email $mail): void
+    public function assertMailHasPlainContent(AssertableMessage|Email $mail): void
     {
         if ($mail->getBody() instanceof AbstractMultipartPart) {
             $hasPlainContent = collect($mail->getBody()->getParts())
@@ -56,10 +50,8 @@ trait ContentTypeAssertions
 
     /**
      * Assert multipart email does not have text/plain content type.
-     *
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailDoesNotHavePlainContent(AssertableMessage | Email $mail): void
+    public function assertMailDoesNotHavePlainContent(AssertableMessage|Email $mail): void
     {
         if ($mail->getBody() instanceof AbstractMultipartPart) {
             $hasPlainContent = collect($mail->getBody()->getParts())
@@ -74,10 +66,8 @@ trait ContentTypeAssertions
 
     /**
      * Assert mail content type is text/html.
-     *
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailIsHtml(AssertableMessage | Email $mail): void
+    public function assertMailIsHtml(AssertableMessage|Email $mail): void
     {
         $this->assertEquals(
             'html',
@@ -88,10 +78,8 @@ trait ContentTypeAssertions
 
     /**
      * Assert mail content type is not text/html.
-     *
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailIsNotHtml(AssertableMessage | Email $mail): void
+    public function assertMailIsNotHtml(AssertableMessage|Email $mail): void
     {
         $this->assertNotEquals(
             'html',
@@ -102,10 +90,8 @@ trait ContentTypeAssertions
 
     /**
      * Assert multipart email has text/html content type.
-     *
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailHasHtmlContent(AssertableMessage | Email $mail): void
+    public function assertMailHasHtmlContent(AssertableMessage|Email $mail): void
     {
         if ($mail->getBody() instanceof AbstractMultipartPart) {
             $hasHtmlContent = collect($mail->getBody()->getParts())
@@ -120,10 +106,8 @@ trait ContentTypeAssertions
 
     /**
      * Assert multipart email does not have text/html content type.
-     *
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailDoesNotHaveHtmlContent(AssertableMessage | Email $mail): void
+    public function assertMailDoesNotHaveHtmlContent(AssertableMessage|Email $mail): void
     {
         if ($mail->getBody() instanceof AbstractMultipartPart) {
             $hasHtmlContent = collect($mail->getBody()->getParts())
@@ -138,10 +122,8 @@ trait ContentTypeAssertions
 
     /**
      * Assert mail content type is multipart/alternative.
-     *
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailIsAlternative(AssertableMessage | Email $mail): void
+    public function assertMailIsAlternative(AssertableMessage|Email $mail): void
     {
         $this->assertEquals(
             'alternative',
@@ -152,10 +134,8 @@ trait ContentTypeAssertions
 
     /**
      * Assert mail content type is not multipart/alternative.
-     *
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailIsNotAlternative(AssertableMessage | Email $mail): void
+    public function assertMailIsNotAlternative(AssertableMessage|Email $mail): void
     {
         $this->assertNotEquals(
             'alternative',
@@ -166,10 +146,8 @@ trait ContentTypeAssertions
 
     /**
      * Assert mail content type is multipart/mixed.
-     *
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailIsMixed(AssertableMessage | Email $mail): void
+    public function assertMailIsMixed(AssertableMessage|Email $mail): void
     {
         $this->assertEquals(
             'mixed',
@@ -180,10 +158,8 @@ trait ContentTypeAssertions
 
     /**
      * Assert mail content type is not multipart/mixed.
-     *
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailIsNotMixed(AssertableMessage | Email $mail): void
+    public function assertMailIsNotMixed(AssertableMessage|Email $mail): void
     {
         $this->assertNotEquals(
             'mixed',

@@ -4,6 +4,7 @@ namespace KirschbaumDevelopment\MailIntercept;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
+use KirschbaumDevelopment\MailIntercept\Assertions\AttachmentAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\BccAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\CcAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\ContentAssertions;
@@ -21,6 +22,7 @@ use Symfony\Component\Mime\Email;
 
 trait WithMailInterceptor
 {
+    use AttachmentAssertions;
     use BccAssertions;
     use CcAssertions;
     use ContentAssertions;

@@ -54,6 +54,14 @@ use Symfony\Component\Mime\Email;
  * @method assertMissingHeader(string $expected)
  * @method assertHeaderIs(string $expected, string $expectedValue)
  * @method assertHeaderIsNot(string $expected, string $expectedValue)
+ * @method assertHasAttachment(string $filename)
+ * @method assertHasAttachments()
+ * @method assertMissingAttachment(string $filename)
+ * @method assertMissingAttachments()
+ * @method assertHasEmbeddedImage(string $filename)
+ * @method assertHasEmbeddedImages()
+ * @method assertMissingEmbeddedImage(string $filename)
+ * @method assertMissingEmbeddedImages()
  */
 class AssertableMessage extends Assert
 {

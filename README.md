@@ -151,6 +151,17 @@ This should be called after `Mail` has been sent, but before your assertions, ot
 | `$intercepted->assertPriorityIsLowest();`     |                 |
 | `$intercepted->assertPriorityIsLowest();`     |                 |
 
+| Attachment Assertions                                  | Parameters         |
+|:-------------------------------------------------------|:-------------------|
+| `$intercepted->assertHasAttachment($filename);`        | `$filename` string |
+| `$intercepted->assertHasAttachments();`                |                    |
+| `$intercepted->assertMissingAttachment($filename);`    | `$filename` string |
+| `$intercepted->assertMissingAttachments();`            |                    |
+| `$intercepted->assertHasEmbeddedImage($filename);`     | `$filename` string |
+| `$intercepted->assertHasEmbeddedImages();`             |                    |
+| `$intercepted->assertMissingEmbeddedImage($filename);` | `$filename` string |
+| `$intercepted->assertMissingEmbeddedImages();`         |                    |
+
 #### Assertion Methods
 
 | Assertions                                                 | Parameters                                                   |
@@ -210,6 +221,17 @@ This should be called after `Mail` has been sent, but before your assertions, ot
 | `$this->assertMailPriorityNotLow($mail);`         | `$mail` AssertableMessage, Email                     |
 | `$this->assertMailPriorityIsLowest($mail);`       | `$mail` AssertableMessage, Email                     |
 | `$this->assertMailPriorityIsLowest($mail);`       | `$mail` AssertableMessage, Email                     |
+
+| Attachment Assertions                              | Parameters                                              |
+|:---------------------------------------------------|:--------------------------------------------------------|
+| `this->assertMailHasAttachment($filename);`        | `$filename` string<br/>`$mail` AssertableMessage, Email |
+| `this->assertMailHasAttachments();`                | `$mail` AssertableMessage, Email                        |
+| `this->assertMailMissingAttachment($filename);`    | `$filename` string<br/>`$mail` AssertableMessage, Email |
+| `this->assertMailMissingAttachments();`            | `$mail` AssertableMessage, Email                        |
+| `this->assertMailHasEmbeddedImage($filename);`     | `$filename` string<br/>`$mail` AssertableMessage, Email |
+| `this->assertMailHasEmbeddedImages();`             | `$mail` AssertableMessage, Email                        |
+| `this->assertMailMissingEmbeddedImage($filename);` | `$filename` string<br/>`$mail` AssertableMessage, Email |
+| `this->assertMailMissingEmbeddedImages();`         | `$mail` AssertableMessage, Email                        |
 
 You should use each item of the `interceptedMail()` collection as the mail object for all assertions.
 

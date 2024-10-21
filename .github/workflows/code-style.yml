@@ -12,6 +12,10 @@ jobs:
       with:
         fetch-depth: 1
 
+    - name: Install composer dependencies
+      run: |
+        composer install --prefer-dist --no-interaction --no-scripts
+
     - name: Check Coding Standards
       run: composer pint-check
 

@@ -1,7 +1,12 @@
 <?php
 
-arch('laravel preset')->preset()->laravel();
+// Pest Presets are available beginning in version 3.
+exec('composer show pestphp/pest', $output);
 
-arch('php preset')->preset()->php();
+if ($output[3] === 'versions : * v3') {
+    arch('laravel preset')->preset()->laravel();
 
-arch('security preset')->preset()->security();
+    arch('php preset')->preset()->php();
+
+    arch('security preset')->preset()->security();
+}

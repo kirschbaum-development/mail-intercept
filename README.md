@@ -16,7 +16,7 @@ Mail isn't faked here. You get to inspect the actual mail ensuring you are sendi
 
 | Laravel Version | Mail Intercept Version |
 |:----------------|:-----------------------|
-| 11.x            | 0.5.x                  |
+| 11.x            | 0.6.x                  |
 | 10.x            | 0.4.x                  |
 | 9.x             | 0.3.x                  |
 | 8.x and lower   | 0.2.x                  |

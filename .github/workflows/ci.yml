@@ -2,7 +2,25 @@ on: push
 name: CI
 
 jobs:
-  phpunit-php82:
+  pest-php81:
+    name: PHP 8.1
+    runs-on: ubuntu-latest
+    container:
+      image: kirschbaumdevelopment/laravel-test-runner:8.1
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+
+      - name: Install composer dependencies
+        run: |
+          composer install --prefer-dist --no-interaction --no-scripts
+
+      - name: Run Testsuite
+        run: composer pest
+
+  pest-php82:
       name: PHP 8.2
       runs-on: ubuntu-latest
       container:
@@ -20,7 +38,7 @@ jobs:
         - name: Run Testsuite
           run: composer pest
 
-  phpunit-php83:
+  pest-php83:
     name: PHP 8.3
     runs-on: ubuntu-latest
     container:

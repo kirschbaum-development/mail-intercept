@@ -13,10 +13,10 @@ use KirschbaumDevelopment\MailIntercept\Assertions\SubjectAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\ToAssertions;
 use KirschbaumDevelopment\MailIntercept\Assertions\UnstructuredHeaderAssertions;
 
-arch()->expect('KirschbaumDevelopment\MailIntercept\WithMailInterceptor')
+arch('WithMailInterceptor is a trait')->expect('KirschbaumDevelopment\MailIntercept\WithMailInterceptor')
     ->toBeTrait();
 
-arch()->expect('KirschbaumDevelopment\MailIntercept\WithMailInterceptor')
+arch('WithMailInterceptor uses traits')->expect('KirschbaumDevelopment\MailIntercept\WithMailInterceptor')
     ->toUseTraits([
         BccAssertions::class,
         CcAssertions::class,

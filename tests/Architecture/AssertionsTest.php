@@ -1,14 +1,14 @@
 <?php
 
-arch()->expect('KirschbaumDevelopment\MailIntercept\Assertions')
+arch('assertions are traits')->expect('KirschbaumDevelopment\MailIntercept\Assertions')
     ->toBeTraits();
 
-arch()->expect('KirschbaumDevelopment\MailIntercept\Assertions')
+arch('assertions have correct suffix')->expect('KirschbaumDevelopment\MailIntercept\Assertions')
     ->traits()
     ->toHaveSuffix('Assertions');
 
-arch()->expect('KirschbaumDevelopment\MailIntercept\Assertions')
+arch('assertions do not have private methods')->expect('KirschbaumDevelopment\MailIntercept\Assertions')
     ->not->toHavePrivateMethods();
 
-arch()->expect('KirschbaumDevelopment\MailIntercept\Assertions')
+arch('assertions do not have protected methods')->expect('KirschbaumDevelopment\MailIntercept\Assertions')
     ->not->toHaveProtectedMethods();

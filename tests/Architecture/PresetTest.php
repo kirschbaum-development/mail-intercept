@@ -1,7 +1,7 @@
 <?php
 
-arch()->preset()->laravel();
+arch('laravel preset')->preset()->laravel();
 
-arch()->preset()->php();
+arch('php preset')->preset()->php();
 
-arch()->preset()->security();
+arch('security preset')->preset()->security();

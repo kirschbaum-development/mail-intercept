@@ -3,18 +3,15 @@
 namespace KirschbaumDevelopment\MailIntercept\Assertions;
 
 use Illuminate\Support\Arr;
-use Symfony\Component\Mime\Email;
 use KirschbaumDevelopment\MailIntercept\AssertableMessage;
+use Symfony\Component\Mime\Email;
 
 trait ToAssertions
 {
     /**
      * Assert mail was sent to address.
-     *
-     * @param array|string $expected
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailSentTo(array | string $expected, AssertableMessage | Email $mail): void
+    public function assertMailSentTo(array|string $expected, AssertableMessage|Email $mail): void
     {
         $expectedAddresses = Arr::wrap($expected);
         $actualAddresses = $this->gatherEmailData('getTo', $mail);
@@ -30,11 +27,8 @@ trait ToAssertions
 
     /**
      * Assert mail was not sent to address.
-     *
-     * @param array|string $expected
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailNotSentTo(array | string $expected, AssertableMessage | Email $mail): void
+    public function assertMailNotSentTo(array|string $expected, AssertableMessage|Email $mail): void
     {
         $expectedAddresses = Arr::wrap($expected);
         $actualAddresses = $this->gatherEmailData('getTo', $mail);

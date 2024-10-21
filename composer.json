@@ -17,13 +17,14 @@
         }
     ],
     "require": {
-        "php": "^8.0.2|^8.1|^8.2",
-        "illuminate/mail": "^9.2|^10.0|^11.0"
+        "php": "^8.1|^8.2",
+        "illuminate/mail": "^10.0|^11.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.7",
-        "orchestra/testbench": "^7.1|^8.0|^9.0",
-        "phpunit/phpunit": "^9.5.10|^10.5",
+        "laravel/pint": "^1.18",
+        "orchestra/testbench": "^8.0|^9.0",
+        "pestphp/pest": "^2.36|^3.4",
+        "phpunit/phpunit": "^10.1|^11.0",
         "spatie/ray": "^1.41.1"
     },
     "autoload": {
@@ -36,8 +37,25 @@
             "Tests\\": "tests/"
         }
     },
+    "scripts": {
+        "pest": [
+            "./vendor/bin/pest"
+        ],
+        "pint": [
+            "./vendor/bin/pint"
+        ],
+        "pint-check": [
+            "./vendor/bin/pint --test"
+        ],
+        "test": [
+            "./vendor/bin/phpunit"
+        ]
+    },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

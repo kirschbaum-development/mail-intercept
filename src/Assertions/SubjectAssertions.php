@@ -2,18 +2,15 @@
 
 namespace KirschbaumDevelopment\MailIntercept\Assertions;
 
-use Symfony\Component\Mime\Email;
 use KirschbaumDevelopment\MailIntercept\AssertableMessage;
+use Symfony\Component\Mime\Email;
 
 trait SubjectAssertions
 {
     /**
      * Assert mail has subject.
-     *
-     * @param string $expected
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailSubject(string $expected, AssertableMessage | Email $mail): void
+    public function assertMailSubject(string $expected, AssertableMessage|Email $mail): void
     {
         $this->assertEquals(
             $expected,
@@ -24,11 +21,8 @@ trait SubjectAssertions
 
     /**
      * Assert mail does not have subject.
-     *
-     * @param string $expected
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailNotSubject(string $expected, AssertableMessage | Email $mail): void
+    public function assertMailNotSubject(string $expected, AssertableMessage|Email $mail): void
     {
         $this->assertNotEquals(
             $expected,

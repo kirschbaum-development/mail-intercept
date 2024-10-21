@@ -3,8 +3,8 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\WithFaker;
-use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use KirschbaumDevelopment\MailIntercept\WithMailInterceptor;
+use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase
 {

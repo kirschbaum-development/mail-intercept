@@ -2,11 +2,11 @@
 
 namespace Tests\Fluent;
 
-use Tests\TestCase;
+use KirschbaumDevelopment\MailIntercept\AssertableMessage;
+use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Part\TextPart;
-use PHPUnit\Framework\ExpectationFailedException;
-use KirschbaumDevelopment\MailIntercept\AssertableMessage;
+use Tests\TestCase;
 
 class ContentTypeAssertionsTest extends TestCase
 {

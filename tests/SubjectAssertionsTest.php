@@ -2,9 +2,9 @@
 
 namespace Tests;
 
-use Symfony\Component\Mime\Email;
-use PHPUnit\Framework\ExpectationFailedException;
 use KirschbaumDevelopment\MailIntercept\AssertableMessage;
+use PHPUnit\Framework\ExpectationFailedException;
+use Symfony\Component\Mime\Email;
 
 class SubjectAssertionsTest extends TestCase
 {

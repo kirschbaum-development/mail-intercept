@@ -2,10 +2,10 @@
 
 namespace Tests\Fluent;
 
-use Tests\TestCase;
-use Symfony\Component\Mime\Email;
-use PHPUnit\Framework\ExpectationFailedException;
 use KirschbaumDevelopment\MailIntercept\AssertableMessage;
+use PHPUnit\Framework\ExpectationFailedException;
+use Symfony\Component\Mime\Email;
+use Tests\TestCase;
 
 class CcAssertionsTest extends TestCase
 {

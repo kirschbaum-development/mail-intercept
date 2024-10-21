@@ -2,6 +2,17 @@
 
 All notable changes to `mail-intercept` will be documented in this file
 
+## 1.0.0 - 2024-10-21
+
+- Bumped minimum requirement to Laravel 11 and PHP 8.2.
+- New attachment and embedded image assertions.
+- Pest architecture tests.
+- Replace PHP CS Fixer with Laravel Pint.
+
+## 0.5.0 - 2024-03-18
+
+- Added Laravel 11 support.
+
 ## 0.4.0 - 2023-04-05
 
 - Added Laravel 10 support. Thank you [@cstriuli](https://github.com/cstriuli).

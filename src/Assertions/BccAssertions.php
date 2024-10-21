@@ -3,18 +3,15 @@
 namespace KirschbaumDevelopment\MailIntercept\Assertions;
 
 use Illuminate\Support\Arr;
-use Symfony\Component\Mime\Email;
 use KirschbaumDevelopment\MailIntercept\AssertableMessage;
+use Symfony\Component\Mime\Email;
 
 trait BccAssertions
 {
     /**
      * Assert mail was BCC'd to address.
-     *
-     * @param array|string $expected
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailBcc(array|string $expected, AssertableMessage | Email $mail): void
+    public function assertMailBcc(array|string $expected, AssertableMessage|Email $mail): void
     {
         $expectedAddresses = Arr::wrap($expected);
         $actualAddresses = $this->gatherEmailData('getBcc', $mail);
@@ -30,11 +27,8 @@ trait BccAssertions
 
     /**
      * Assert mail was not BCC'd to address.
-     *
-     * @param array|string $expected
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailNotBcc(array|string $expected, AssertableMessage | Email $mail): void
+    public function assertMailNotBcc(array|string $expected, AssertableMessage|Email $mail): void
     {
         $addresses = Arr::wrap($expected);
         $actualAddresses = $this->gatherEmailData('getBcc', $mail);

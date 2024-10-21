@@ -2,18 +2,15 @@
 
 namespace KirschbaumDevelopment\MailIntercept\Assertions;
 
-use Symfony\Component\Mime\Email;
 use KirschbaumDevelopment\MailIntercept\AssertableMessage;
+use Symfony\Component\Mime\Email;
 
 trait ReturnPathAssertions
 {
     /**
      * Assert mail has return path.
-     *
-     * @param string $expected
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailReturnPath(string $expected, AssertableMessage | Email $mail): void
+    public function assertMailReturnPath(string $expected, AssertableMessage|Email $mail): void
     {
         $this->assertEquals(
             $expected,
@@ -24,11 +21,8 @@ trait ReturnPathAssertions
 
     /**
      * Assert mail does not have return path.
-     *
-     * @param string $expected
-     * @param AssertableMessage|Email $mail
      */
-    public function assertMailNotReturnPath(string $expected, AssertableMessage | Email $mail): void
+    public function assertMailNotReturnPath(string $expected, AssertableMessage|Email $mail): void
     {
         $this->assertNotEquals(
             $expected,

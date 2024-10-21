@@ -16,18 +16,23 @@ use KirschbaumDevelopment\MailIntercept\Assertions\UnstructuredHeaderAssertions;
 arch('WithMailInterceptor is a trait')->expect('KirschbaumDevelopment\MailIntercept\WithMailInterceptor')
     ->toBeTrait();
 
-arch('WithMailInterceptor uses traits')->expect('KirschbaumDevelopment\MailIntercept\WithMailInterceptor')
-    ->toUseTraits([
-        BccAssertions::class,
-        CcAssertions::class,
-        ContentAssertions::class,
-        ContentTypeAssertions::class,
-        FromAssertions::class,
-        PriorityAssertions::class,
-        ReplyToAssertions::class,
-        ReturnPathAssertions::class,
-        SenderAssertions::class,
-        SubjectAssertions::class,
-        ToAssertions::class,
-        UnstructuredHeaderAssertions::class,
-    ]);
+// Pest Presets are available beginning in version 3.
+exec('composer show pestphp/pest', $output);
+
+if ($output[3] === 'versions : * v3') {
+    arch('WithMailInterceptor uses traits')->expect('KirschbaumDevelopment\MailIntercept\WithMailInterceptor')
+        ->toUseTraits([
+            BccAssertions::class,
+            CcAssertions::class,
+            ContentAssertions::class,
+            ContentTypeAssertions::class,
+            FromAssertions::class,
+            PriorityAssertions::class,
+            ReplyToAssertions::class,
+            ReturnPathAssertions::class,
+            SenderAssertions::class,
+            SubjectAssertions::class,
+            ToAssertions::class,
+            UnstructuredHeaderAssertions::class,
+        ]);
+}

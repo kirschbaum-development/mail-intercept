@@ -8,8 +8,13 @@ use PHPUnit\Framework\Assert;
 arch('AssertableMessage extends Assert')->expect(AssertableMessage::class)
     ->toExtend(Assert::class);
 
-arch('AssertableMessage uses traits')->expect(AssertableMessage::class)
-    ->toUseTraits([
-        ForwardsCalls::class,
-        WithMailInterceptor::class,
-    ]);
+// Pest Presets are available beginning in version 3.
+exec('composer show pestphp/pest', $output);
+
+if ($output[3] === 'versions : * v3') {
+    arch('AssertableMessage uses traits')->expect(AssertableMessage::class)
+        ->toUseTraits([
+            ForwardsCalls::class,
+            WithMailInterceptor::class,
+        ]);
+}

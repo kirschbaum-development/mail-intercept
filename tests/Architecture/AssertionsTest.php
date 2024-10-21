@@ -7,8 +7,13 @@ arch('assertions have correct suffix')->expect('KirschbaumDevelopment\MailInterc
     ->traits()
     ->toHaveSuffix('Assertions');
 
-arch('assertions do not have private methods')->expect('KirschbaumDevelopment\MailIntercept\Assertions')
-    ->not->toHavePrivateMethods();
+// Pest Presets are available beginning in version 3.
+exec('composer show pestphp/pest', $output);
 
-arch('assertions do not have protected methods')->expect('KirschbaumDevelopment\MailIntercept\Assertions')
-    ->not->toHaveProtectedMethods();
+if ($output[3] === 'versions : * v3') {
+    arch('assertions do not have private methods')->expect('KirschbaumDevelopment\MailIntercept\Assertions')
+        ->not->toHavePrivateMethods();
+
+    arch('assertions do not have protected methods')->expect('KirschbaumDevelopment\MailIntercept\Assertions')
+        ->not->toHaveProtectedMethods();
+}

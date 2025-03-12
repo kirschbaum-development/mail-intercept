@@ -1,0 +1,119 @@
+on: push
+name: CI
+
+jobs:
+  pest:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [ 8.1, 8.2, 8.3, 8.4 ]
+        laravel: [ 10.*, 11.*, 12.* ]
+        include:
+          - php: 8.1
+            laravel: 10.*
+            pest: 2.*
+            testbench: 8.*
+          - php: 8.2
+            laravel: 10.*
+            pest: 2.*
+            testbench: 8.*
+          - php: 8.3
+            laravel: 10.*
+            pest: 2.*
+            testbench: 8.*
+          - php: 8.4
+            laravel: 10.*
+            pest: 2.*
+            testbench: 8.*
+          - php: 8.2
+            laravel: 11.*
+            pest: 3.*
+            testbench: 9.*
+          - php: 8.3
+            laravel: 11.*
+            pest: 3.*
+            testbench: 9.*
+          - php: 8.4
+            laravel: 11.*
+            pest: 3.*
+            testbench: 9.*
+          - php: 8.2
+            laravel: 12.*
+            pest: 3.*
+            testbench: 10.*
+          - php: 8.3
+            laravel: 12.*
+            pest: 3.*
+            testbench: 10.*
+          - php: 8.4
+            laravel: 12.*
+            pest: 3.*
+            testbench: 10.*
+        exclude:
+          - php: 8.1
+            laravel: 11.*
+          - php: 8.1
+            laravel: 12.*
+
+    name: Mail Intercept Tests - PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, mbstring, zip, pcntl, iconv
+          coverage: none
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
+          composer require "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer require "pestphp/pest:${{ matrix.pest }}" "pestphp/pest-plugin-laravel:${{ matrix.pest }}" "pestphp/pest-plugin-type-coverage:${{ matrix.pest }}" --no-interaction --no-update
+          composer update --prefer-dist --no-interaction
+          composer dump
+
+      - name: Execute tests
+        run: composer pest
+
+  pint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+
+    name: Pint Style Check
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-composer-${{ hashFiles('composer.json') }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: |
+          composer install --no-interaction
+          composer dump
+
+      - name: Execute Pint
+        run: composer pint-check

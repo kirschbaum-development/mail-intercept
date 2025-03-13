@@ -38,6 +38,12 @@
     "new_with_braces": true,
     "nullable_type_declaration_for_default_null_value": true,
     "ordered_traits": true,
+    "php_unit_method_casing": {
+      "case": "camel_case"
+    },
+    "php_unit_test_annotation": {
+      "style": "prefix"
+    },
     "phpdoc_separation": true,
     "single_line_empty_body": true
   }
